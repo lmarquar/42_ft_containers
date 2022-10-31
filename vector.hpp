@@ -5,8 +5,17 @@
 # include <string>
 
 template<
-    class T,
-    class Allocator = std::allocator<T>
+	class T
+>
+typedef struct s_list
+{
+	T el;
+	t_list *next;
+} t_list;
+
+template<
+	class T,
+	class Allocator = std::allocator<T>
 >
 class vector
 {
