@@ -50,28 +50,7 @@ class vector
 		{
 			return arr_size;
 		}
-		void push_back(T &el)
-		{
-			if (arr_size == arr_capacity)
-			{
-				T *new_arr;
-				size_t new_arr_capacity;
-
-				if (arr_capacity == 0)
-					new_arr_capacity = 1;
-				else
-					new_arr_capacity = arr_capacity * 2;
-				if (arr_capacity > INT_MAX)
-					throw std::out_of_range("vector size gets too big");
-				new_arr = new int((int)new_arr_capacity);
-				pasteAllInto(new_arr, new_arr_capacity);
-				delete arr;
-				arr = new_arr;
-				arr_capacity = new_arr_capacity;
-			}
-			arr[arr_size++] = el;
-		}
-		void push_back(T el)
+ 		void push_back(T el)
 		{
 			if (arr_size == arr_capacity)
 			{
@@ -88,6 +67,30 @@ class vector
 				arr_capacity = new_arr_capacity;
 			}
 			arr[arr_size++] = el;
+			std::cout << "test" << std::endl;
+		}
+		void push_front(T el)
+		{
+			if (arr_size == arr_capacity)
+			{
+				T *new_arr;
+				size_t new_arr_capacity;
+
+				new_arr_capacity = arr_capacity * 2;
+				if (arr_capacity > INT_MAX)
+					throw std::out_of_range("vector size gets too big");
+				new_arr = new int((int)new_arr_capacity);
+				pasteAllInto(new_arr, new_arr_capacity);
+				delete arr;
+				arr = new_arr;
+				arr_capacity = new_arr_capacity;
+			}
+			moveAllToRightByOne();
+			arr[0] = el;
+		}
+		inline T at(int i) const
+		{
+			return (arr[i]);
 		}
 
 
@@ -100,6 +103,11 @@ class vector
 		{
 			for (size_t i = 0; i < buf_size; i++)
 				buf[i] = arr[i];
+		}
+		void moveAllToRightByOne()
+		{
+			for (size_t i = arr_size; i > 0; i--)
+				arr[i] = arr[i - 1];
 		}
 };
 }

@@ -1,13 +1,17 @@
 #include <iostream>
 #include <vector>
 #include "vector.hpp"
- 
+
+class A {public: A(){a = 1;} int a;};
+
 int main()
 {
+    int i;
     ft::vector<int> v1;
 
+    i = 10;
     std::cout << v1.capacity() << std::endl;
-    v1.push_back(10);
+    v1.push_back(1);
     std::cout << v1.size() << std::endl;
     
 

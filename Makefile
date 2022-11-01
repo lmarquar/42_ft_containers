@@ -5,9 +5,9 @@ MY_SRC		:= mymain.cpp
 NAME		:= ft_containers_test
 MY_NAME		:= ft_containers_test_mine
 
-all: $(NAME)
+all: $(MY_NAME)
 
-mytest: $(MY_NAME)
+mytest: $(NAME)
 
 re: fclean all
 
