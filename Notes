@@ -1,0 +1,3 @@
+Some minor inconvienences:
+in vector::capacity() the original function had a noexcept at the end i couldn't implement
+
