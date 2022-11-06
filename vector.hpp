@@ -92,6 +92,8 @@ class vector
 		} */
 		inline T at(size_t i) const
 		{
+			if (i + 1 > arr_size)
+				throw std::out_of_range("vector");
 			return (arr[i]);
 		}
 		inline T &front()
@@ -119,19 +121,53 @@ class vector
 		{
 			return (arr);
 		}
+
+
+		// Classes
 		class iterator
 		{
-				explicit iterator(vector& v)
+			public:
+				// Constructors
+				explicit iterator()
 				{
-					ptr = v.data();
 				}
+
+				// Destructors
+				~iterator()
+				{
+				}
+
+				// Operators
 				reference operator*() const
 				{
 					return (*ptr);
 				}
+				iterator & operator=(const iterator & iter)
+				{
+					ptr = iter.getPtr();
+					return (*this);
+				}
+
+				// Getters and Setters
+				T*	getPtr() const
+				{
+					return (ptr);
+				}
+				void setPtr(T *_ptr)
+				{
+					ptr = _ptr;
+				}
+
 			private:
 				T*	ptr;
 		};
+		vector::iterator begin()
+		{
+			iterator it;
+
+			it.setPtr(arr);
+			return (it);
+		}
 	private:
 		T		*arr;
 		size_t	arr_capacity;
