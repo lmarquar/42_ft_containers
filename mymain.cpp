@@ -4,39 +4,32 @@
 
 class A {public: A(){a = 1;} int a;};
 
-/* template <typename Vector>
-void test(Vector t)
+template <typename Vector>
+void test(Vector &t)
 {
-    (void) t;
     t.push_back(2);
-//    std::cout << t.at(0) << std::endl;
-} */
+    t.push_back(3);
+    for(size_t i = 0; i < t.size(); i++)
+        std::cout << t.at(i) << std::endl;
+    t.clear();
+    for(size_t i = 0; i < 4; i++)
+        std::cout << t.at(i) << std::endl;
+    std::cout << "back(): " << t.back() << std::endl;
+    std::cout << "capacity(): " << t.capacity() << std::endl;
+    std::cout << "size(): " << t.size() << std::endl;
+}
 
 int main()
 {
     int i;
-    ft::vector<int> v1;
+    ft::vector<int> v_mine;
+    std::vector<int> v_real;
 
     i = 10;
-    test(v1);
-    v1.push_back(2);
-    v1.push_back(3);
-    v1.push_front(1);
-    for(size_t i = 0; i < v1.size(); i++)
-        std::cout << v1.at((int)i) << std::endl;
-    v1.clear();
-    for(size_t i = 0; i < 4; i++)
-        std::cout << v1.at((int)i) << std::endl;
-    std::cout << "back(): " << v1.back() << std::endl;
-    std::cout << "capacity(): " << v1.capacity() << std::endl;
-    std::cout << "size(): " << v1.size() << std::endl;
-
-    std::vector<A> v2;
-    A a;
-    a.a = 2;
-    v2.push_back(a);
-    v2.clear();
-    std::cout << "A: " << v2.back().a << std::endl;
+    test(v_mine);
+    test(v_real);
+    v_real.insert(v_real.begin(), 10);
+    std::vector<int>::iterator iter;
 
     std::cout << "start of real vector" << std::endl;
      // Create a vector containing integers

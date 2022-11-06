@@ -14,6 +14,9 @@ template<
 class vector
 {
 	public:
+		// Variables
+		typedef T&               reference;
+
 		// Constructors
 		vector()
 		{
@@ -41,12 +44,12 @@ class vector
 			return (*this);
 		}
 		
-		// Getters / Setters
+		// Functions
 		inline size_t capacity() const
 		{
 			return arr_capacity;
 		}
-		inline size_t size() const/*  noexcept */
+		inline size_t size() const
 		{
 			return arr_size;
 		}
@@ -68,7 +71,7 @@ class vector
 			}
 			arr[arr_size++] = el;
 		}
-		void push_front(T el)
+/* 		void insert(iterator __pos, T el)
 		{
 			if (arr_size == arr_capacity)
 			{
@@ -84,11 +87,10 @@ class vector
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			moveAllToRightByOne();
 			arr[0] = el;
 			arr_size++;
-		}
-		inline T at(int i) const
+		} */
+		inline T at(size_t i) const
 		{
 			return (arr[i]);
 		}
@@ -117,8 +119,19 @@ class vector
 		{
 			return (arr);
 		}
-
-
+		class iterator
+		{
+				explicit iterator(vector& v)
+				{
+					ptr = v.data();
+				}
+				reference operator*() const
+				{
+					return (*ptr);
+				}
+			private:
+				T*	ptr;
+		};
 	private:
 		T		*arr;
 		size_t	arr_capacity;
