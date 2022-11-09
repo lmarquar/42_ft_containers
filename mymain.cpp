@@ -13,6 +13,13 @@ void test(Vector &t)
     for(size_t i = 0; i < t.size(); i++)
         std::cout << t.at(i) << std::endl;
     std::cout << "end of array" << std::endl;
+    typename Vector::iterator iter;
+    iter = t.begin();
+    for(size_t i = 0; i < t.size(); i++)
+    {
+        std::cout << *iter << std::endl;
+        iter++;
+    }
     t.clear();
     try{
         for(size_t i = 0; i < 4; i++)
@@ -24,9 +31,6 @@ void test(Vector &t)
     std::cout << "back(): " << t.back() << std::endl;
     std::cout << "capacity(): " << t.capacity() << std::endl;
     std::cout << "size(): " << t.size() << std::endl;
-    typename Vector::iterator iter;
-    iter = t.begin();
-    std::cout << *iter << std::endl;
 }
 
 int main()

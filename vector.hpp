@@ -71,25 +71,6 @@ class vector
 			}
 			arr[arr_size++] = el;
 		}
-/* 		void insert(iterator __pos, T el)
-		{
-			if (arr_size == arr_capacity)
-			{
-				T *new_arr;
-				size_t new_arr_capacity;
-
-				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				if (arr_capacity > INT_MAX)
-					throw std::out_of_range("vector size gets too big");
-				new_arr = new T[new_arr_capacity];
-				pasteAllInto(new_arr, new_arr_capacity);
-				delete arr;
-				arr = new_arr;
-				arr_capacity = new_arr_capacity;
-			}
-			arr[0] = el;
-			arr_size++;
-		} */
 		inline T at(size_t i) const
 		{
 			if (i + 1 > arr_size)
@@ -142,11 +123,32 @@ class vector
 				{
 					return (*ptr);
 				}
+				iterator& operator++()
+				{
+					++ptr;
+					return (*this);
+				}
+				iterator operator++(int)
+				{
+					ptr++;
+					return (*this);
+				}
+				iterator& operator--()
+				{
+					--ptr;
+					return (*this);
+				}
+				iterator operator--(int)
+				{
+					ptr--;
+					return (*this);
+				}
 				iterator & operator=(const iterator & iter)
 				{
 					ptr = iter.getPtr();
 					return (*this);
 				}
+
 
 				// Getters and Setters
 				T*	getPtr() const
@@ -161,6 +163,25 @@ class vector
 			private:
 				T*	ptr;
 		};
+		void insert(iterator __pos, T el)
+		{
+			if (arr_size == arr_capacity)
+			{
+				T *new_arr;
+				size_t new_arr_capacity;
+
+				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
+				if (arr_capacity > INT_MAX)
+					throw std::out_of_range("vector size gets too big");
+				new_arr = new T[new_arr_capacity];
+				pasteAllInto(new_arr, new_arr_capacity);
+				delete arr;
+				arr = new_arr;
+				arr_capacity = new_arr_capacity;
+			}
+			arr[0] = el;
+			arr_size++;
+		}
 		vector::iterator begin()
 		{
 			iterator it;
