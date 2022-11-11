@@ -1,5 +1,5 @@
 CC			:= c++
-CFLAGS		:= -Wall -Werror -Wextra -Wconversion -std=c++98
+CFLAGS		:= -Wall -Werror -Wextra -Wconversion -std=c++98 -g
 SRC			:= main.cpp
 MY_SRC		:= mymain.cpp
 NAME		:= ft_containers_test

@@ -1,6 +1,8 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# define MAX_SIZE INT_MAX
+
 # include <iostream>
 # include <string>
 # include <stdexcept>
@@ -24,6 +26,20 @@ class vector
 			arr_size = 0;
 			arr = new T[arr_capacity];
 		}
+		vector(T *range_start, T *range_end)
+		{
+			size_t	i;
+
+			i = (size_t)(range_end - range_start);
+			std::cout << "distance between range_inputs: " << i << std::endl;
+			if ((range_start + i) != range_end || i > MAX_SIZE)
+				throw std::length_error("vector");
+			arr_capacity = i;
+			arr = new T[arr_capacity];
+			for (i = 0; range_start[i] != *range_end; i++)
+				arr[i] = range_start[i];
+			arr_size = i;
+		}
 		vector(const vector &copy)
 		{
 			*this = copy;
@@ -43,6 +59,10 @@ class vector
 			arr_size = assign.size();
 			return (*this);
 		}
+		reference operator[](size_t pos)
+		{
+			return (arr[pos]);
+		}
 		
 		// Functions
 		inline size_t capacity() const
@@ -60,9 +80,9 @@ class vector
 				T *new_arr;
 				size_t new_arr_capacity;
 
+				if (arr_capacity > MAX_SIZE / (size_t)2)
+					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				if (arr_capacity > INT_MAX)
-					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
 				pasteAllInto(new_arr, new_arr_capacity);
 				delete arr;
@@ -112,11 +132,12 @@ class vector
 				explicit iterator()
 				{
 				}
+				iterator(iterator &ref)
+				{
+					*this = ref;
+				}
 
 				// Destructors
-				~iterator()
-				{
-				}
 
 				// Operators
 				reference operator*() const
@@ -130,8 +151,9 @@ class vector
 				}
 				iterator operator++(int)
 				{
-					ptr++;
-					return (*this);
+					iterator iter(*this);
+					operator++();
+					return (iter);
 				}
 				iterator& operator--()
 				{
@@ -140,8 +162,9 @@ class vector
 				}
 				iterator operator--(int)
 				{
-					ptr--;
-					return (*this);
+					iterator iter(*this);
+					operator--();
+					return (iter);
 				}
 				iterator & operator=(const iterator & iter)
 				{
@@ -163,7 +186,7 @@ class vector
 			private:
 				T*	ptr;
 		};
-		void insert(iterator __pos, T el)
+/*		void insert(iterator __pos, T el)
 		{
 			if (arr_size == arr_capacity)
 			{
@@ -181,12 +204,19 @@ class vector
 			}
 			arr[0] = el;
 			arr_size++;
-		}
+		}*/
 		vector::iterator begin()
 		{
 			iterator it;
 
 			it.setPtr(arr);
+			return (it);
+		}
+		vector::iterator end()
+		{
+			iterator it;
+
+			it.setPtr(arr[arr_size - 1]);
 			return (it);
 		}
 	private:

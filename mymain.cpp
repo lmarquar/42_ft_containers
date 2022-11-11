@@ -1,36 +1,59 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <sstream>
+#include <iomanip>
 #include "vector.hpp"
+
+#define RED "\033[1;31m"
+#define GREEN "\033[0;32m"
+#define BLUE "\033[4;34m"
+#define RESET "\033[0m"
 
 class A {public: A(){a = 1;} int a;};
 
 template <typename Vector>
-void test(Vector &t)
+void test(std::ostream& oStream)
 {
+    int arr[4] = {1, 2, 3, 4};
+    int arr2[2] = {5, 6};
+    try {
+        Vector t_wrong(arr, arr2);
+    } catch (std::exception &e)
+    {
+        oStream << "caught length_error of type: " << e.what() << std::endl;
+    }
+    Vector t(arr, arr+4);
     t.push_back(2);
     t.push_back(3);
-    std::cout << "size: " << t.size() << std::endl;
+    oStream << "size: " << t.size() << std::endl;
     for(size_t i = 0; i < t.size(); i++)
-        std::cout << t.at(i) << std::endl;
-    std::cout << "end of array" << std::endl;
+        oStream << t.at(i) << std::endl;
+    oStream << "vector[size() - 1]: " << t[t.size() - 1] << std::endl;
+    oStream << "end of array" << std::endl;
+    oStream << "back(): " << t.back() << std::endl;
+
     typename Vector::iterator iter;
     iter = t.begin();
-    for(size_t i = 0; i < t.size(); i++)
+    for(size_t i = 0; i < t.size() - 1; i++)
     {
-        std::cout << *iter << std::endl;
+        oStream << *iter << std::endl;
         iter++;
     }
+    oStream << "*(--iterator)" << *(--iter) << std::endl;
+    oStream << "*(++iterator)" << *(++iter) << std::endl;
+    oStream << "*(iterator--)" << *(iter--) << std::endl;
+    oStream << "*(iterator++)" << *(iter++) << std::endl;
     t.clear();
     try{
         for(size_t i = 0; i < 4; i++)
-            std::cout << t.at(i) << std::endl;
+            oStream << t.at(i) << std::endl;
     } catch (std::out_of_range &e)
     {
-        std::cout << e.what() << std::endl;
+        oStream << "catched Exception: " << e.what() << std::endl;
     }
-    std::cout << "back(): " << t.back() << std::endl;
-    std::cout << "capacity(): " << t.capacity() << std::endl;
-    std::cout << "size(): " << t.size() << std::endl;
+    oStream << "capacity(): " << t.capacity() << std::endl;
+    oStream << "size(): " << t.size() << std::endl;
 }
 
 int main()
@@ -38,12 +61,35 @@ int main()
     int i;
     ft::vector<int> v_mine;
     std::vector<int> v_real;
+    std::stringstream ss_v_mine;
+    std::stringstream ss_v_real;
+    std::string buf_mine;
+    std::string buf_real;
+    int width;
+
 
     i = 10;
-    std::cout << "test for ft::vector: " << std::endl;
-    test(v_mine);
+    width = 30;
+/*     std::cout << "test for ft::vector: " << std::endl;
+    test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
-    test(v_real);
+    test(v_real, std::cout); */
+
+    test<ft::vector<int> >(ss_v_mine);
+    test<std::vector<int> >(ss_v_real);
+
+    std::cout << BLUE << std::setw(width) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
+    while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
+    {
+        if (buf_mine == buf_real)
+            std::cout << GREEN << std::setw(width) << std::left << buf_real << buf_mine << RESET << std::endl;
+        else
+            std::cout << RED << std::setw(width) << std::left << buf_real << buf_mine << RESET << std::endl;
+    }
+
+    assert(ss_v_mine.str() == ss_v_real.str());
+    std::cout << GREEN << "all tests for vector pass" << RESET << std::endl;
+
     std::cout << std::endl << std::endl;
     v_real.insert(v_real.begin(), 10);
     std::vector<int>::iterator iter;
