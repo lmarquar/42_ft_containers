@@ -138,6 +138,9 @@ class vector
 				}
 
 				// Destructors
+				~iterator()
+				{
+				}
 
 				// Operators
 				reference operator*() const
@@ -172,7 +175,6 @@ class vector
 					return (*this);
 				}
 
-
 				// Getters and Setters
 				T*	getPtr() const
 				{
@@ -186,7 +188,7 @@ class vector
 			private:
 				T*	ptr;
 		};
-/*		void insert(iterator __pos, T el)
+/* 		void insert(iterator __pos, T el)
 		{
 			if (arr_size == arr_capacity)
 			{
@@ -202,9 +204,9 @@ class vector
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			arr[0] = el;
+			
 			arr_size++;
-		}*/
+		} */
 		vector::iterator begin()
 		{
 			iterator it;
