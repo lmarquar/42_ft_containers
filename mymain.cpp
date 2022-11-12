@@ -15,7 +15,7 @@ class A {public: A(){a = 1;} int a;};
 template <typename Vector>
 void test(std::ostream& oStream)
 {
-    int arr[4] = {1, 2, 3, 4};
+    int arr[6] = {1, 2, 3, 4, 3, 2};
     int arr2[2] = {5, 6};
     try {
         Vector t_wrong(arr, arr2);
@@ -23,7 +23,7 @@ void test(std::ostream& oStream)
     {
         oStream << "caught length_error of type: " << e.what() << std::endl;
     }
-    Vector t(arr, arr+4);
+    Vector t(arr, arr+6);
     t.push_back(2);
     t.push_back(3);
     oStream << "size: " << t.size() << std::endl;
@@ -44,6 +44,11 @@ void test(std::ostream& oStream)
     oStream << "*(++iterator)" << *(++iter) << std::endl;
     oStream << "*(iterator--)" << *(iter--) << std::endl;
     oStream << "*(iterator++)" << *(iter++) << std::endl;
+
+    typename Vector::iterator iterCpy;
+    iterCpy = iter;
+    oStream << "iterCpy: " << *iterCpy << std::endl;
+    oStream << "*(--iterCpy): " << *(--iterCpy) << std::endl;
     t.clear();
     try{
         for(size_t i = 0; i < 4; i++)
@@ -54,6 +59,7 @@ void test(std::ostream& oStream)
     }
     oStream << "capacity(): " << t.capacity() << std::endl;
     oStream << "size(): " << t.size() << std::endl;
+
 }
 
 int main()
@@ -69,7 +75,7 @@ int main()
 
 
     i = 10;
-    width = 30;
+    width = 40;
 /*     std::cout << "test for ft::vector: " << std::endl;
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;

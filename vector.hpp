@@ -138,7 +138,7 @@ class vector
 				}
 
 				// Destructors
-				~iterator()
+				virtual ~iterator()
 				{
 				}
 
@@ -171,25 +171,56 @@ class vector
 				}
 				iterator & operator=(const iterator & iter)
 				{
-					ptr = iter.getPtr();
+					ptr = &(*iter);
 					return (*this);
 				}
 
 				// Getters and Setters
-				T*	getPtr() const
-				{
-					return (ptr);
-				}
-				void setPtr(T *_ptr)
-				{
-					ptr = _ptr;
-				}
+			protected:
+				void setPtr()
 
-			private:
+			protected:
 				T*	ptr;
 		};
+	private:
+		class iteratorBegin : public iterator
+		{
+			public:
+				// Constructors
+				explicit iteratorBegin()
+				{
+					ptr = arr;
+				}
+
+				// Destructors
+				virtual ~iteratorBegin()
+				{
+				}
+
+				// Getters and Setters
+		};
+		class iteratorEnd : public iterator
+		{
+			public:
+				// Constructors
+				explicit iteratorEnd()
+				{
+					ptr = arr[arr_size - 1];
+				}
+
+				// Destructors
+				virtual ~iteratorEnd()
+				{
+				}
+
+				// Getters and Setters
+		};
+		
+	public:
 /* 		void insert(iterator __pos, T el)
 		{
+			iterator tmp;
+
 			if (arr_size == arr_capacity)
 			{
 				T *new_arr;
@@ -204,22 +235,21 @@ class vector
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			
+			tmp = begin();
+			while (tmp.getPtr)
 			arr_size++;
 		} */
 		vector::iterator begin()
 		{
-			iterator it;
+			iteratorEnd itend;
 
-			it.setPtr(arr);
-			return (it);
+			return (itend);
 		}
 		vector::iterator end()
 		{
-			iterator it;
+			iteratorBegin itbegin;
 
-			it.setPtr(arr[arr_size - 1]);
-			return (it);
+			return (itbegin);
 		}
 	private:
 		T		*arr;
