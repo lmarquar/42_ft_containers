@@ -12,6 +12,7 @@
 
 class A {public: A(){a = 1;} int a;};
 
+//implement begin and end function for iterator
 template <typename Vector>
 void test(std::ostream& oStream)
 {

@@ -194,9 +194,9 @@ class vector
 		{
 			public:
 				// Constructors
-				explicit iteratorBegin()
+				explicit iteratorBegin(T *newPtr)
 				{
-					setPtr(arr);
+					this->setPtr(newPtr);
 				}
 
 				// Destructors
@@ -206,13 +206,13 @@ class vector
 
 				// Getters and Setters
 		};
-		class iteratorEnd : public iterator
+/* 		class iteratorEnd : public iterator
 		{
 			public:
 				// Constructors
 				explicit iteratorEnd()
 				{
-					setPtr(&arr[arr_size - 1]);
+					this-YsetPtr(&arr[arr_size - 1]);
 				}
 
 				// Destructors
@@ -221,7 +221,7 @@ class vector
 				}
 
 				// Getters and Setters
-		};
+		}; */
 		
 	public:
 /* 		void insert(iterator __pos, T el)
@@ -248,15 +248,15 @@ class vector
 		} */
 		vector::iterator begin()
 		{
-			iteratorBegin itbegin;
+			iteratorBegin itbegin(arr);
 
 			return (itbegin);
 		}
 		vector::iterator end()
 		{
-			iteratorEnd itend;
+			iteratorBegin itbegin(&(arr[arr_size - 1]));
 
-			return (itend);
+			return (itbegin);
 		}
 	private:
 		T		*arr;
