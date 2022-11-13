@@ -31,7 +31,7 @@ class vector
 			size_t	i;
 
 			i = (size_t)(range_end - range_start);
-			std::cout << "distance between range_inputs: " << i << std::endl;
+			std::cout << "Debugging: distance between range_inputs: " << i << std::endl;
 			if ((range_start + i) != range_end || i > MAX_SIZE)
 				throw std::length_error("vector");
 			arr_capacity = i;
@@ -171,6 +171,7 @@ class vector
 				}
 				iterator & operator=(const iterator & iter)
 				{
+					std::cout << "equals operator got called" << std::endl;
 					ptr = &(*iter);
 					return (*this);
 				}

@@ -36,15 +36,23 @@ void test(std::ostream& oStream)
 
     typename Vector::iterator iter;
     iter = t.begin();
-    for(size_t i = 0; i < t.size() - 1; i++)
+     for(size_t i = 0; i < t.size() - 1; i++)
     {
         oStream << *iter << std::endl;
         iter++;
     }
     oStream << "*(--iterator)" << *(--iter) << std::endl;
+//    oStream << "*(--iterator)" << *(--iter) << std::endl;
     oStream << "*(++iterator)" << *(++iter) << std::endl;
     oStream << "*(iterator--)" << *(iter--) << std::endl;
     oStream << "*(iterator++)" << *(iter++) << std::endl;
+
+    iter = t.end();
+/*     for(size_t i = t.size() - 1; i >= 0; i++)
+    {
+        oStream << *iter << std::endl;
+        iter--;
+    } */
 
     typename Vector::iterator iterCpy;
     iterCpy = iter;
@@ -65,6 +73,7 @@ void test(std::ostream& oStream)
 
 int main()
 {
+	std::cout << INT_MAX << std::endl;
     int i;
     ft::vector<int> v_mine;
     std::vector<int> v_real;
@@ -82,6 +91,7 @@ int main()
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
 
+    test<ft::vector<int> >(std::cout);
     test<ft::vector<int> >(ss_v_mine);
     test<std::vector<int> >(ss_v_real);
 
