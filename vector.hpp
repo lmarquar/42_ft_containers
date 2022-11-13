@@ -177,7 +177,14 @@ class vector
 
 				// Getters and Setters
 			protected:
-				void setPtr()
+				void setPtr(T *newPtr)
+				{
+					ptr = newPtr;
+				}
+				T *getPtr()
+				{
+					return (ptr);
+				}
 
 			protected:
 				T*	ptr;
@@ -189,7 +196,7 @@ class vector
 				// Constructors
 				explicit iteratorBegin()
 				{
-					ptr = arr;
+					setPtr(arr);
 				}
 
 				// Destructors
@@ -205,7 +212,7 @@ class vector
 				// Constructors
 				explicit iteratorEnd()
 				{
-					ptr = arr[arr_size - 1];
+					setPtr(&arr[arr_size - 1]);
 				}
 
 				// Destructors
@@ -241,15 +248,15 @@ class vector
 		} */
 		vector::iterator begin()
 		{
-			iteratorEnd itend;
-
-			return (itend);
-		}
-		vector::iterator end()
-		{
 			iteratorBegin itbegin;
 
 			return (itbegin);
+		}
+		vector::iterator end()
+		{
+			iteratorEnd itend;
+
+			return (itend);
 		}
 	private:
 		T		*arr;
