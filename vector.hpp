@@ -216,14 +216,14 @@ class vector
 		void insert(iterator __pos, T el)
 		{
 			iterator tmp;
-			iterator end;
+			iterator tmp_end;
 			int	i;
 
 			tmp = begin();
 			for (i = 0; i < INT_MAX; i++)
 			{
 				tmp++;
-				if (tmp == __pos)
+				if (&(*tmp) == &(*__pos))
 					break;
 			}
 			if (arr_size == arr_capacity)
@@ -242,18 +242,18 @@ class vector
 				arr_capacity = new_arr_capacity;
 			}
 			tmp = begin();
-			end = end();
+			tmp_end = end();
 			i = 0;
-			while (tmp != end && *tmp != __pos)
+			while (&(*tmp) == &(*tmp_end) && &(*tmp) == &(*__pos))
 			{
 				arr[i] = arr[i + 1];
 				i++;
 				tmp++;
 			}
-			if (arr[i] == *tmp)
+			if (arr[i] != *tmp)
 				throw std::error_code();
 			arr[i++] = el;
-			while (tmp != end)
+			while (&(*tmp) == &(*tmp_end))
 			{
 				arr[i] = arr[i + 1];
 				i++;
