@@ -1,7 +1,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# define MAX_SIZE INT_MAX
+# define MAX_SIZE INT_MAX // (LONG_MAX / 2)
 
 # include <iostream>
 # include <string>
@@ -72,6 +72,10 @@ class vector
 		inline size_t size() const
 		{
 			return arr_size;
+		}
+		size_t max_size() const
+		{
+			return (MAX_SIZE);
 		}
  		void push_back(T el)
 		{
@@ -191,44 +195,37 @@ class vector
 				T*	ptr;
 		};
 	private:
-		class iteratorBegin : public iterator
+		class iteratorParameterized : public iterator
 		{
 			public:
 				// Constructors
-				explicit iteratorBegin(T *newPtr)
+				explicit iteratorParameterized(T *newPtr)
 				{
 					this->setPtr(newPtr);
 				}
 
 				// Destructors
-				virtual ~iteratorBegin()
+				virtual ~iteratorParameterized()
 				{
 				}
 
 				// Getters and Setters
 		};
-/* 		class iteratorEnd : public iterator
-		{
-			public:
-				// Constructors
-				explicit iteratorEnd()
-				{
-					this-YsetPtr(&arr[arr_size - 1]);
-				}
-
-				// Destructors
-				virtual ~iteratorEnd()
-				{
-				}
-
-				// Getters and Setters
-		}; */
 		
 	public:
-/* 		void insert(iterator __pos, T el)
+		void insert(iterator __pos, T el)
 		{
 			iterator tmp;
+			iterator end;
+			int	i;
 
+			tmp = begin();
+			for (i = 0; i < INT_MAX; i++)
+			{
+				tmp++;
+				if (tmp == __pos)
+					break;
+			}
 			if (arr_size == arr_capacity)
 			{
 				T *new_arr;
@@ -238,26 +235,43 @@ class vector
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
-				pasteAllInto(new_arr, new_arr_capacity);
+				for (size_t i = 0; i < arr_size - 1; i++)
+					new_arr[i + 1] = arr[i];
 				delete arr;
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
 			tmp = begin();
-			while (tmp.getPtr)
+			end = end();
+			i = 0;
+			while (tmp != end && *tmp != __pos)
+			{
+				arr[i] = arr[i + 1];
+				i++;
+				tmp++;
+			}
+			if (arr[i] == *tmp)
+				throw std::error_code();
+			arr[i++] = el;
+			while (tmp != end)
+			{
+				arr[i] = arr[i + 1];
+				i++;
+				tmp++;
+			}
 			arr_size++;
-		} */
+		}
 		vector::iterator begin()
 		{
-			iteratorBegin itbegin(arr);
+			iteratorParameterized it(arr);
 
-			return (itbegin);
+			return (it);
 		}
 		vector::iterator end()
 		{
-			iteratorBegin itbegin(&(arr[arr_size - 1]));
+			iteratorParameterized it(&arr[size()]);
 
-			return (itbegin);
+			return (it);
 		}
 	private:
 		T		*arr;

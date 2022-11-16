@@ -27,7 +27,8 @@ void test(std::ostream& oStream)
     Vector t(arr, arr+6);
     t.push_back(2);
     t.push_back(3);
-    oStream << "size: " << t.size() << std::endl;
+    oStream << "size:     " << t.size() << std::endl;
+    oStream << "max_size: " << "not identical, that's why not displayed"/*<< t.max_size()*/ << std::endl;
     for(size_t i = 0; i < t.size(); i++)
         oStream << t.at(i) << std::endl;
     oStream << "vector[size() - 1]: " << t[t.size() - 1] << std::endl;
@@ -36,6 +37,8 @@ void test(std::ostream& oStream)
 
     typename Vector::iterator iter;
     iter = t.begin();
+    t.insert(++iter, 10);
+    typename Vector::iterator iterCpy;
      for(size_t i = 0; i < t.size() - 1; i++)
     {
         oStream << *iter << std::endl;
@@ -53,9 +56,8 @@ void test(std::ostream& oStream)
         oStream << *iter << std::endl;
         iter--;
     } */
-
-    typename Vector::iterator iterCpy;
     iterCpy = iter;
+    oStream << "iter:    " << *iter << std::endl;
     oStream << "iterCpy: " << *iterCpy << std::endl;
     oStream << "*(--iterCpy): " << *(--iterCpy) << std::endl;
     t.clear();
@@ -82,7 +84,6 @@ int main()
     std::string buf_mine;
     std::string buf_real;
     int width;
-
 
     i = 10;
     width = 40;
