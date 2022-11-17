@@ -7,6 +7,7 @@
 
 #define RED "\033[1;31m"
 #define GREEN "\033[0;32m"
+#define YELLOW "\033[0;33m"
 #define BLUE "\033[4;34m"
 #define RESET "\033[0m"
 
@@ -35,11 +36,14 @@ void test(std::ostream& oStream)
     oStream << "end of array" << std::endl;
     oStream << "back(): " << t.back() << std::endl;
 
+    oStream << "iterator tests:" << std::endl;
     typename Vector::iterator iter;
     iter = t.begin();
-    t.insert(++iter, 10);
+    t.insert(iter, 20);
+//    t.insert(++iter, 10);
+//    --iter;
     typename Vector::iterator iterCpy;
-     for(size_t i = 0; i < t.size() - 1; i++)
+    for(size_t i = 0; i < t.size() - 1; i++)
     {
         oStream << *iter << std::endl;
         iter++;
@@ -51,6 +55,7 @@ void test(std::ostream& oStream)
     oStream << "*(iterator++)" << *(iter++) << std::endl;
 
     iter = t.end();
+    iter--;
 /*     for(size_t i = t.size() - 1; i >= 0; i++)
     {
         oStream << *iter << std::endl;
@@ -70,7 +75,6 @@ void test(std::ostream& oStream)
     }
     oStream << "capacity(): " << t.capacity() << std::endl;
     oStream << "size(): " << t.size() << std::endl;
-
 }
 
 int main()

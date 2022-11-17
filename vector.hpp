@@ -244,25 +244,20 @@ class vector
 			}
 			tmp = end();
 			tmp_begin = begin();
-			i = size() - 1;
+			i = size();
 			while (&(*tmp) != &(*tmp_begin) && &(*tmp) != &(*__pos))
 			{
 				arr[i + 1] = arr[i];
 				i--;
 				tmp--;
 			}
+			arr[i + 1] = arr[i];
 			if (arr[i] != *tmp && &(*tmp) != &(*tmp_begin))
 			{
 				std::cout << "i: " << i << std::endl;
 				throw std::error_code();
 			}
-			arr[i--] = el;
-			while (&(*tmp) != &(*tmp_begin))
-			{
-				arr[i + 1] = arr[i];
-				i--;
-				tmp--;
-			}
+			arr[i] = el;
 			arr_size++;
 		}
 		vector::iterator begin()
