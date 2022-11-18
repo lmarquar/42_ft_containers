@@ -93,8 +93,12 @@ class vector
 		}
 		inline T at(size_t i) const
 		{
+			std::stringstream ss;
+			ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
+			std::string err_msg = ss.str();
+
 			if (i + 1 > arr_size)
-				throw std::out_of_range("vector");
+				throw std::out_of_range(err_msg);
 			return (arr[i]);
 		}
 		inline T &front()
@@ -191,38 +195,22 @@ class vector
 				T*	ptr;
 		};
 	private:
-		class iteratorBegin : public iterator
+		class iteratorPrivate : public iterator
 		{
 			public:
 				// Constructors
-				explicit iteratorBegin(T *newPtr)
+				explicit iteratorPrivate(T *newPtr)
 				{
 					this->setPtr(newPtr);
 				}
 
 				// Destructors
-				virtual ~iteratorBegin()
+				virtual ~iteratorPrivate()
 				{
 				}
 
 				// Getters and Setters
 		};
-/* 		class iteratorEnd : public iterator
-		{
-			public:
-				// Constructors
-				explicit iteratorEnd()
-				{
-					this-YsetPtr(&arr[arr_size - 1]);
-				}
-
-				// Destructors
-				virtual ~iteratorEnd()
-				{
-				}
-
-				// Getters and Setters
-		}; */
 		
 	public:
 /* 		void insert(iterator __pos, T el)
@@ -249,15 +237,15 @@ class vector
 		} */
 		vector::iterator begin()
 		{
-			iteratorBegin itbegin(arr);
+			iteratorPrivate itPriv(arr);
 
-			return (itbegin);
+			return (itPriv);
 		}
 		vector::iterator end()
 		{
-			iteratorBegin itbegin(&(arr[arr_size - 1]));
+			iteratorPrivate itPriv(&(arr[arr_size]));
 
-			return (itbegin);
+			return (itPriv);
 		}
 	private:
 		T		*arr;

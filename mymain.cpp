@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <cassert>
+#include <climits>
 #include "vector.hpp"
 
 #define RED "\033[1;31m"
@@ -36,13 +38,13 @@ void test(std::ostream& oStream)
 
     typename Vector::iterator iter;
     iter = t.begin();
-     for(size_t i = 0; i < t.size() - 1; i++)
+     for(size_t i = 0; i < t.size(); i++)
     {
         oStream << *iter << std::endl;
         iter++;
     }
     oStream << "*(--iterator)" << *(--iter) << std::endl;
-//    oStream << "*(--iterator)" << *(--iter) << std::endl;
+    oStream << "*(--iterator)" << *(--iter) << std::endl;
     oStream << "*(++iterator)" << *(++iter) << std::endl;
     oStream << "*(iterator--)" << *(iter--) << std::endl;
     oStream << "*(iterator++)" << *(iter++) << std::endl;
@@ -82,8 +84,9 @@ int main()
     std::string buf_mine;
     std::string buf_real;
     int width;
+	size_t length_min;
 
-
+	(void)i;
     i = 10;
     width = 40;
 /*     std::cout << "test for ft::vector: " << std::endl;
@@ -98,11 +101,22 @@ int main()
     std::cout << BLUE << std::setw(width) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
     {
+		length_min = std::min(buf_mine.length(), buf_real.length());
         if (buf_mine == buf_real)
-            std::cout << GREEN << std::setw(width) << std::left << buf_real << buf_mine << RESET << std::endl;
-        else
-            std::cout << RED << std::setw(width) << std::left << buf_real << buf_mine << RESET << std::endl;
-    }
+		{
+			for (size_t i = 0; i < length_min; i = i + width - 2)
+				std::cout << GREEN << std::setw(width) << std::left
+					<< buf_real.substr(i, width - 2)
+					<< buf_mine.substr(i, width - 2) << RESET << std::endl;
+		}
+		else
+		{
+			for (size_t i = 0; i < length_min; i = i + width - 2)
+				std::cout << RED << std::setw(width) << std::left
+					<< buf_real.substr(i, width - 2)
+					<< buf_mine.substr(i, width - 2) << RESET << std::endl;
+		}
+	}
 
     assert(ss_v_mine.str() == ss_v_real.str());
     std::cout << GREEN << "all tests for vector pass" << RESET << std::endl;
