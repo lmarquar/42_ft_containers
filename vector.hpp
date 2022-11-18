@@ -1,7 +1,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# define MAX_SIZE INT_MAX
+# define MAX_SIZE INT_MAX // (LONG_MAX / 2)
 
 # include <iostream>
 # include <string>
@@ -72,6 +72,10 @@ class vector
 		inline size_t size() const
 		{
 			return arr_size;
+		}
+		size_t max_size() const
+		{
+			return (MAX_SIZE);
 		}
  		void push_back(T el)
 		{
@@ -195,17 +199,29 @@ class vector
 				T*	ptr;
 		};
 	private:
+<<<<<<< HEAD
 		class iteratorPrivate : public iterator
 		{
 			public:
 				// Constructors
 				explicit iteratorPrivate(T *newPtr)
+=======
+		class iteratorParameterized : public iterator
+		{
+			public:
+				// Constructors
+				explicit iteratorParameterized(T *newPtr)
+>>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
 				{
 					this->setPtr(newPtr);
 				}
 
 				// Destructors
+<<<<<<< HEAD
 				virtual ~iteratorPrivate()
+=======
+				virtual ~iteratorParameterized()
+>>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
 				{
 				}
 
@@ -213,10 +229,20 @@ class vector
 		};
 		
 	public:
-/* 		void insert(iterator __pos, T el)
+		void insert(iterator __pos, T el)
 		{
 			iterator tmp;
+			iterator tmp_begin;
 
+			size_t	i;
+
+			tmp = begin();
+			for (i = 0; i < INT_MAX; i++)
+			{
+				tmp++;
+				if (&(*tmp) == &(*__pos))
+					break;
+			}
 			if (arr_size == arr_capacity)
 			{
 				T *new_arr;
@@ -226,17 +252,33 @@ class vector
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
-				pasteAllInto(new_arr, new_arr_capacity);
+				for (size_t i = 0; i < arr_size - 1; i++)
+					new_arr[i + 1] = arr[i];
 				delete arr;
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			tmp = begin();
-			while (tmp.getPtr)
+			tmp = end();
+			tmp_begin = begin();
+			i = size();
+			while (&(*tmp) != &(*tmp_begin) && &(*tmp) != &(*__pos))
+			{
+				arr[i + 1] = arr[i];
+				i--;
+				tmp--;
+			}
+			arr[i + 1] = arr[i];
+			if (arr[i] != *tmp && &(*tmp) != &(*tmp_begin))
+			{
+				std::cout << "i: " << i << std::endl;
+				throw std::error_code();
+			}
+			arr[i] = el;
 			arr_size++;
-		} */
+		}
 		vector::iterator begin()
 		{
+<<<<<<< HEAD
 			iteratorPrivate itPriv(arr);
 
 			return (itPriv);
@@ -246,6 +288,17 @@ class vector
 			iteratorPrivate itPriv(&(arr[arr_size]));
 
 			return (itPriv);
+=======
+			iteratorParameterized it(arr);
+
+			return (it);
+		}
+		vector::iterator end()
+		{
+			iteratorParameterized it(&arr[size()]);
+
+			return (it);
+>>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
 		}
 	private:
 		T		*arr;

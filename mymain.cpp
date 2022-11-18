@@ -9,6 +9,7 @@
 
 #define RED "\033[1;31m"
 #define GREEN "\033[0;32m"
+#define YELLOW "\033[0;33m"
 #define BLUE "\033[4;34m"
 #define RESET "\033[0m"
 
@@ -29,16 +30,26 @@ void test(std::ostream& oStream)
     Vector t(arr, arr+6);
     t.push_back(2);
     t.push_back(3);
-    oStream << "size: " << t.size() << std::endl;
+    oStream << "size:     " << t.size() << std::endl;
+    oStream << "max_size: " << "not identical, that's why not displayed"/*<< t.max_size()*/ << std::endl;
     for(size_t i = 0; i < t.size(); i++)
         oStream << t.at(i) << std::endl;
     oStream << "vector[size() - 1]: " << t[t.size() - 1] << std::endl;
     oStream << "end of array" << std::endl;
     oStream << "back(): " << t.back() << std::endl;
 
+    oStream << "iterator tests:" << std::endl;
     typename Vector::iterator iter;
     iter = t.begin();
+<<<<<<< HEAD
      for(size_t i = 0; i < t.size(); i++)
+=======
+    t.insert(iter, 20);
+//    t.insert(++iter, 10);
+//    --iter;
+    typename Vector::iterator iterCpy;
+    for(size_t i = 0; i < t.size() - 1; i++)
+>>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
     {
         oStream << *iter << std::endl;
         iter++;
@@ -50,14 +61,14 @@ void test(std::ostream& oStream)
     oStream << "*(iterator++)" << *(iter++) << std::endl;
 
     iter = t.end();
+    iter--;
 /*     for(size_t i = t.size() - 1; i >= 0; i++)
     {
         oStream << *iter << std::endl;
         iter--;
     } */
-
-    typename Vector::iterator iterCpy;
     iterCpy = iter;
+    oStream << "iter:    " << *iter << std::endl;
     oStream << "iterCpy: " << *iterCpy << std::endl;
     oStream << "*(--iterCpy): " << *(--iterCpy) << std::endl;
     t.clear();
@@ -70,7 +81,6 @@ void test(std::ostream& oStream)
     }
     oStream << "capacity(): " << t.capacity() << std::endl;
     oStream << "size(): " << t.size() << std::endl;
-
 }
 
 int main()
@@ -86,7 +96,10 @@ int main()
     int width;
 	size_t length_min;
 
+<<<<<<< HEAD
 	(void)i;
+=======
+>>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
     i = 10;
     width = 40;
 /*     std::cout << "test for ft::vector: " << std::endl;
