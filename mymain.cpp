@@ -76,12 +76,12 @@ void test(std::ostream& oStream)
 
     oStream << "iterator tests:" << std::endl;
     iter = t.begin();
-    t.insert(iter, 20);
+    t.insert(t.begin(), 20);
     t.insert(++iter, 10);
-//	t.insert(t.end(), 30);
+	t.insert(t.end(), 30);
     --iter;
     typename Vector::iterator iterCpy;
-    for(size_t i = 0; i < t.size() - 1; i++)
+    for(size_t i = 0; i < t.size(); i++)
     {
         oStream << *iter << std::endl;
         iter++;

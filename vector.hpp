@@ -17,7 +17,10 @@ class vector
 {
 	public:
 		// Variables
-		typedef T&               reference;
+		typedef T&		reference;
+		typedef size_t	size_type;
+		typedef T		value_type;
+
 
 		// Constructors
 		vector()
@@ -130,6 +133,15 @@ class vector
 		{
 			return (arr);
 		}
+		void	resize(size_type n, value_type val = value_type())
+		{
+			T	*new_arr;
+
+			new_arr = new T[n];
+			pasteAllInto(new_arr, n);
+			delete arr;
+			arr = new_arr;
+		}
 
 
 		// Classes
@@ -140,9 +152,9 @@ class vector
 				explicit iterator()
 				{
 				}
-				iterator(iterator &ref)
+				iterator(const iterator &ref)
 				{
-					*this = ref;
+					ptr = &(*ref);
  				}
 
 				// Destructors
@@ -270,13 +282,13 @@ class vector
 			arr[i] = el;
 			arr_size++;
 		}
-		vector::iterator begin()
+		iterator begin()
 		{
 			iteratorParameterized it(arr);
 
 			return (it);
 		}
-		vector::iterator end()
+		iterator end()
 		{
 			iteratorParameterized it(&arr[size()]);
 
