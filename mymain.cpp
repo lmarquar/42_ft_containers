@@ -15,19 +15,55 @@
 
 class A {public: A(){a = 1;} int a;};
 
+template <typename Vector>
+void printVector(std::ostream& oStream, Vector &v)
+{
+    oStream << "v = { ";
+    for (unsigned long n = 0; n < v.size(); n++)
+        oStream << v.at(n) << ", ";
+    oStream << "}; \n";
+}
+
 //implement begin and end function for iterator
 template <typename Vector>
 void test(std::ostream& oStream)
 {
-    int arr[6] = {1, 2, 3, 4, 3, 2};
+//	Vector v_real;
+	oStream << "GIVEN TESTS:" << std::endl;
+//    v_real.insert(v_real.begin(), 10);
+    typename Vector::iterator iter;
+
+     // Create a vector containing integers
+    int arr[4] = {7, 5, 16, 8};
+    Vector v(arr, arr+4);
+    Vector empty;
+
+    oStream << v.size() << std::endl;
+    // Add two more integers to vector
+    v.push_back(25);
+    v.push_back(13);
+
+    oStream << "v:back1: " << v.back() << std::endl;
+    v.clear();
+    oStream << "v:back2: " << v.back() << std::endl;
+    oStream << "v.capa: " << v.capacity() << std::endl;
+    oStream << "v.size: " << v.size() << std::endl;
+    oStream << empty.capacity() << std::endl;
+ 
+    // Print out the vector
+	printVector(oStream, v);
+
+
+	oStream << std::endl << "MY TESTS: " << std::endl;
+    int arr1[6] = {1, 2, 3, 4, 3, 2};
     int arr2[2] = {5, 6};
     try {
-        Vector t_wrong(arr, arr2);
+        Vector t_wrong(arr1, arr2);
     } catch (std::exception &e)
     {
         oStream << "caught length_error of type: " << e.what() << std::endl;
     }
-    Vector t(arr, arr+6);
+    Vector t(arr1, arr1+6);
     t.push_back(2);
     t.push_back(3);
     oStream << "size:     " << t.size() << std::endl;
@@ -39,17 +75,13 @@ void test(std::ostream& oStream)
     oStream << "back(): " << t.back() << std::endl;
 
     oStream << "iterator tests:" << std::endl;
-    typename Vector::iterator iter;
     iter = t.begin();
-<<<<<<< HEAD
-     for(size_t i = 0; i < t.size(); i++)
-=======
     t.insert(iter, 20);
-//    t.insert(++iter, 10);
-//    --iter;
+    t.insert(++iter, 10);
+//	t.insert(t.end(), 30);
+    --iter;
     typename Vector::iterator iterCpy;
     for(size_t i = 0; i < t.size() - 1; i++)
->>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
     {
         oStream << *iter << std::endl;
         iter++;
@@ -83,25 +115,33 @@ void test(std::ostream& oStream)
     oStream << "size(): " << t.size() << std::endl;
 }
 
+std::string equalizeDifferences(std::string buf_mine)
+{
+	std::string buf_mine_adjusted;
+
+	buf_mine_adjusted = buf_mine;
+	for (size_t pos = 0; pos < buf_mine_adjusted.length(); pos++)
+	{
+		pos = buf_mine_adjusted.find("ft::", pos);
+		if (pos == std::string::npos)
+			break;
+		buf_mine_adjusted.replace(pos, 4, "std::");
+	}
+	return (buf_mine_adjusted);
+}
+
 int main()
 {
 	std::cout << INT_MAX << std::endl;
-    int i;
-    ft::vector<int> v_mine;
-    std::vector<int> v_real;
     std::stringstream ss_v_mine;
     std::stringstream ss_v_real;
     std::string buf_mine;
+	std::string buf_mine_adjusted;
     std::string buf_real;
     int width;
 	size_t length_min;
 
-<<<<<<< HEAD
-	(void)i;
-=======
->>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
-    i = 10;
-    width = 40;
+    width = 50;
 /*     std::cout << "test for ft::vector: " << std::endl;
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
@@ -114,8 +154,9 @@ int main()
     std::cout << BLUE << std::setw(width) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
     {
+		buf_mine_adjusted = equalizeDifferences(buf_mine);
 		length_min = std::min(buf_mine.length(), buf_real.length());
-        if (buf_mine == buf_real)
+        if (buf_mine_adjusted == buf_real)
 		{
 			for (size_t i = 0; i < length_min; i = i + width - 2)
 				std::cout << GREEN << std::setw(width) << std::left
@@ -130,35 +171,14 @@ int main()
 					<< buf_mine.substr(i, width - 2) << RESET << std::endl;
 		}
 	}
-
-    assert(ss_v_mine.str() == ss_v_real.str());
-    std::cout << GREEN << "all tests for vector pass" << RESET << std::endl;
-
-    std::cout << std::endl << std::endl;
-    v_real.insert(v_real.begin(), 10);
-    std::vector<int>::iterator iter;
-
-    std::cout << "start of real vector" << std::endl;
-     // Create a vector containing integers
-    int arr[4] = {7, 5, 16, 8};
-    std::vector<int> v(arr, arr+4);
-    std::vector<int> empty;
-
-    std::cout << v.size() << std::endl;
-    // Add two more integers to vector
-    v.push_back(25);
-    v.push_back(13);
-
-    std::cout << "v:back1: " << v.back() << std::endl;
-    v.clear();
-    std::cout << "v:back2: " << v.back() << std::endl;
-    std::cout << "v.capa: " << v.capacity() << std::endl;
-    std::cout << "v.size: " << v.size() << std::endl;
-    std::cout << empty.capacity() << std::endl;
- 
-    // Print out the vector
-    std::cout << "v = { ";
-    for (unsigned long n = 0; n < v.size(); n++)
-        std::cout << v.at(n) << ", ";
-    std::cout << "}; \n";
+	buf_mine = equalizeDifferences(ss_v_mine.str());
+	buf_real = ss_v_real.str();
+    assert(buf_mine == buf_real);
+    std::cout << std::endl << GREEN << "✔ all tests for vector pass" << RESET << std::endl;
+	std::cout << "Some additional tests: " << std::endl;
+	int onetothree[3] = {1, 2, 3};
+	std::vector<int> test_vec(onetothree, onetothree+3);
+	test_vec.insert(test_vec.end(), 4);
+	printVector(std::cout, test_vec);
+	
 }

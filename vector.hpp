@@ -33,7 +33,7 @@ class vector
 			i = (size_t)(range_end - range_start);
 			std::cout << "Debugging: distance between range_inputs: " << i << std::endl;
 			if ((range_start + i) != range_end || i > MAX_SIZE)
-				throw std::length_error("vector");
+				throw std::length_error("cannot create ft::vector larger than max_size()");
 			arr_capacity = i;
 			arr = new T[arr_capacity];
 			for (i = 0; range_start[i] != *range_end; i++)
@@ -143,7 +143,7 @@ class vector
 				iterator(iterator &ref)
 				{
 					*this = ref;
-				}
+ 				}
 
 				// Destructors
 				virtual ~iterator()
@@ -183,6 +183,10 @@ class vector
 					ptr = &(*iter);
 					return (*this);
 				}
+				bool operator==(const iterator &cmp)
+				{
+					return (ptr == &(*cmp));
+				}
 
 				// Getters and Setters
 			protected:
@@ -199,29 +203,17 @@ class vector
 				T*	ptr;
 		};
 	private:
-<<<<<<< HEAD
-		class iteratorPrivate : public iterator
-		{
-			public:
-				// Constructors
-				explicit iteratorPrivate(T *newPtr)
-=======
 		class iteratorParameterized : public iterator
 		{
 			public:
 				// Constructors
 				explicit iteratorParameterized(T *newPtr)
->>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
 				{
 					this->setPtr(newPtr);
 				}
 
 				// Destructors
-<<<<<<< HEAD
-				virtual ~iteratorPrivate()
-=======
 				virtual ~iteratorParameterized()
->>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
 				{
 				}
 
@@ -232,15 +224,17 @@ class vector
 		void insert(iterator __pos, T el)
 		{
 			iterator tmp;
+			iterator it_end;
 			iterator tmp_begin;
 
 			size_t	i;
 
 			tmp = begin();
+			it_end = end();
 			for (i = 0; i < INT_MAX; i++)
 			{
 				tmp++;
-				if (&(*tmp) == &(*__pos))
+				if (&(*tmp) == &(*__pos) || tmp == it_end)
 					break;
 			}
 			if (arr_size == arr_capacity)
@@ -271,24 +265,13 @@ class vector
 			if (arr[i] != *tmp && &(*tmp) != &(*tmp_begin))
 			{
 				std::cout << "i: " << i << std::endl;
-				throw std::error_code();
+				throw std::bad_exception();
 			}
 			arr[i] = el;
 			arr_size++;
 		}
 		vector::iterator begin()
 		{
-<<<<<<< HEAD
-			iteratorPrivate itPriv(arr);
-
-			return (itPriv);
-		}
-		vector::iterator end()
-		{
-			iteratorPrivate itPriv(&(arr[arr_size]));
-
-			return (itPriv);
-=======
 			iteratorParameterized it(arr);
 
 			return (it);
@@ -298,7 +281,6 @@ class vector
 			iteratorParameterized it(&arr[size()]);
 
 			return (it);
->>>>>>> 4add10839cc9671971fdd36171dbc83b5887d5ca
 		}
 	private:
 		T		*arr;
