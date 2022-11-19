@@ -135,10 +135,16 @@ class vector
 		}
 		void	resize(size_type n, value_type val = value_type())
 		{
-			T	*new_arr;
+			value_type	*new_arr;
 
-			new_arr = new T[n];
-			pasteAllInto(new_arr, n);
+			new_arr = new value_type[n];
+			pasteAllInto(new_arr, arr_size);
+			for (size_t i = arr_size; i < n; i++)
+				new_arr[i] = val;
+			if (arr_size > n)
+				arr_size = n;
+			if (arr_capacity > n)
+				arr_capacity = n;
 			delete arr;
 			arr = new_arr;
 		}
@@ -191,7 +197,6 @@ class vector
 				}
 				iterator & operator=(const iterator & iter)
 				{
-					std::cout << "equals operator got called" << std::endl;
 					ptr = &(*iter);
 					return (*this);
 				}

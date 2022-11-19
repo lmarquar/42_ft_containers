@@ -81,6 +81,10 @@ void test(std::ostream& oStream)
 	t.insert(t.end(), 30);
     --iter;
     typename Vector::iterator iterCpy;
+	oStream << "size: " << t.size() << std::endl;
+	t.resize(t.size() - 1);
+	oStream << "size: " << t.size() << std::endl;
+	iter = t.begin();
     for(size_t i = 0; i < t.size(); i++)
     {
         oStream << *iter << std::endl;
@@ -138,16 +142,16 @@ int main()
     std::string buf_mine;
 	std::string buf_mine_adjusted;
     std::string buf_real;
-    int width;
-	size_t length_min;
 
-    width = 50;
 /*     std::cout << "test for ft::vector: " << std::endl;
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
 
     test<ft::vector<int> >(std::cout);
+    int width;
+	size_t length_min;
+    width = 50;
     test<ft::vector<int> >(ss_v_mine);
     test<std::vector<int> >(ss_v_real);
 
@@ -179,6 +183,6 @@ int main()
 	int onetothree[3] = {1, 2, 3};
 	std::vector<int> test_vec(onetothree, onetothree+3);
 	test_vec.insert(test_vec.end(), 4);
+	test_vec.resize(test_vec.size() - 1);
 	printVector(std::cout, test_vec);
-	
 }
