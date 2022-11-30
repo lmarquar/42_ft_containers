@@ -11,6 +11,8 @@
 #define GREEN "\033[0;32m"
 #define YELLOW "\033[0;33m"
 #define BLUE "\033[4;34m"
+#define CYANUSCR "\033[4;36m"
+#define CYAN "\033[0;36m"
 #define RESET "\033[0m"
 
 class A {public: A(){a = 1;} int a;};
@@ -28,9 +30,10 @@ void printVector(std::ostream& oStream, Vector &v)
 template <typename Vector>
 void test(std::ostream& oStream)
 {
-//	Vector v_real;
+	std::stringstream sstream;
+	int i_tmp;
+
 	oStream << "GIVEN TESTS:" << std::endl;
-//    v_real.insert(v_real.begin(), 10);
     typename Vector::iterator iter;
 
      // Create a vector containing integers
@@ -82,14 +85,17 @@ void test(std::ostream& oStream)
     --iter;
     typename Vector::iterator iterCpy;
 	oStream << "size: " << t.size() << std::endl;
-	t.resize(t.size() - 1);
+	oStream << "capacity: " << t.capacity() << std::endl;
+	t.resize(t.size() - 2);
 	oStream << "size: " << t.size() << std::endl;
+	oStream << "capacity: " << t.capacity() << std::endl;
 	iter = t.begin();
     for(size_t i = 0; i < t.size(); i++)
     {
         oStream << *iter << std::endl;
         iter++;
     }
+	t.resize(t.size() + 2);
     oStream << "*(--iterator)" << *(--iter) << std::endl;
     oStream << "*(--iterator)" << *(--iter) << std::endl;
     oStream << "*(++iterator)" << *(++iter) << std::endl;
@@ -98,16 +104,25 @@ void test(std::ostream& oStream)
 
     iter = t.end();
     iter--;
-/*     for(size_t i = t.size() - 1; i >= 0; i++)
+	oStream << "t.size(): " << t.size() << std::endl;
+	for(size_t i = t.size() - 1; i > 0; i--)
     {
-        oStream << *iter << std::endl;
+        oStream << "iter: " << *iter << std::endl;
         iter--;
-    } */
+    }
     iterCpy = iter;
     oStream << "iter:    " << *iter << std::endl;
     oStream << "iterCpy: " << *iterCpy << std::endl;
     oStream << "*(--iterCpy): " << *(--iterCpy) << std::endl;
-    t.clear();
+	i_tmp = -1;
+	sstream << "Descr.: trying resize with argument " << i_tmp << ":";
+	oStream << sstream.str() <<  std::endl;
+	try {
+		t.resize(-1);
+	} catch (std::length_error &e) {
+		oStream << "Error: " << e.what() << std::endl;
+	}
+	t.clear();
     try{
         for(size_t i = 0; i < 4; i++)
             oStream << t.at(i) << std::endl;
@@ -117,6 +132,14 @@ void test(std::ostream& oStream)
     }
     oStream << "capacity(): " << t.capacity() << std::endl;
     oStream << "size(): " << t.size() << std::endl;
+	int onetothree[3] = {1, 3, 3};
+	std::vector<int> test_vec(onetothree, onetothree+3);
+	test_vec.insert(test_vec.end(), 4);
+	test_vec.resize(test_vec.size() - 1);
+	test_vec.reserve(10);
+	test_vec.reserve(4);
+	oStream << "capacity(): " << test_vec.capacity() << std::endl;
+	printVector(oStream, test_vec);
 }
 
 std::string equalizeDifferences(std::string buf_mine)
@@ -134,9 +157,20 @@ std::string equalizeDifferences(std::string buf_mine)
 	return (buf_mine_adjusted);
 }
 
+void toOutput(std::string first, std::string second, int width, std::string color)
+{
+	if (first.substr(0, 7) == "Descr.:")
+		std::cout << CYANUSCR << std::setw(width) << std::left
+			<< first.substr(8, first.length()) << RESET
+			<< "│" << CYANUSCR << std::setw(width) << std::left
+			<< second.substr(8, second.length()) << RESET << std::endl;
+	else
+		std::cout << GREEN << std::setw(width) << std::left
+			<< first << RESET << "│" << color << second << RESET << std::endl;
+}
+
 int main()
 {
-	std::cout << INT_MAX << std::endl;
     std::stringstream ss_v_mine;
     std::stringstream ss_v_real;
     std::string buf_mine;
@@ -148,31 +182,27 @@ int main()
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
 
-    test<ft::vector<int> >(std::cout);
+//    test<ft::vector<int> >(std::cout);
     int width;
 	size_t length_min;
     width = 50;
     test<ft::vector<int> >(ss_v_mine);
     test<std::vector<int> >(ss_v_real);
 
-    std::cout << BLUE << std::setw(width) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
+    std::cout << BLUE << std::setw(width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
     {
 		buf_mine_adjusted = equalizeDifferences(buf_mine);
 		length_min = std::min(buf_mine.length(), buf_real.length());
         if (buf_mine_adjusted == buf_real)
 		{
-			for (size_t i = 0; i < length_min; i = i + width - 2)
-				std::cout << GREEN << std::setw(width) << std::left
-					<< buf_real.substr(i, width - 2)
-					<< buf_mine.substr(i, width - 2) << RESET << std::endl;
+			for (size_t i = 0; i < length_min; i = i + width - 1)
+				toOutput(buf_real.substr(i, width - 1), buf_mine.substr(i, width - 1), width, GREEN);
 		}
 		else
 		{
-			for (size_t i = 0; i < length_min; i = i + width - 2)
-				std::cout << RED << std::setw(width) << std::left
-					<< buf_real.substr(i, width - 2)
-					<< buf_mine.substr(i, width - 2) << RESET << std::endl;
+			for (size_t i = 0; i < length_min; i = i + width - 1)
+				toOutput(buf_real.substr(i, width - 1), buf_mine.substr(i, width - 1), width, RED);
 		}
 	}
 	buf_mine = equalizeDifferences(ss_v_mine.str());
@@ -180,9 +210,18 @@ int main()
     assert(buf_mine == buf_real);
     std::cout << std::endl << GREEN << "✔ all tests for vector pass" << RESET << std::endl;
 	std::cout << "Some additional tests: " << std::endl;
-	int onetothree[3] = {1, 2, 3};
-	std::vector<int> test_vec(onetothree, onetothree+3);
-	test_vec.insert(test_vec.end(), 4);
-	test_vec.resize(test_vec.size() - 1);
+	std::vector<int> test_vec;
+	std::vector<int> test_vec2;
+
+	test_vec2.push_back(2);
+	test_vec.push_back(1);
+	test_vec.push_back(2);
+	test_vec.push_back(3);
+	std::cout << "size(): " << test_vec.size() << std::endl;
+	std::cout << "capacity(): " << test_vec.capacity() << std::endl;
+	test_vec.erase(test_vec2.begin());
+	std::cout << std::endl << "after erase(): " << std::endl;
+	std::cout << "size(): " << test_vec.size() << std::endl;
+	std::cout << "capacity(): " << test_vec.capacity() << std::endl;
 	printVector(std::cout, test_vec);
 }
