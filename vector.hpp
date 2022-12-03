@@ -18,7 +18,7 @@ class vector
 	public:
 		// Variables
 		typedef T&						reference;
-		typedef &T						pointer;
+		typedef T *						pointer;
 		typedef size_t					size_type;
 		typedef T						value_type;
 
@@ -235,7 +235,7 @@ class vector
 		};
 	private:
 		template<typename PointerType>
-		class iteratorParameterized : public iterator<PointerType>
+		class iteratorParameterized : public BaseIterator<PointerType>
 		{
 			public:
 				// Constructors
@@ -307,13 +307,13 @@ class vector
 		}
 		iterator begin()
 		{
-			iteratorParameterized it(arr);
+			iteratorParameterized<pointer> it(arr);
 
 			return (it);
 		}
 		iterator end()
 		{
-			iteratorParameterized it(&arr[size()]);
+			iteratorParameterized<pointer> it(&arr[size()]);
 
 			return (it);
 		}
