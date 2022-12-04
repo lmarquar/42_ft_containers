@@ -29,6 +29,11 @@ class vector
 			arr_capacity = 0;
 			arr_size = 0;
 			arr = new T[arr_capacity];
+			#ifdef __linux__
+				os = "linux";
+			#else
+				os = "mac";
+			#endif
 		}
 		vector(T *range_start, T *range_end)
 		{
@@ -37,7 +42,12 @@ class vector
 			i = (size_t)(range_end - range_start);
 			std::cout << "Debugging: distance between range_inputs: " << i << std::endl;
 			if ((range_start + i) != range_end || i > MAX_SIZE)
-				throw std::length_error("cannot create ft::vector larger than max_size()");
+			{
+				if (os == "linux")
+					throw std::length_error("cannot create ft::vector larger than max_size()");
+				else
+					throw std::length_error("vector");
+			}
 			arr_capacity = i;
 			arr = new T[arr_capacity];
 			for (i = 0; range_start[i] != *range_end; i++)
@@ -101,12 +111,19 @@ class vector
 		}
 		inline T at(size_t i) const
 		{
-			std::stringstream ss;
-			ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
-			std::string err_msg = ss.str();
 
 			if (i + 1 > arr_size)
-				throw std::out_of_range(err_msg);
+			{
+				if (os == "linux")
+				{
+					std::stringstream ss;
+					ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
+					std::string err_msg = ss.str();
+					throw std::out_of_range(err_msg);
+				}
+				else
+					throw std::out_of_range("vector");
+			}
 			return (arr[i]);
 		}
 		inline T &front()
@@ -331,9 +348,10 @@ class vector
 
 		}
 	private:
-		T		*arr;
-		size_t	arr_capacity;
-		size_t	arr_size;
+		T			*arr;
+		size_t		arr_capacity;
+		size_t		arr_size;
+		std::string	os;
 
 		void pasteAllInto(T *buf, size_t buf_size)
 		{

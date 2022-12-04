@@ -30,13 +30,13 @@ int MyTester::run()
     test(v_real, std::cout); */
     test<ft::vector<int> >();
     std::cout <<  oStream.str();
-    oStream.clear();
+    oStream.str("");
     size_t width;
     size_t length_min;
     width = 50;
     test<ft::vector<int> >();
     ss_v_mine << oStream.str();
-    oStream.clear();
+    oStream.str("");
     test<std::vector<int> >();
     ss_v_real << oStream.str();
     std::cout << BLUE << std::setw((int)width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
@@ -46,7 +46,7 @@ int MyTester::run()
 		length_min = std::min(buf_mine.length(), buf_real.length());
         if (buf_mine_adjusted == buf_real)
 		{
-			for (size_t i = 0; i < length_min; i = i + width - 1)
+			for (size_t i = 0; i < length_min; i = i + (width - 1))
 				toOutput(buf_real.substr(i, width - 1), buf_mine.substr(i, width - 1), width, GREEN);
 		}
 		else
