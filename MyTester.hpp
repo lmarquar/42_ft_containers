@@ -44,7 +44,7 @@ class MyTester
 
         oStream << "v:back1: " << v.back() << std::endl;
         v.clear();
-    /*     #ifdef __linux__
+/*         #ifdef __linux__
             oStream << "v:back2: " << v.back() << std::endl;
         #else
             oStream << "this test only works on linux" << std::endl;
@@ -78,7 +78,7 @@ class MyTester
         oStream << "end of array" << std::endl;
         oStream << "back(): " << t.back() << std::endl;
 
-        oStream << "iterator tests:" << std::endl;
+        oStream << "Descr.: iterator tests:" << std::endl;
         iter = t.begin();
         t.insert(t.begin(), 20);
         t.insert(++iter, 10);
@@ -147,7 +147,7 @@ class MyTester
 	private:
 	std::stringstream oStream;
 	std::string equalizeDifferences(std::string buf_mine);
-    void toOutput(std::string first, std::string second, int width, std::string color);
+    void toOutput(std::string first, std::string second, size_t width, std::string color);
 };
 
 #endif

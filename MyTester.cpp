@@ -19,7 +19,6 @@ std::string MyTester::equalizeDifferences(std::string buf_mine)
 
 int MyTester::run()
 {
-    std::cout << INT_MAX << std::endl;
     std::stringstream ss_v_mine;
     std::stringstream ss_v_real;
     std::string buf_mine;
@@ -40,28 +39,24 @@ int MyTester::run()
     oStream.clear();
     test<std::vector<int> >();
     ss_v_real << oStream.str();
-    std::cout << BLUE << std::setw((int)width) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
+    std::cout << BLUE << std::setw((int)width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
     {
-        buf_mine_adjusted = equalizeDifferences(buf_mine);
-        length_min = std::min(buf_mine.length(), buf_real.length());
+		buf_mine_adjusted = equalizeDifferences(buf_mine);
+		length_min = std::min(buf_mine.length(), buf_real.length());
         if (buf_mine_adjusted == buf_real)
-        {
-            for (size_t i = 0; i < length_min; i = i + width - 2)
-                std::cout << GREEN << std::setw((int)width) << std::left
-                    << buf_real.substr(i, width - 2)
-                    << buf_mine.substr(i, width - 2) << RESET << std::endl;
-        }
-        else
-        {
-            for (size_t i = 0; i < length_min; i = i + width - 2)
-                std::cout << RED << std::setw((int)width) << std::left
-                    << buf_real.substr(i, width - 2)
-                    << buf_mine.substr(i, width - 2) << RESET << std::endl;
-        }
-    }
-    buf_mine = equalizeDifferences(ss_v_mine.str());
-    buf_real = ss_v_real.str();
+		{
+			for (size_t i = 0; i < length_min; i = i + width - 1)
+				toOutput(buf_real.substr(i, width - 1), buf_mine.substr(i, width - 1), width, GREEN);
+		}
+		else
+		{
+			for (size_t i = 0; i < length_min; i = i + width - 1)
+				toOutput(buf_real.substr(i, width - 1), buf_mine.substr(i, width - 1), width, RED);
+		}
+	}
+	buf_mine = equalizeDifferences(ss_v_mine.str());
+	buf_real = ss_v_real.str();
     assert(buf_mine == buf_real);
     std::cout << std::endl << GREEN << "✔ all tests for vector pass" << RESET << std::endl;
     std::cout << "Some additional tests: " << std::endl;
@@ -73,15 +68,15 @@ int MyTester::run()
     return (0);
 }
 
-void MyTester::toOutput(std::string first, std::string second, int width, std::string color)
+void MyTester::toOutput(std::string first, std::string second, size_t width, std::string color)
 {
 	if (first.substr(0, 7) == "Descr.:")
-		std::cout << CYANUSCR << std::setw(width) << std::left
+		std::cout << CYANUSCR << std::setw((int)width) << std::left
 			<< first.substr(8, first.length()) << RESET
-			<< "│" << CYANUSCR << std::setw(width) << std::left
+			<< "│" << CYANUSCR << std::setw((int)width) << std::left
 			<< second.substr(8, second.length()) << RESET << std::endl;
 	else
-		std::cout << GREEN << std::setw(width) << std::left
+		std::cout << GREEN << std::setw((int)width) << std::left
 			<< first << RESET << "│" << color << second << RESET << std::endl;
 }
 

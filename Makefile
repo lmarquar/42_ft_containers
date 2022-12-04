@@ -2,8 +2,8 @@ CC			:= c++
 CFLAGS		:= -Wall -Werror -Wextra -Wconversion -std=c++98 -g
 SRC			:= main.cpp
 MY_SRC		:= mymain.cpp MyTester.cpp
-NAME		:= ft_containers_test
-MY_NAME		:= ft_containers_test_mine
+NAME		:= ft_containers_test.out
+MY_NAME		:= ft_containers_test_mine.out
 
 all: $(MY_NAME)
 
