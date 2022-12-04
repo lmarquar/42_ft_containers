@@ -34,11 +34,11 @@ int MyTester::run()
     size_t width;
     size_t length_min;
     width = 50;
-    test<ft::vector<int> >();
-    ss_v_mine << oStream.str();
-    oStream.str("");
     test<std::vector<int> >();
     ss_v_real << oStream.str();
+    oStream.str("");
+    test<ft::vector<int> >();
+    ss_v_mine << oStream.str();
     std::cout << BLUE << std::setw((int)width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
     {
@@ -65,6 +65,9 @@ int MyTester::run()
     test_vec.insert(test_vec.end(), 4);
     test_vec.resize(test_vec.size() - 1);
     printVector(test_vec);
+    std::vector<int> test_vec2;
+    test_vec2.insert(test_vec2.begin(), 10);
+    std::cout << "here" << std::endl;
     return (0);
 }
 

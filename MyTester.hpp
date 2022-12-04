@@ -27,9 +27,10 @@ class MyTester
 	template <typename Vector>
     void test()
     {
-    //	Vector v_real;
+//    	Vector v_real;
         oStream << "GIVEN TESTS:" << std::endl;
-    //    v_real.insert(v_real.begin(), 10);
+//        v_real.insert(v_real.begin(), 10);
+//        std::cout << "here" << std::endl;
         typename Vector::iterator iter;
 
         // Create a vector containing integers
@@ -44,12 +45,7 @@ class MyTester
 
         oStream << "v:back1: " << v.back() << std::endl;
         v.clear();
-/*         #ifdef __linux__
-            oStream << "v:back2: " << v.back() << std::endl;
-        #else
-            oStream << "this test only works on linux" << std::endl;
-        #endif */
-        execOnlyOnLinux(v.back());
+        v.back();
         oStream << "v.capa: " << v.capacity() << std::endl;
         oStream << "v.size: " << v.size() << std::endl;
         oStream << empty.capacity() << std::endl;
