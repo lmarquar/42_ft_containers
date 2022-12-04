@@ -14,6 +14,8 @@
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define BLUE "\033[4;34m"
+# define CYANUSCR "\033[4;36m"
+# define CYAN "\033[0;36m"
 # define RESET "\033[0m"
 
 class MyTester
@@ -145,6 +147,7 @@ class MyTester
 	private:
 	std::stringstream oStream;
 	std::string equalizeDifferences(std::string buf_mine);
+    void toOutput(std::string first, std::string second, int width, std::string color);
 };
 
 #endif
