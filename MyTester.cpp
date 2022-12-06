@@ -28,9 +28,10 @@ int MyTester::run()
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
-    test<ft::vector<int> >();
+    test<std::vector<int> >();
     std::cout <<  oStream.str();
     oStream.str("");
+    std::cout << BLUE << "end for only ft::vector testrun" << RESET << std::endl;
     size_t width;
     size_t length_min;
     width = 50;

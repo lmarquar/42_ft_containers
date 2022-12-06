@@ -137,7 +137,7 @@ class vector
 			if (arr_capacity == 0)
 				throw std::out_of_range("cannot access element of empty vector");
 			if (arr_size == 0)
-				return (arr[0]);
+				return (arr[1]);
 			else
 				return (arr[arr_size - 1]);
 		}
@@ -146,6 +146,13 @@ class vector
 			delete arr;
 			arr_size = 0;
 			arr = new T[arr_capacity];
+		}
+		bool empty() const
+		{
+			if (arr_size == 0)
+				return (true);
+			else
+				return (false);
 		}
 		T*	data()
 		{
@@ -285,9 +292,9 @@ class vector
 			it_end = end();
 			for (i = 0; i < INT_MAX; i++)
 			{
-				tmp++;
 				if (&(*tmp) == &(*__pos) || tmp == it_end)
 					break;
+				tmp++;
 			}
 			if (arr_size == arr_capacity)
 			{
@@ -298,7 +305,7 @@ class vector
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
-				for (size_t i = 0; i < arr_size - 1; i++)
+				for (size_t i = 0; i <= arr_size; i++)
 					new_arr[i + 1] = arr[i];
 				delete arr;
 				arr = new_arr;

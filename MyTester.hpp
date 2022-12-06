@@ -27,10 +27,9 @@ class MyTester
 	template <typename Vector>
     void test()
     {
-//    	Vector v_real;
+    	Vector v_real;
         oStream << "GIVEN TESTS:" << std::endl;
-//        v_real.insert(v_real.begin(), 10);
-//        std::cout << "here" << std::endl;
+        v_real.insert(v_real.begin(), 10);
         typename Vector::iterator iter;
 
         // Create a vector containing integers
@@ -43,6 +42,12 @@ class MyTester
         v.push_back(25);
         v.push_back(13);
 
+        oStream << "Descr.: testing front and back function: " << std::endl;
+        oStream << v_real.front() << std::endl;
+        oStream << v_real.back() << std::endl;
+        v_real.clear();
+        oStream << v_real.front() << std::endl;
+        oStream << v_real.back() << std::endl;
         oStream << "v:back1: " << v.back() << std::endl;
         v.clear();
         v.back();
@@ -52,7 +57,6 @@ class MyTester
     
         // Print out the vector
         printVector(v);
-
 
         oStream << std::endl << "MY TESTS: " << std::endl;
         int arr1[6] = {1, 2, 3, 4, 3, 2};
@@ -98,11 +102,6 @@ class MyTester
 
         iter = t.end();
         iter--;
-    /*     for(size_t i = t.size() - 1; i >= 0; i++)
-        {
-            oStream << *iter << std::endl;
-            iter--;
-        } */
         iterCpy = iter;
         oStream << "iter:    " << *iter << std::endl;
         oStream << "iterCpy: " << *iterCpy << std::endl;
@@ -117,6 +116,22 @@ class MyTester
         }
         oStream << "capacity(): " << t.capacity() << std::endl;
         oStream << "size(): " << t.size() << std::endl;
+        oStream << "Descr.: empty():" << std::endl;
+        oStream << t.empty() << std::endl;
+        Vector vec;
+        oStream << vec.empty() << std::endl;
+        oStream << v.empty() << std::endl;
+        v.push_back(1);
+        oStream << v.empty() << std::endl;
+        v.clear();
+        v.resize(1);
+        oStream << v.empty() << std::endl;
+        oStream << "Descr.: =operator():" << std::endl;
+        v.push_back(1);
+        vec = v;
+        oStream << vec.front() << std::endl;
+        oStream << v.front() << std::endl;
+
     }
 	class A {public: A(){a = 1;} int a;};
 	template <typename Vector>
