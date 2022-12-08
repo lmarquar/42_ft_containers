@@ -17,9 +17,10 @@ class vector
 {
 	public:
 		// Variables
-		typedef T&		reference;
-		typedef size_t	size_type;
-		typedef T		value_type;
+		typedef T&						reference;
+		typedef T *						pointer;
+		typedef size_t					size_type;
+		typedef T						value_type;
 
 
 		// Constructors
@@ -28,6 +29,11 @@ class vector
 			arr_capacity = 0;
 			arr_size = 0;
 			arr = new T[arr_capacity];
+			#ifdef __linux__
+				os = "linux";
+			#else
+				os = "mac";
+			#endif
 		}
 		vector(T *range_start, T *range_end)
 		{
@@ -36,7 +42,12 @@ class vector
 			i = (size_t)(range_end - range_start);
 			std::cout << "Debugging: distance between range_inputs: " << i << std::endl;
 			if ((range_start + i) != range_end || i > MAX_SIZE)
-				throw std::length_error("cannot create ft::vector larger than max_size()");
+			{
+				if (os == "linux")
+					throw std::length_error("cannot create ft::vector larger than max_size()");
+				else
+					throw std::length_error("vector");
+			}
 			arr_capacity = i;
 			arr = new T[arr_capacity];
 			for (i = 0; range_start[i] != *range_end; i++)
@@ -100,12 +111,19 @@ class vector
 		}
 		inline T at(size_t i) const
 		{
-			std::stringstream ss;
-			ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
-			std::string err_msg = ss.str();
 
-			if (i >= arr_size)
-				throw std::out_of_range(err_msg);
+			if (i + 1 > arr_size)
+			{
+				if (os == "linux")
+				{
+					std::stringstream ss;
+					ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
+					std::string err_msg = ss.str();
+					throw std::out_of_range(err_msg);
+				}
+				else
+					throw std::out_of_range("vector");
+			}
 			return (arr[i]);
 		}
 		inline T &front()
@@ -119,7 +137,7 @@ class vector
 			if (arr_capacity == 0)
 				throw std::out_of_range("cannot access element of empty vector");
 			if (arr_size == 0)
-				return (arr[0]);
+				return (arr[1]);
 			else
 				return (arr[arr_size - 1]);
 		}
@@ -129,6 +147,13 @@ class vector
 			arr_size = 0;
 			arr = new T[arr_capacity];
 		}
+		bool empty() const
+		{
+			if (arr_size == 0)
+				return (true);
+			else
+				return (false);
+		}
 		T*	data()
 		{
 			return (arr);
@@ -137,34 +162,47 @@ class vector
 		{
 			value_type	*new_arr;
 
-			new_arr = new value_type[n];
-			pasteAllInto(new_arr, arr_size);
-			for (size_t i = arr_size; i < n; i++)
-				new_arr[i] = val;
-			if (arr_size > n)
-				arr_size = n;
-			if (arr_capacity > n)
+			if (n < 0 || n > MAX_SIZE)
+				throw std::length_error("vector::_M_fill_insert");
+			if (arr_capacity < n)
 				arr_capacity = n;
+			arr_size = n;
+			new_arr = new value_type[arr_capacity];
+			pasteAllInto(new_arr, arr_size);
+			for (size_t i = arr_size; i < arr_capacity; i++)
+				new_arr[i] = val;
 			delete arr;
 			arr = new_arr;
+		}
+		void	reserve(size_t new_arr_capacity)
+		{
+			value_type *new_arr;
+
+			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
+			{
+				new_arr = new value_type[new_arr_capacity];
+				pasteAllInto(new_arr, arr_size);
+				arr_capacity = new_arr_capacity;
+			}
 		}
 
 
 		// Classes
-		class iterator
+		template <typename PointerType>
+		class BaseIterator
 		{
 			public:
 				// Constructors
-				explicit iterator()
+				explicit BaseIterator()
 				{
 				}
-				iterator(const iterator &ref)
+				BaseIterator(const BaseIterator &ref)
 				{
 					ptr = &(*ref);
  				}
 
 				// Destructors
-				virtual ~iterator()
+				virtual ~BaseIterator()
 				{
 				}
 
@@ -173,58 +211,59 @@ class vector
 				{
 					return (*ptr);
 				}
-				iterator& operator++()
+				BaseIterator& operator++()
 				{
 					++ptr;
 					return (*this);
 				}
-				iterator operator++(int)
+				BaseIterator operator++(int)
 				{
-					iterator iter(*this);
+					BaseIterator iter(*this);
 					operator++();
 					return (iter);
 				}
-				iterator& operator--()
+				BaseIterator& operator--()
 				{
 					--ptr;
 					return (*this);
 				}
-				iterator operator--(int)
+				BaseIterator operator--(int)
 				{
-					iterator iter(*this);
+					BaseIterator iter(*this);
 					operator--();
 					return (iter);
 				}
-				iterator & operator=(const iterator & iter)
+				BaseIterator & operator=(const BaseIterator & iter)
 				{
-					ptr = &(*iter);
+					this->setPtr(&(*iter));
 					return (*this);
 				}
-				bool operator==(const iterator &cmp)
+				bool operator==(const BaseIterator &cmp)
 				{
 					return (ptr == &(*cmp));
 				}
 
 				// Getters and Setters
 			protected:
-				void setPtr(T *newPtr)
+				void setPtr(PointerType newPtr)
 				{
 					ptr = newPtr;
 				}
-				T *getPtr()
+				PointerType	getPtr()
 				{
 					return (ptr);
 				}
 
 			protected:
-				T*	ptr;
+				PointerType	ptr;
 		};
 	private:
-		class iteratorParameterized : public iterator
+		template<typename PointerType>
+		class iteratorParameterized : public BaseIterator<PointerType>
 		{
 			public:
 				// Constructors
-				explicit iteratorParameterized(T *newPtr)
+				explicit iteratorParameterized(PointerType newPtr)
 				{
 					this->setPtr(newPtr);
 				}
@@ -238,6 +277,9 @@ class vector
 		};
 		
 	public:
+		typedef BaseIterator<pointer>		iterator;
+		typedef BaseIterator<const pointer>	const_iterator;
+
 		void insert(iterator __pos, T el)
 		{
 			iterator tmp;
@@ -250,9 +292,9 @@ class vector
 			it_end = end();
 			for (i = 0; i < INT_MAX; i++)
 			{
-				tmp++;
 				if (&(*tmp) == &(*__pos) || tmp == it_end)
 					break;
+				tmp++;
 			}
 			if (arr_size == arr_capacity)
 			{
@@ -263,7 +305,7 @@ class vector
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
-				for (size_t i = 0; i < arr_size - 1; i++)
+				for (size_t i = 0; i <= arr_size; i++)
 					new_arr[i + 1] = arr[i];
 				delete arr;
 				arr = new_arr;
@@ -289,20 +331,34 @@ class vector
 		}
 		iterator begin()
 		{
-			iteratorParameterized it(arr);
+			iteratorParameterized<pointer> it(arr);
 
 			return (it);
 		}
 		iterator end()
 		{
-			iteratorParameterized it(&arr[size()]);
+			iteratorParameterized<pointer> it(&arr[size()]);
 
 			return (it);
 		}
+		inline iterator erase(const iterator position)
+		{
+			iterator	it;
+			size_t		i;
+
+			i = 0;
+			for (it = begin(); (it != position) && (it != end()); ++it)
+				i++;
+			if (it != position)
+				throw std::runtime_error("vector: wrong input");
+			
+
+		}
 	private:
-		T		*arr;
-		size_t	arr_capacity;
-		size_t	arr_size;
+		T			*arr;
+		size_t		arr_capacity;
+		size_t		arr_size;
+		std::string	os;
 
 		void pasteAllInto(T *buf, size_t buf_size)
 		{

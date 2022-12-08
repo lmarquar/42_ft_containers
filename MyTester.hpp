@@ -14,6 +14,8 @@
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define BLUE "\033[4;34m"
+# define CYANUSCR "\033[4;36m"
+# define CYAN "\033[0;36m"
 # define RESET "\033[0m"
 
 class MyTester
@@ -25,9 +27,9 @@ class MyTester
 	template <typename Vector>
     void test()
     {
-    //	Vector v_real;
+    	Vector v_real;
         oStream << "GIVEN TESTS:" << std::endl;
-    //    v_real.insert(v_real.begin(), 10);
+        v_real.insert(v_real.begin(), 10);
         typename Vector::iterator iter;
 
         // Create a vector containing integers
@@ -40,21 +42,21 @@ class MyTester
         v.push_back(25);
         v.push_back(13);
 
+        oStream << "Descr.: testing front and back function: " << std::endl;
+        oStream << v_real.front() << std::endl;
+        oStream << v_real.back() << std::endl;
+        v_real.clear();
+        oStream << v_real.front() << std::endl;
+        oStream << v_real.back() << std::endl;
         oStream << "v:back1: " << v.back() << std::endl;
         v.clear();
-    /*     #ifdef __linux__
-            oStream << "v:back2: " << v.back() << std::endl;
-        #else
-            oStream << "this test only works on linux" << std::endl;
-        #endif */
-        execOnlyOnLinux(v.back());
+        v.back();
         oStream << "v.capa: " << v.capacity() << std::endl;
         oStream << "v.size: " << v.size() << std::endl;
         oStream << empty.capacity() << std::endl;
     
         // Print out the vector
         printVector(v);
-
 
         oStream << std::endl << "MY TESTS: " << std::endl;
         int arr1[6] = {1, 2, 3, 4, 3, 2};
@@ -76,7 +78,7 @@ class MyTester
         oStream << "end of array" << std::endl;
         oStream << "back(): " << t.back() << std::endl;
 
-        oStream << "iterator tests:" << std::endl;
+        oStream << "Descr.: iterator tests:" << std::endl;
         iter = t.begin();
         t.insert(t.begin(), 20);
         t.insert(++iter, 10);
@@ -100,11 +102,6 @@ class MyTester
 
         iter = t.end();
         iter--;
-    /*     for(size_t i = t.size() - 1; i >= 0; i++)
-        {
-            oStream << *iter << std::endl;
-            iter--;
-        } */
         iterCpy = iter;
         oStream << "iter:    " << *iter << std::endl;
         oStream << "iterCpy: " << *iterCpy << std::endl;
@@ -119,6 +116,22 @@ class MyTester
         }
         oStream << "capacity(): " << t.capacity() << std::endl;
         oStream << "size(): " << t.size() << std::endl;
+        oStream << "Descr.: empty():" << std::endl;
+        oStream << t.empty() << std::endl;
+        Vector vec;
+        oStream << vec.empty() << std::endl;
+        oStream << v.empty() << std::endl;
+        v.push_back(1);
+        oStream << v.empty() << std::endl;
+        v.clear();
+        v.resize(1);
+        oStream << v.empty() << std::endl;
+        oStream << "Descr.: =operator():" << std::endl;
+        v.push_back(1);
+        vec = v;
+        oStream << vec.front() << std::endl;
+        oStream << v.front() << std::endl;
+
     }
 	class A {public: A(){a = 1;} int a;};
 	template <typename Vector>
@@ -145,6 +158,7 @@ class MyTester
 	private:
 	std::stringstream oStream;
 	std::string equalizeDifferences(std::string buf_mine);
+    void toOutput(std::string first, std::string second, size_t width, std::string color);
 };
 
 #endif
