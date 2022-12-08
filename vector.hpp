@@ -104,7 +104,7 @@ class vector
 			ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
 			std::string err_msg = ss.str();
 
-			if (i + 1 > arr_size)
+			if (i >= arr_size)
 				throw std::out_of_range(err_msg);
 			return (arr[i]);
 		}
