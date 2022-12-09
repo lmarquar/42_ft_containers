@@ -28,17 +28,17 @@ int MyTester::run()
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
-    test<std::vector<int> >();
+    test<std::vector>();
     std::cout <<  oStream.str();
     oStream.str("");
     std::cout << BLUE << "end for only ft::vector testrun" << RESET << std::endl;
     size_t width;
     size_t length_min;
     width = 50;
-    test<std::vector<int> >();
+    test<std::vector>();
     ss_v_real << oStream.str();
     oStream.str("");
-    test<ft::vector<int> >();
+    test<ft::vector>();
     ss_v_mine << oStream.str();
     std::cout << BLUE << std::setw((int)width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))

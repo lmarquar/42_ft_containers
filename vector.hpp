@@ -71,6 +71,8 @@ class vector
 		{
 			arr_capacity = assign.capacity();
 			arr_size = assign.size();
+			for (size_t i = 0; i < arr_size; i++)
+				arr[i] = assign.at(i);
 			return (*this);
 		}
 		reference operator[](size_t pos)
@@ -162,15 +164,16 @@ class vector
 		{
 			value_type	*new_arr;
 
+			std::cout << val;
 			if (n < 0 || n > MAX_SIZE)
 				throw std::length_error("vector::_M_fill_insert");
 			if (arr_capacity < n)
 				arr_capacity = n;
-			arr_size = n;
 			new_arr = new value_type[arr_capacity];
-			pasteAllInto(new_arr, arr_size);
+			pasteAllInto(new_arr, arr_capacity);
 			for (size_t i = arr_size; i < arr_capacity; i++)
 				new_arr[i] = val;
+			arr_size = n;
 			delete arr;
 			arr = new_arr;
 		}
