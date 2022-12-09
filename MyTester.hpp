@@ -137,9 +137,11 @@ class MyTester
         oStream << v.at(0) << std::endl;
         oStream << v.at(1) << std::endl;
         oStream << v.at(2) << std::endl;
-        oStream << "Descr.: const object:" << std::endl;
-/*       Vector<const A> vec_const;
-        vec_const.push_back(A()); */
+        oStream << "Descr.: const_iterator:" << std::endl;
+        typename Vector<int>::const_iterator it_const;
+/*        it_const = v.begin();
+        it_const++;
+        std::cout << *it_const << std::endl;*/
     }
 	template <typename Vector>
     void printVector(Vector &v)

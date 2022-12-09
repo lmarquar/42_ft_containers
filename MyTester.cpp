@@ -24,7 +24,7 @@ int MyTester::run()
     std::string buf_mine;
     std::string buf_mine_adjusted;
     std::string buf_real;
-/*     std::cout << "test for ft::vector: " << std::endl;
+/*    std::cout << "test for ft::vector: " << std::endl;
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
@@ -68,7 +68,10 @@ int MyTester::run()
     printVector(test_vec);
     std::vector<int> test_vec2;
     test_vec2.insert(test_vec2.begin(), 10);
-    std::cout << "here" << std::endl;
+    std::vector<int>::const_iterator it_const;
+    it_const = test_vec2.begin();
+    it_const++;
+    std::cout << *it_const << std::endl;
     return (0);
 }
 

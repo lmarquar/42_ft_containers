@@ -18,7 +18,9 @@ class vector
 	public:
 		// Variables
 		typedef T&						reference;
+		typedef const T&				const_reference;
 		typedef T *						pointer;
+		typedef const T *				const_pointer;
 		typedef size_t					size_type;
 		typedef T						value_type;
 
@@ -281,7 +283,7 @@ class vector
 		
 	public:
 		typedef BaseIterator<pointer>		iterator;
-		typedef BaseIterator<const pointer>	const_iterator;
+		typedef BaseIterator<const_pointer>	const_iterator;
 
 		void insert(iterator __pos, T el)
 		{
