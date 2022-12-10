@@ -24,21 +24,21 @@ int MyTester::run()
     std::string buf_mine;
     std::string buf_mine_adjusted;
     std::string buf_real;
-/*     std::cout << "test for ft::vector: " << std::endl;
+/*    std::cout << "test for ft::vector: " << std::endl;
     test(v_mine, std::cout);
     std::cout << std::endl << "test for std::vector: " << std::endl;
     test(v_real, std::cout); */
-    test<std::vector<int> >();
+    test<std::vector>();
     std::cout <<  oStream.str();
     oStream.str("");
     std::cout << BLUE << "end for only ft::vector testrun" << RESET << std::endl;
     size_t width;
     size_t length_min;
     width = 50;
-    test<std::vector<int> >();
+    test<std::vector>();
     ss_v_real << oStream.str();
     oStream.str("");
-    test<ft::vector<int> >();
+    test<ft::vector>();
     ss_v_mine << oStream.str();
     std::cout << BLUE << std::setw((int)width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
     while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
@@ -68,7 +68,10 @@ int MyTester::run()
     printVector(test_vec);
     std::vector<int> test_vec2;
     test_vec2.insert(test_vec2.begin(), 10);
-    std::cout << "here" << std::endl;
+    std::vector<int>::const_iterator it_const;
+    it_const = test_vec2.begin();
+    it_const++;
+    std::cout << *it_const << std::endl;
     return (0);
 }
 
