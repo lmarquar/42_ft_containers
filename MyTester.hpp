@@ -144,8 +144,8 @@ class MyTester
         oStream << *(++iter) << std::endl;
         oStream << *(--iter) << std::endl;
         oStream << "Descr.: const_iterator:" << std::endl;
-        typename Vector<int>::const_iterator it_const;
-/*        it_const = v.begin();
+/*        typename Vector<int>::const_iterator it_const;
+        it_const = v.begin();
         it_const++;
         std::cout << *it_const << std::endl;*/
     }

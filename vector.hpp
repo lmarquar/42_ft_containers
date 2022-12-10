@@ -201,8 +201,9 @@ class vector
 			typedef typename choose<is_const, const T *, T *>::type pointer;
 			public:
 				// Constructors
-				explicit BaseIterator()
+				explicit BaseIterator(PointerType pt = 0)
 				{
+					this->setPtr(pt);
 				}
 				BaseIterator(const BaseIterator &ref)
 				{
@@ -246,11 +247,11 @@ class vector
 					this->setPtr(&(*iter));
 					return (*this);
 				}
-				const BaseIterator & operator=(const BaseIterator & iter) const
+/* 				BaseIterator & operator=(const BaseIterator & iter) const
 				{
 					this->setPtr(&(*iter));
 					return (*this);
-				}
+				} */
 				bool operator==(const BaseIterator &cmp)
 				{
 					return (ptr == &(*cmp));
@@ -266,27 +267,8 @@ class vector
 				{
 					return (ptr);
 				}
-
 			protected:
 				PointerType	ptr;
-		};
-	private:
-		template<typename PointerType, bool is_const = false>
-		class iteratorParameterized : public BaseIterator<PointerType, is_const>
-		{
-			public:
-				// Constructors
-				explicit iteratorParameterized(PointerType newPtr)
-				{
-					this->setPtr(newPtr);
-				}
-
-				// Destructors
-				virtual ~iteratorParameterized()
-				{
-				}
-
-				// Getters and Setters
 		};
 	public:
 		typedef BaseIterator<pointer>		iterator;
@@ -343,19 +325,19 @@ class vector
 		}
 		iterator begin()
 		{
-			iteratorParameterized<pointer> it(arr);
+			BaseIterator<pointer> it(arr);
 
 			return (it);
 		}
 		const_iterator begin() const
 		{
-			iteratorParameterized<const_pointer, true> it(arr);
+			BaseIterator<const_pointer, true> it(arr);
 
 			return (it);
 		}
 		iterator end()
 		{
-			iteratorParameterized<pointer> it(&arr[size()]);
+			BaseIterator<pointer> it(&arr[size()]);
 
 			return (it);
 		}
