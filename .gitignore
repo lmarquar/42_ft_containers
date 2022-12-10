@@ -33,3 +33,6 @@
 
 # debugging stuff
 *.dSYM
+
+# Files
+en.subject.pdf
