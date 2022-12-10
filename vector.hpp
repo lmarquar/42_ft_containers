@@ -340,6 +340,12 @@ class vector
 
 			return (it);
 		}
+		const_iterator begin() const
+		{
+			iteratorParameterized<const_pointer> it(arr);
+
+			return (it);
+		}
 		iterator end()
 		{
 			iteratorParameterized<pointer> it(&arr[size()]);
