@@ -58,9 +58,14 @@ int MyTester::run()
 	}
 	buf_mine = equalizeDifferences(ss_v_mine.str());
 	buf_real = ss_v_real.str();
-    assert(buf_mine == buf_real);
-    std::cout << std::endl << GREEN << "✔ all tests for vector pass" << RESET << std::endl;
-    std::cout << "Some additional tests: " << std::endl;
+    if (buf_mine == buf_real)
+    	std::cout << std::endl << GREEN << "✔ all tests for vector passed" << RESET << std::endl;
+	else
+	{
+		std::cout << std::endl << RED << "✘ some tests for vector failed" << RESET << std::endl;
+		return (0);
+	}
+	std::cout << "Some additional tests: " << std::endl;
     int onetothree[3] = {1, 2, 3};
     std::vector<int> test_vec(onetothree, onetothree+3);
     test_vec.insert(test_vec.end(), 4);

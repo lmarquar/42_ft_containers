@@ -28,21 +28,14 @@ class vector
 		// Constructors
 		vector()
 		{
-			arr_capacity = 0;
-			arr_size = 0;
-			arr = new T[arr_capacity];
-			#ifdef __linux__
-				os = "linux";
-			#else
-				os = "mac";
-			#endif
+			initVariablesToDefault();
 		}
 		vector(T *range_start, T *range_end)
 		{
 			size_t	i;
 
+			initVariablesToDefault();
 			i = (size_t)(range_end - range_start);
-			std::cout << "Debugging: distance between range_inputs: " << i << std::endl;
 			if ((range_start + i) != range_end || i > MAX_SIZE)
 			{
 				if (os == "linux")
@@ -51,7 +44,6 @@ class vector
 					throw std::length_error("vector");
 			}
 			arr_capacity = i;
-			arr = new T[arr_capacity];
 			for (i = 0; range_start[i] != *range_end; i++)
 				arr[i] = range_start[i];
 			arr_size = i;
@@ -147,9 +139,7 @@ class vector
 		}
 		inline void clear()
 		{
-			delete arr;
 			arr_size = 0;
-			arr = new T[arr_capacity];
 		}
 		bool empty() const
 		{
@@ -380,6 +370,17 @@ class vector
 		{
 			for (size_t i = arr_size; i > 0; i--)
 				arr[i] = arr[i - 1];
+		}
+		void initVariablesToDefault()
+		{
+			arr_capacity = 0;
+			arr_size = 0;
+			arr = new T[arr_capacity];
+			#ifdef __linux__
+				os = "linux";
+			#else
+				os = "mac";
+			#endif
 		}
 };
 }

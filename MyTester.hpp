@@ -28,7 +28,7 @@ class MyTester
     void test()
     {
     	Vector<int> v_real;
-        oStream << "GIVEN TESTS:" << std::endl;
+        oStream << "Descr.: GIVEN TESTS:" << std::endl;
         v_real.insert(v_real.begin(), 10);
         typename Vector<int>::iterator iter;
 
@@ -42,6 +42,8 @@ class MyTester
         v.push_back(25);
         v.push_back(13);
 
+
+        oStream << std::endl << "Descr.: MY TESTS: " << std::endl;
         oStream << "Descr.: testing front and back function: " << std::endl;
         oStream << v_real.front() << std::endl;
         oStream << v_real.back() << std::endl;
@@ -54,11 +56,7 @@ class MyTester
         oStream << "v.capa: " << v.capacity() << std::endl;
         oStream << "v.size: " << v.size() << std::endl;
         oStream << empty.capacity() << std::endl;
-    
-        // Print out the vector
         printVector(v);
-
-        oStream << std::endl << "MY TESTS: " << std::endl;
         int arr1[6] = {1, 2, 3, 4, 3, 2};
         int arr2[2] = {5, 6};
         try {
