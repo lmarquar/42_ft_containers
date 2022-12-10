@@ -24,7 +24,6 @@ class vector
 		typedef size_t					size_type;
 		typedef T						value_type;
 
-
 		// Constructors
 		vector()
 		{
@@ -45,7 +44,7 @@ class vector
 			}
 			arr_capacity = i;
 			for (i = 0; range_start[i] != *range_end; i++)
-				arr[i] = range_start[i];
+				push_back(range_start[i]);
 			arr_size = i;
 		}
 		vector(const vector &copy)
@@ -183,9 +182,23 @@ class vector
 
 
 		// Classes
-		template <typename PointerType>
+		template <typename PointerType, bool is_const = false>
 		class BaseIterator
 		{
+			template <bool flag, class IsTrue, class IsFalse>
+			struct choose;
+
+			template <class IsTrue, class IsFalse>
+			struct choose<true, IsTrue, IsFalse> {
+			   typedef IsTrue type;
+			};
+
+			template <class IsTrue, class IsFalse>
+			struct choose<false, IsTrue, IsFalse> {
+			   typedef IsFalse type;
+			};
+			typedef typename choose<is_const, const T &, T &>::type reference;
+			typedef typename choose<is_const, const T *, T *>::type pointer;
 			public:
 				// Constructors
 				explicit BaseIterator()
@@ -233,6 +246,11 @@ class vector
 					this->setPtr(&(*iter));
 					return (*this);
 				}
+				const BaseIterator & operator=(const BaseIterator & iter) const
+				{
+					this->setPtr(&(*iter));
+					return (*this);
+				}
 				bool operator==(const BaseIterator &cmp)
 				{
 					return (ptr == &(*cmp));
@@ -253,8 +271,8 @@ class vector
 				PointerType	ptr;
 		};
 	private:
-		template<typename PointerType>
-		class iteratorParameterized : public BaseIterator<PointerType>
+		template<typename PointerType, bool is_const = false>
+		class iteratorParameterized : public BaseIterator<PointerType, is_const>
 		{
 			public:
 				// Constructors
@@ -270,7 +288,6 @@ class vector
 
 				// Getters and Setters
 		};
-		
 	public:
 		typedef BaseIterator<pointer>		iterator;
 		typedef BaseIterator<const_pointer>	const_iterator;
@@ -332,7 +349,7 @@ class vector
 		}
 		const_iterator begin() const
 		{
-			iteratorParameterized<const_pointer> it(arr);
+			iteratorParameterized<const_pointer, true> it(arr);
 
 			return (it);
 		}

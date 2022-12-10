@@ -75,8 +75,11 @@ int MyTester::run()
     test_vec2.insert(test_vec2.begin(), 10);
     std::vector<int>::const_iterator it_const;
     it_const = test_vec2.begin();
-    it_const++;
+    it_const = test_vec2.end();
+    it_const--;
     std::cout << *it_const << std::endl;
+    std::cout << *it_const << std::endl;
+    std::cout << *(++it_const) << std::endl;
     return (0);
 }
 
