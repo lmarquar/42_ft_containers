@@ -41,10 +41,10 @@ class vector
 				else
 					throw std::length_error("vector");
 			}
-			arr_capacity = i + 1;
+			arr_capacity = i;
 			arr_size = arr_capacity;
 			arr = new T[arr_capacity];
-			for (i = 0; range_start[i] != *range_end; i++)
+			for (i = 0; i < arr_capacity; i++)
 				arr[i] = range_start[i];
 		}
 		vector(const vector &copy)

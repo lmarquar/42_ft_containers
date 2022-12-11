@@ -93,7 +93,7 @@ class MyTester
         iter = t.begin();
         for(size_t i = 0; i < t.size(); i++)
         {
-            oStream << *iter << std::endl;
+            oStream << *iter << " == " << t.at(i) << std::endl;
             iter++;
         }
         oStream << "*(--iterator)" << *(--iter) << std::endl;
@@ -109,13 +109,13 @@ class MyTester
         oStream << "iterCpy: " << *iterCpy << std::endl;
         oStream << "*(--iterCpy): " << *(--iterCpy) << std::endl;
         t.clear();
-        try{
+/*         try{
             for(size_t i = 0; i < 4; i++)
                 oStream << t.at(i) << std::endl;
         } catch (std::out_of_range &e)
         {
             oStream << "catched Exception: " << e.what() << std::endl;
-        }
+        } */
         oStream << "capacity(): " << t.capacity() << std::endl;
         oStream << "size(): " << t.size() << std::endl;
         oStream << "Descr.: empty():" << std::endl;
