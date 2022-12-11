@@ -27,29 +27,31 @@ class MyTester
 	template <template <class T, class Allocator = std::allocator<T> > class Vector >
     void test()
     {
-    	Vector<int> v_real;
         oStream << "Descr.: GIVEN TESTS:" << std::endl;
-        v_real.insert(v_real.begin(), 10);
         typename Vector<int>::iterator iter;
-
         // Create a vector containing integers
         int arr[4] = {7, 5, 16, 8};
         Vector<int> v(arr, arr+4);
+        iter = v.begin();
         Vector<int> empty;
-
         oStream << v.size() << std::endl;
         // Add two more integers to vector
         v.push_back(25);
         v.push_back(13);
 
-
         oStream << std::endl << "Descr.: MY TESTS: " << std::endl;
+ /*        Vector<int> v2(arr, arr+3);
+        oStream << "v2.capa(): " << v2.capacity() << std::endl; */
         oStream << "Descr.: testing front and back function: " << std::endl;
-        oStream << v_real.front() << std::endl;
-        oStream << v_real.back() << std::endl;
-        v_real.clear();
-        oStream << v_real.front() << std::endl;
-        oStream << v_real.back() << std::endl;
+        oStream << "front(): " <<  v.front() << std::endl;
+        oStream << "back(): " << v.back() << std::endl;
+        oStream << "clear()" << std::endl;
+//        v.clear();
+//        v.resize(20);
+        oStream << "front(): " <<  v.front() << std::endl;
+        oStream << "back(): " << v.back() << std::endl;
+        oStream << v.capacity() << std::endl;
+        oStream << v.size() << std::endl;
         oStream << "v:back1: " << v.back() << std::endl;
         v.clear();
         v.back();
@@ -67,8 +69,9 @@ class MyTester
         }
         Vector<int> t(arr1, arr1+6);
         t.push_back(2);
-        t.push_back(3);
+//        t.push_back(3);
         oStream << "size:     " << t.size() << std::endl;
+        oStream << "capa: " << t.capacity() << std::endl;
         oStream << "max_size: " << "not identical, that's why not displayed" << std::endl;
         for(size_t i = 0; i < t.size(); i++)
             oStream << t.at(i) << std::endl;
@@ -137,7 +140,6 @@ class MyTester
         oStream << v.at(2) << std::endl;
         oStream << "Descr.: iterator:" << std::endl;
         iter = v.begin();
-        iter--;
         oStream << *iter << std::endl;
         *iter = 100;
         oStream << *iter << std::endl;

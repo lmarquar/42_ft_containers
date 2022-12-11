@@ -158,6 +158,8 @@ class vector
 			std::cout << val;
 			if (n < 0 || n > MAX_SIZE)
 				throw std::length_error("vector::_M_fill_insert");
+			if (arr_capacity > 0)
+				delete arr;
 			if (arr_capacity < n)
 				arr_capacity = n;
 			new_arr = new value_type[arr_capacity];
@@ -165,7 +167,6 @@ class vector
 			for (size_t i = arr_size; i < arr_capacity; i++)
 				new_arr[i] = val;
 			arr_size = n;
-			delete arr;
 			arr = new_arr;
 		}
 		void	reserve(size_t new_arr_capacity)
