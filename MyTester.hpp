@@ -59,6 +59,7 @@ class MyTester
         oStream << "v.size: " << v.size() << std::endl;
         oStream << empty.capacity() << std::endl;
         printVector(v);
+        oStream << "Descr.: range input" << std::endl;
         int arr1[6] = {1, 2, 3, 4, 3, 2};
         int arr2[2] = {5, 6};
         try {
@@ -67,8 +68,8 @@ class MyTester
         {
             oStream << "caught length_error of type: " << e.what() << std::endl;
         }
-        Vector<int> t(arr1, arr1+6);
-        t.push_back(2);
+        Vector<int> t(arr1, arr1+5);
+//        t.push_back(2);
 //        t.push_back(3);
         oStream << "size:     " << t.size() << std::endl;
         oStream << "capa: " << t.capacity() << std::endl;
@@ -82,7 +83,7 @@ class MyTester
         oStream << "Descr.: iterator tests:" << std::endl;
         iter = t.begin();
         t.insert(t.begin(), 20);
-        t.insert(++iter, 10);
+//        t.insert(++iter, 10);
         t.insert(t.end(), 30);
         --iter;
         typename Vector<int>::iterator iterCpy;

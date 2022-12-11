@@ -33,7 +33,6 @@ class vector
 		{
 			size_t	i;
 
-			initVariablesToDefault();
 			i = (size_t)(range_end - range_start);
 			if ((range_start + i) != range_end || i > MAX_SIZE)
 			{
@@ -42,10 +41,11 @@ class vector
 				else
 					throw std::length_error("vector");
 			}
-			arr_capacity = i;
+			arr_capacity = i + 1;
+			arr_size = arr_capacity;
+			arr = new T[arr_capacity];
 			for (i = 0; range_start[i] != *range_end; i++)
-				push_back(range_start[i]);
-			arr_size = i;
+				arr[i] = range_start[i];
 		}
 		vector(const vector &copy)
 		{
@@ -97,7 +97,7 @@ class vector
 					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				new_arr = new T[new_arr_capacity];
-				pasteAllInto(new_arr, new_arr_capacity);
+				pasteAllInto(new_arr, arr_size);
 				delete arr;
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
