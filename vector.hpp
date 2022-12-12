@@ -25,12 +25,13 @@ class vector
 		typedef T						value_type;
 
 		// Constructors
-		vector()
+		vector() : arr(new T[0]), arr_capacity(0), arr_size(0)
 		{
-			initVariablesToDefault();
+			setOs();
 		}
-		vector(T *range_start, T *range_end)
+		vector(pointer range_start, pointer range_end) : arr(0), arr_capacity(0), arr_size(0)
 		{
+			setOs();
 			size_t	i;
 
 			i = (size_t)(range_end - range_start);
@@ -202,9 +203,8 @@ class vector
 			typedef typename choose<is_const, const T *, T *>::type pointer;
 			public:
 				// Constructors
-				explicit BaseIterator(PointerType pt = 0)
+				explicit BaseIterator(PointerType pt = 0) : ptr(pt)
 				{
-					this->setPtr(pt);
 				}
 				BaseIterator(const BaseIterator &ref)
 				{
@@ -245,10 +245,10 @@ class vector
 				}
 				BaseIterator & operator=(const BaseIterator & iter)
 				{
-					this->setPtr(&(*iter));
+					ptr = &(*iter);
 					return (*this);
 				}
-/* 				BaseIterator & operator=(const BaseIterator & iter) const
+/* 				const BaseIterator & operator=(const BaseIterator & iter) const
 				{
 					this->setPtr(&(*iter));
 					return (*this);
@@ -257,19 +257,8 @@ class vector
 				{
 					return (ptr == &(*cmp));
 				}
-
-				// Getters and Setters
-			protected:
-				void setPtr(PointerType newPtr)
-				{
-					ptr = newPtr;
-				}
-				PointerType	getPtr()
-				{
-					return (ptr);
-				}
-			protected:
-				PointerType	ptr;
+			private:
+				mutable PointerType	ptr;
 		};
 	public:
 		typedef BaseIterator<pointer>		iterator;
@@ -356,12 +345,12 @@ class vector
 
 		}
 	private:
-		T			*arr;
+		pointer		arr;
 		size_t		arr_capacity;
 		size_t		arr_size;
 		std::string	os;
 
-		void pasteAllInto(T *buf, size_t buf_size)
+		void pasteAllInto(pointer buf, size_t buf_size)
 		{
 			for (size_t i = 0; i < buf_size; i++)
 				buf[i] = arr[i];
@@ -371,11 +360,8 @@ class vector
 			for (size_t i = arr_size; i > 0; i--)
 				arr[i] = arr[i - 1];
 		}
-		void initVariablesToDefault()
+		void setOs()
 		{
-			arr_capacity = 0;
-			arr_size = 0;
-			arr = new T[arr_capacity];
 			#ifdef __linux__
 				os = "linux";
 			#else
