@@ -299,14 +299,15 @@ class vector
 				arr_capacity = new_arr_capacity;
 			}
 			i = size();
-			std::cout << &(*it_end) << std::endl;
-			std::cout << *it_end << std::endl;
+			std::cout << &(*tmp) << std::endl;
+			std::cout << *tmp << std::endl;
 			while (i > 0 && &(arr[i]) != &(*__pos) && __pos != it_end)
 			{
 				std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 				arr[i] = arr[i - 1];
 				i--;
 			}
+			std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 			if (&(arr[i]) == &(*__pos) || __pos == it_end)
 				arr[i] = el;
 			else
