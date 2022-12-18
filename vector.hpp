@@ -257,6 +257,10 @@ class vector
 				{
 					return (ptr == &(*cmp));
 				}
+				bool operator!=(const BaseIterator &cmp)
+				{
+					return (ptr != &(*cmp));
+				}
 			private:
 				mutable PointerType	ptr;
 		};
@@ -268,13 +272,12 @@ class vector
 		{
 			iterator tmp;
 			iterator it_end;
-			iterator tmp_begin;
 
 			size_t	i;
 
 			tmp = begin();
 			it_end = end();
-			for (i = 0; i < INT_MAX; i++)
+			for (i = 0; i < arr_size; i++)
 			{
 				if (&(*tmp) == &(*__pos) || tmp == it_end)
 					break;
@@ -290,27 +293,27 @@ class vector
 					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
 				for (size_t i = 0; i <= arr_size; i++)
-					new_arr[i + 1] = arr[i];
+					new_arr[i] = arr[i];
 				delete arr;
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			tmp = end();
-			tmp_begin = begin();
 			i = size();
-			while (&(*tmp) != &(*tmp_begin) && &(*tmp) != &(*__pos))
+			std::cout << &(*it_end) << std::endl;
+			std::cout << *it_end << std::endl;
+			while (i > 0 && &(arr[i]) != &(*__pos) && __pos != it_end)
 			{
-				arr[i + 1] = arr[i];
+				std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
+				arr[i] = arr[i - 1];
 				i--;
-				tmp--;
 			}
-			arr[i + 1] = arr[i];
-			if (arr[i] != *tmp && &(*tmp) != &(*tmp_begin))
+			if (&(arr[i]) == &(*__pos) || __pos == it_end)
+				arr[i] = el;
+			else
 			{
 				std::cout << "i: " << i << std::endl;
 				throw std::bad_exception();
 			}
-			arr[i] = el;
 			arr_size++;
 		}
 		iterator begin()
