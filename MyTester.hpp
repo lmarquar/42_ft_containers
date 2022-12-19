@@ -82,7 +82,9 @@ class MyTester
 
         oStream << "Descr.: iterator tests:" << std::endl;
         iter = t.begin();
-        t.insert(t.begin(), 20);
+        std::cout << *iter << std::endl;
+        std::cout << &(*iter) << std::endl << std::endl << std::endl;
+        t.insert(iter, 20);
 //        t.insert(++iter, 10);
         t.insert(t.end(), 30);
         --iter;

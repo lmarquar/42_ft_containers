@@ -208,6 +208,7 @@ class vector
 				}
 				BaseIterator(const BaseIterator &ref)
 				{
+					std::cout << "inside iterator: " << &(*ref) << std::endl;
 					ptr = &(*ref);
  				}
 
@@ -299,8 +300,18 @@ class vector
 				arr_capacity = new_arr_capacity;
 			}
 			i = size();
-			std::cout << &(*tmp) << std::endl;
+			//debugging
+			tmp = begin();
 			std::cout << *tmp << std::endl;
+			std::cout << &(*tmp) << std::endl;
+			while (tmp != __pos)
+			{
+				tmp--;
+				std::cout << "address: " << &(*tmp) << std::endl;
+				std::cout << "value: " << *tmp << std::endl << std::endl;
+			}
+			std::cout << &(arr[0]) << std::endl << "end of debug" << std::endl << std::endl;
+			//eo debugging
 			while (i > 0 && &(arr[i]) != &(*__pos) && __pos != it_end)
 			{
 				std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
