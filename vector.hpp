@@ -207,10 +207,7 @@ class vector
 				explicit BaseIterator(pointer pt = 0) : ptr(pt)
 				{
 				}
-				BaseIterator(const BaseIterator &ref)
-				{
-					ptr = &(*ref);
- 				}
+				BaseIterator(const BaseIterator<false>& ref) : ptr(ref.ptr) {}
 
 				// Destructors
 				virtual ~BaseIterator()
@@ -249,11 +246,6 @@ class vector
 					ptr = &(*iter);
 					return (*this);
 				}
-/* 				const BaseIterator & operator=(const BaseIterator & iter) const
-				{
-					this->setPtr(&(*iter));
-					return (*this);
-				} */
 				bool operator==(const BaseIterator &cmp)
 				{
 					return (ptr == &(*cmp));
