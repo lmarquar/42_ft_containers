@@ -185,7 +185,7 @@ class vector
 
 
 		// Classes
-		template <typename PointerType, bool is_const = false>
+		template <bool is_const = false>
 		class BaseIterator
 		{
 			template <bool flag, class IsTrue, class IsFalse>
@@ -204,7 +204,7 @@ class vector
 			typedef typename choose<is_const, const T *, T *>::type pointer;
 			public:
 				// Constructors
-				explicit BaseIterator(PointerType pt = 0) : ptr(pt)
+				explicit BaseIterator(pointer pt = 0) : ptr(pt)
 				{
 				}
 				BaseIterator(const BaseIterator &ref)
@@ -263,11 +263,11 @@ class vector
 					return (ptr != &(*cmp));
 				}
 			private:
-				mutable PointerType	ptr;
+				mutable pointer	ptr;
 		};
 	public:
-		typedef BaseIterator<pointer>		iterator;
-		typedef BaseIterator<const_pointer>	const_iterator;
+		typedef BaseIterator<>		iterator;
+		typedef BaseIterator<true>	const_iterator;
 
 		void insert(iterator __pos, T el)
 		{
@@ -317,19 +317,19 @@ class vector
 		}
 		iterator begin()
 		{
-			BaseIterator<pointer> it(arr);
+			BaseIterator<> it(arr);
 
 			return (it);
 		}
 		const_iterator begin() const
 		{
-			BaseIterator<const_pointer, true> it(arr);
+			BaseIterator<true> it(arr);
 
 			return (it);
 		}
 		iterator end()
 		{
-			BaseIterator<pointer> it(&arr[size()]);
+			BaseIterator<> it(&arr[size()]);
 
 			return (it);
 		}
