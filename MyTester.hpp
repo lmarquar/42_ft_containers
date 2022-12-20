@@ -24,11 +24,6 @@ class MyTester
 	MyTester();
 	
 	private:
-	template <class Iterator>
-    void iterTestFunc(Iterator iter)
-    {
-        std::cout << "iter address in TestFunc: " << &(*iter) << std::endl;
-    }
 	template <template <class T, class Allocator = std::allocator<T> > class Vector >
     void test()
     {
@@ -74,8 +69,8 @@ class MyTester
             oStream << "caught length_error of type: " << e.what() << std::endl;
         }
         Vector<int> t(arr1, arr1+5);
-//        t.push_back(2);
-//        t.push_back(3);
+        t.push_back(2);
+        t.push_back(3);
         oStream << "size:     " << t.size() << std::endl;
         oStream << "capa: " << t.capacity() << std::endl;
         oStream << "max_size: " << "not identical, that's why not displayed" << std::endl;
@@ -89,14 +84,15 @@ class MyTester
         iter = t.begin();
         std::cout << *iter << std::endl;
         std::cout << "iter address: " << &(*iter) << std::endl << std::endl << std::endl;
-        iterTestFunc(iter);
         t.insert(iter, 20);
-//        t.insert(++iter, 10);
+        std::cout << "iter address: " << &(*iter) << std::endl << std::endl << std::endl;
+        std::cout << "blah" << std::endl;
+        t.insert(++iter, 10);
         t.insert(t.end(), 30);
         --iter;
         typename Vector<int>::iterator iterCpy;
         oStream << "size: " << t.size() << std::endl;
-//        t.resize(t.size() - 1);
+        t.resize(t.size() - 1);
         oStream << "size: " << t.size() << std::endl;
         iter = t.begin();
         for(size_t i = 0; i < t.size(); i++)

@@ -311,7 +311,7 @@ class vector
 			}
 			i = size();
 			//debugging
-			tmp = begin();
+			tmp = end();
 			std::cout << *tmp << std::endl;
 			std::cout << &(*tmp) << std::endl;
 	/* 		while (tmp != __pos)
@@ -327,6 +327,7 @@ class vector
 				std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 				arr[i] = arr[i - 1];
 				i--;
+				tmp--;
 			}
 			std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 			arr[i] = el;
