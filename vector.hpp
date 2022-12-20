@@ -208,7 +208,6 @@ class vector
 				}
 				BaseIterator(const BaseIterator &ref)
 				{
-					std::cout << "inside iterator: " << &(*ref) << std::endl;
 					ptr = &(*ref);
  				}
 
@@ -280,8 +279,6 @@ class vector
 			tmp = begin();
 			it_end = end();
 			i = 0;
-			std::cout << "end() address: " << &(*it_end) << std::endl;
-			std::cout << "begin() address: " << &(*tmp) << std::endl;
 			for (insert_pos = 0; insert_pos < arr_size; insert_pos++)
 			{
 				if (&(*tmp) == &(*__pos) || tmp == it_end)
@@ -290,10 +287,9 @@ class vector
 			}
 			if (&(*tmp) != &(*__pos))
 			{
-				std::cout << "insert_pos: " << insert_pos << std::endl;
+				std::cerr << "vector: iterator position not found in vector" << std::endl;
 				throw std::bad_exception();
 			}
-			std::cout << "insert_pos: " << insert_pos << std::endl;
 			if (arr_size == arr_capacity)
 			{
 				T *new_arr;
@@ -310,26 +306,11 @@ class vector
 				arr_capacity = new_arr_capacity;
 			}
 			i = size();
-			//debugging
-			tmp = end();
-			std::cout << *tmp << std::endl;
-			std::cout << &(*tmp) << std::endl;
-	/* 		while (tmp != __pos)
-			{
-				tmp--;
-				std::cout << "address: " << &(*tmp) << std::endl;
-				std::cout << "value: " << *tmp << std::endl << std::endl;
-			} */
-			std::cout << &(arr[0]) << std::endl << "end of debug" << std::endl << std::endl;
-			//eo debugging
 			while (i > insert_pos)
 			{
-				std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 				arr[i] = arr[i - 1];
 				i--;
-				tmp--;
 			}
-			std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 			arr[i] = el;
 			arr_size++;
 		}
