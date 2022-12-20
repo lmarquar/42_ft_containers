@@ -24,6 +24,11 @@ class MyTester
 	MyTester();
 	
 	private:
+	template <class Iterator>
+    void iterTestFunc(Iterator iter)
+    {
+        std::cout << "iter address in TestFunc: " << &(*iter) << std::endl;
+    }
 	template <template <class T, class Allocator = std::allocator<T> > class Vector >
     void test()
     {
@@ -83,7 +88,8 @@ class MyTester
         oStream << "Descr.: iterator tests:" << std::endl;
         iter = t.begin();
         std::cout << *iter << std::endl;
-        std::cout << &(*iter) << std::endl << std::endl << std::endl;
+        std::cout << "iter address: " << &(*iter) << std::endl << std::endl << std::endl;
+        iterTestFunc(iter);
         t.insert(iter, 20);
 //        t.insert(++iter, 10);
         t.insert(t.end(), 30);

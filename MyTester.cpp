@@ -17,6 +17,11 @@ std::string MyTester::equalizeDifferences(std::string buf_mine)
     return (buf_mine_adjusted);
 }
 
+void itTestFunc(std::vector<int>::iterator it)
+{
+    std::cout << "it address inside of testFunc: " << &(*it) << std::endl;
+}
+
 int MyTester::run()
 {
     std::stringstream ss_v_mine;
@@ -74,6 +79,10 @@ int MyTester::run()
     std::vector<int> test_vec2;
     test_vec2.insert(test_vec2.begin(), 10);
     std::vector<int>::const_iterator it_const;
+    std::vector<int>::iterator it;
+    it = test_vec2.begin();
+    std::cout << "it address normal: " << &(*it) << std::endl;
+    itTestFunc(it);
     it_const = test_vec2.begin();
     it_const = test_vec2.end();
     it_const--;

@@ -275,15 +275,25 @@ class vector
 			iterator it_end;
 
 			size_t	i;
+			size_t	insert_pos;
 
 			tmp = begin();
 			it_end = end();
-			for (i = 0; i < arr_size; i++)
+			i = 0;
+			std::cout << "end() address: " << &(*it_end) << std::endl;
+			std::cout << "begin() address: " << &(*tmp) << std::endl;
+			for (insert_pos = 0; insert_pos < arr_size; insert_pos++)
 			{
 				if (&(*tmp) == &(*__pos) || tmp == it_end)
 					break;
 				tmp++;
 			}
+			if (&(*tmp) != &(*__pos))
+			{
+				std::cout << "insert_pos: " << insert_pos << std::endl;
+				throw std::bad_exception();
+			}
+			std::cout << "insert_pos: " << insert_pos << std::endl;
 			if (arr_size == arr_capacity)
 			{
 				T *new_arr;
@@ -293,7 +303,7 @@ class vector
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
 				new_arr = new T[new_arr_capacity];
-				for (size_t i = 0; i <= arr_size; i++)
+				for (i = 0; i <= arr_size; i++)
 					new_arr[i] = arr[i];
 				delete arr;
 				arr = new_arr;
@@ -304,28 +314,22 @@ class vector
 			tmp = begin();
 			std::cout << *tmp << std::endl;
 			std::cout << &(*tmp) << std::endl;
-			while (tmp != __pos)
+	/* 		while (tmp != __pos)
 			{
 				tmp--;
 				std::cout << "address: " << &(*tmp) << std::endl;
 				std::cout << "value: " << *tmp << std::endl << std::endl;
-			}
+			} */
 			std::cout << &(arr[0]) << std::endl << "end of debug" << std::endl << std::endl;
 			//eo debugging
-			while (i > 0 && &(arr[i]) != &(*__pos) && __pos != it_end)
+			while (i > insert_pos)
 			{
 				std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
 				arr[i] = arr[i - 1];
 				i--;
 			}
 			std::cout << arr[i] << std::endl << &(arr[i]) << std::endl << &(*__pos) << std::endl << std::endl;
-			if (&(arr[i]) == &(*__pos) || __pos == it_end)
-				arr[i] = el;
-			else
-			{
-				std::cout << "i: " << i << std::endl;
-				throw std::bad_exception();
-			}
+			arr[i] = el;
 			arr_size++;
 		}
 		iterator begin()
