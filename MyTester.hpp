@@ -40,19 +40,18 @@ class MyTester
         v.push_back(13);
 
         oStream << std::endl << "Descr.: MY TESTS: " << std::endl;
- /*        Vector<int> v2(arr, arr+3);
-        oStream << "v2.capa(): " << v2.capacity() << std::endl; */
+        Vector<int> v2(arr, arr+3);
+        oStream << "v2.capa(): " << v2.capacity() << std::endl;
         oStream << "Descr.: testing front and back function: " << std::endl;
         oStream << "front(): " <<  v.front() << std::endl;
         oStream << "back(): " << v.back() << std::endl;
         oStream << "clear()" << std::endl;
-//        v.clear();
-//        v.resize(20);
+        v.clear();
+        v.resize(20);
         oStream << "front(): " <<  v.front() << std::endl;
         oStream << "back(): " << v.back() << std::endl;
         oStream << v.capacity() << std::endl;
         oStream << v.size() << std::endl;
-        oStream << "v:back1: " << v.back() << std::endl;
         v.clear();
         v.back();
         oStream << "v.capa: " << v.capacity() << std::endl;

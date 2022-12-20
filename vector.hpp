@@ -140,6 +140,7 @@ class vector
 		inline void clear()
 		{
 			arr_size = 0;
+			arr[1] = T();
 		}
 		bool empty() const
 		{
