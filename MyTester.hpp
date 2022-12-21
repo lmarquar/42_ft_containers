@@ -63,7 +63,7 @@ class MyTester
         int arr2[2] = {5, 6};
         try {
             Vector<int> t_wrong(arr1, arr2);
-        } catch (std::exception &e)
+        } catch (std::length_error &e)
         {
             oStream << "caught length_error of type: " << e.what() << std::endl;
         }

@@ -157,19 +157,23 @@ class vector
 		{
 			value_type	*new_arr;
 
-			std::cout << val;
+			std::cout << val << std::endl;
 			if (n < 0 || n > MAX_SIZE)
 				throw std::length_error("vector::_M_fill_insert");
-			if (arr_capacity > 0)
-				delete arr;
-			if (arr_capacity < n)
-				arr_capacity = n;
-			new_arr = new value_type[arr_capacity];
-			pasteAllInto(new_arr, arr_capacity);
-			for (size_t i = arr_size; i < arr_capacity; i++)
-				new_arr[i] = val;
+			if (n > arr_size)
+			{
+				if (n > arr_capacity)
+				{
+					new_arr = new value_type[n];
+					pasteAllInto(new_arr, arr_size);
+					delete arr;
+					arr = new_arr;
+					arr_capacity = n;
+				}
+				for (size_t i = arr_size; i < n; i++)
+					arr[i] = val;
+			}
 			arr_size = n;
-			arr = new_arr;
 		}
 		void	reserve(size_t new_arr_capacity)
 		{
