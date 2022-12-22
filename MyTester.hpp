@@ -138,6 +138,7 @@ class MyTester
         oStream << v.at(0) << std::endl;
         oStream << v.at(1) << std::endl;
         oStream << v.at(2) << std::endl;
+		v.push_back(1);
         oStream << "Descr.: iterator:" << std::endl;
         iter = v.begin();
         oStream << *iter << std::endl;
@@ -147,12 +148,17 @@ class MyTester
         oStream << *(--iter) << std::endl;
         oStream << "Descr.: const_iterator:" << std::endl;
         typename Vector<int>::const_iterator it_const;
-        it_const = v.begin();
-        it_const++;
+        it_const = v.end();
+		iter = v.end();
+        it_const--;
         oStream << *it_const << std::endl;
+		oStream << *iter << std::endl;
+		oStream << "test comparisons:" << std::endl;
 		oStream << (it_const == iter) << std::endl;
+		oStream << (it_const < iter) << std::endl;
 		it_const = iter;
 		oStream << (it_const == iter) << std::endl;
+		oStream << (iter != it_const) << std::endl;
 		oStream << *it_const << std::endl;
 		oStream << "Descr.: reverse_iterator:" << std::endl;
     }

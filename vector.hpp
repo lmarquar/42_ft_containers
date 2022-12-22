@@ -247,10 +247,22 @@ class vector
 				{
 					return (ptr < &(*cmp));
 				}
+				bool operator<=(const BaseIterator &cmp)
+				{
+					return (ptr <= &(*cmp));
+				}
+				bool operator>(const BaseIterator &cmp)
+				{
+					return (ptr > &(*cmp));
+				}
+				bool operator>=(const BaseIterator &cmp)
+				{
+					return (ptr >= &(*cmp));
+				}
 			private:
 				pointer	ptr;
 		};
-		class ConstBaseIterator : BaseIterator
+		class ConstBaseIterator : public BaseIterator
 		{
 			public:
 				// Constructors
@@ -305,6 +317,22 @@ class vector
 				bool operator!=(const BaseIterator &cmp)
 				{
 					return (BaseIterator::operator!=(cmp));
+				}
+				bool operator<(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator<(cmp));
+				}
+				bool operator<=(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator<=(cmp));
+				}
+				bool operator>(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator>(cmp));
+				}
+				bool operator>=(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator>=(cmp));
 				}
 		};
 	public:
