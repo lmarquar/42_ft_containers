@@ -189,29 +189,14 @@ class vector
 
 
 		// Classes
-		template <bool is_const = false>
 		class BaseIterator
 		{
-			template <bool flag, class IsTrue, class IsFalse>
-			struct choose;
-
-			template <class IsTrue, class IsFalse>
-			struct choose<true, IsTrue, IsFalse> {
-			   typedef IsTrue type;
-			};
-
-			template <class IsTrue, class IsFalse>
-			struct choose<false, IsTrue, IsFalse> {
-			   typedef IsFalse type;
-			};
-			typedef typename choose<is_const, const T &, T &>::type reference;
-			typedef typename choose<is_const, const T *, T *>::type pointer;
 			public:
 				// Constructors
 				explicit BaseIterator(pointer pt = 0) : ptr(pt)
 				{
 				}
-				BaseIterator(const BaseIterator<false>& ref) : ptr(ref.ptr) {}
+				BaseIterator(const BaseIterator& ref) : ptr(ref.ptr) {}
 
 				// Destructors
 				virtual ~BaseIterator()
@@ -259,11 +244,68 @@ class vector
 					return (ptr != &(*cmp));
 				}
 			private:
-				mutable pointer	ptr;
+				pointer	ptr;
+		};
+		class ConstBaseIterator : BaseIterator
+		{
+			public:
+				// Constructors
+				explicit ConstBaseIterator(pointer pt = 0) : BaseIterator(pt)
+				{
+				}
+				ConstBaseIterator(const ConstBaseIterator& ref) : BaseIterator(ref)
+				{
+				}
+
+				// Destructors
+				virtual ~ConstBaseIterator()
+				{
+				}
+
+				// Operators
+				ConstBaseIterator & operator=(const BaseIterator & iter)
+				{
+					BaseIterator::operator=(iter);
+					return (*this);
+				}
+				const_reference operator*() const
+				{
+					return (BaseIterator::operator*());
+				}
+				ConstBaseIterator& operator++()
+				{
+					BaseIterator::operator++();
+					return (*this);
+				}
+				ConstBaseIterator& operator--()
+				{
+					BaseIterator::operator--();
+					return (*this);
+				}
+				ConstBaseIterator operator++(int)
+				{
+					ConstBaseIterator iter(*this);
+					BaseIterator::operator++();
+					return (iter);
+				}
+				ConstBaseIterator operator--(int)
+				{
+					ConstBaseIterator iter(*this);
+					BaseIterator::operator--();
+					return (iter);
+				}
+				ConstBaseIterator & operator==(const ConstBaseIterator &cmp)
+				{
+					return (BaseIterator::operator==(cmp));
+				}
+				ConstBaseIterator & operator!=(const ConstBaseIterator &cmp)
+				{
+					return (BaseIterator::operator!=(cmp));
+				}
 		};
 	public:
-		typedef BaseIterator<>		iterator;
-		typedef BaseIterator<true>	const_iterator;
+		typedef BaseIterator		iterator;
+		typedef ConstBaseIterator	const_iterator;
 
 		void insert(iterator __pos, T el)
 		{
@@ -313,19 +355,19 @@ class vector
 		}
 		iterator begin()
 		{
-			BaseIterator<> it(arr);
+			BaseIterator it(arr);
 
 			return (it);
 		}
 		const_iterator begin() const
 		{
-			BaseIterator<true> it(arr);
+			ConstBaseIterator it(arr);
 
 			return (it);
 		}
 		iterator end()
 		{
-			BaseIterator<> it(&arr[size()]);
+			BaseIterator it(&arr[size()]);
 
 			return (it);
 		}

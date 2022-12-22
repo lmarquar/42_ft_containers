@@ -147,9 +147,9 @@ class MyTester
         oStream << *(--iter) << std::endl;
         oStream << "Descr.: const_iterator:" << std::endl;
         typename Vector<int>::const_iterator it_const;
-/*        it_const = v.begin();
+        it_const = v.begin();
         it_const++;
-        std::cout << *it_const << std::endl;*/
+        oStream << *it_const << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v)
@@ -170,7 +170,7 @@ class MyTester
         #endif
     }
 	public:
-	int run();
+	int run(char kind);
 
 	private:
 	std::stringstream oStream;
