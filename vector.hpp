@@ -298,11 +298,11 @@ class vector
 					BaseIterator::operator--();
 					return (iter);
 				}
-				ConstBaseIterator & operator==(const ConstBaseIterator &cmp)
+				bool operator==(const BaseIterator &cmp)
 				{
 					return (BaseIterator::operator==(cmp));
 				}
-				ConstBaseIterator & operator!=(const ConstBaseIterator &cmp)
+				bool operator!=(const BaseIterator &cmp)
 				{
 					return (BaseIterator::operator!=(cmp));
 				}
