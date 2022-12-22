@@ -89,6 +89,7 @@ int MyTester::run(char kind)
 		it_const--;
 		std::cout << *it_const << std::endl;
 		std::cout << *(++it_const) << std::endl;
+		std::cout << (it_const > it) << std::endl;
 	}
     return (0);
 }

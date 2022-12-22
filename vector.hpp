@@ -243,6 +243,10 @@ class vector
 				{
 					return (ptr != &(*cmp));
 				}
+				bool operator<(const BaseIterator &cmp)
+				{
+					return (ptr < &(*cmp));
+				}
 			private:
 				pointer	ptr;
 		};

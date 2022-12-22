@@ -150,6 +150,11 @@ class MyTester
         it_const = v.begin();
         it_const++;
         oStream << *it_const << std::endl;
+		oStream << (it_const == iter) << std::endl;
+		it_const = iter;
+		oStream << (it_const == iter) << std::endl;
+		oStream << *it_const << std::endl;
+		oStream << "Descr.: reverse_iterator:" << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v)
