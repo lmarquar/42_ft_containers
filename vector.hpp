@@ -44,9 +44,9 @@ class vector
 			}
 			arr_capacity = i;
 			arr_size = arr_capacity;
-			arr = new T[arr_capacity];
-			for (i = 0; i < arr_capacity; i++)
-				arr[i] = range_start[i];
+			arr = new T[arr_capacity + 2];
+			for (i = 1; i <= arr_capacity; i++)
+				arr[i] = range_start[i - 1];
 		}
 		vector(const vector &copy)
 		{
@@ -65,13 +65,13 @@ class vector
 		{
 			arr_capacity = assign.capacity();
 			arr_size = assign.size();
-			for (size_t i = 0; i < arr_size; i++)
-				arr[i] = assign.at(i);
+			for (size_t i = 1; i <= arr_size; i++)
+				arr[i] = assign.at(i - 1);
 			return (*this);
 		}
 		reference operator[](size_t pos)
 		{
-			return (arr[pos]);
+			return (arr[pos + 1]);
 		}
 		
 		// Functions
@@ -97,18 +97,18 @@ class vector
 				if (arr_capacity > MAX_SIZE / (size_t)2)
 					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				new_arr = new T[new_arr_capacity];
+				new_arr = new T[new_arr_capacity + 2];
 				pasteAllInto(new_arr, arr_size);
 				delete arr;
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			arr[arr_size++] = el;
+			arr[++arr_size] = el;
 		}
 		inline T at(size_t i) const
 		{
 
-			if (i + 1 > arr_size)
+			if (i >= arr_size)
 			{
 				if (os == "linux")
 				{
@@ -120,13 +120,13 @@ class vector
 				else
 					throw std::out_of_range("vector");
 			}
-			return (arr[i]);
+			return (arr[i + 1]);
 		}
 		inline T &front()
 		{
 			if (arr_capacity == 0)
 				throw std::out_of_range("cannot access element of empty vector");
-			return (arr[0]);
+			return (arr[1]);
 		}
 		inline T &back()
 		{
@@ -135,7 +135,7 @@ class vector
 			if (arr_size == 0)
 				return (arr[1]);
 			else
-				return (arr[arr_size - 1]);
+				return (arr[arr_size]);
 		}
 		inline void clear()
 		{
@@ -164,14 +164,14 @@ class vector
 			{
 				if (n > arr_capacity)
 				{
-					new_arr = new value_type[n];
+					new_arr = new value_type[n + 2];
 					pasteAllInto(new_arr, arr_size);
 					delete arr;
 					arr = new_arr;
 					arr_capacity = n;
 				}
-				for (size_t i = arr_size; i < n; i++)
-					arr[i] = val;
+				for (size_t i = (arr_size + 1); i <= n; i++)
+					arr[i - 1] = val;
 			}
 			arr_size = n;
 		}
@@ -181,7 +181,7 @@ class vector
 
 			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
 			{
-				new_arr = new value_type[new_arr_capacity];
+				new_arr = new value_type[new_arr_capacity + 2];
 				pasteAllInto(new_arr, arr_size);
 				arr_capacity = new_arr_capacity;
 			}
@@ -335,9 +335,83 @@ class vector
 					return (BaseIterator::operator>=(cmp));
 				}
 		};
+		class ReverseBaseIterator : public BaseIterator
+		{
+			public:
+				// Constructors
+				explicit ReverseBaseIterator(pointer pt = 0) : BaseIterator(pt)
+				{
+				}
+				ReverseBaseIterator(const ReverseBaseIterator& ref) : BaseIterator(ref)
+				{
+				}
+
+				// Destructors
+				virtual ~ReverseBaseIterator()
+				{
+				}
+
+				// Operators
+				ReverseBaseIterator & operator=(const BaseIterator & iter)
+				{
+					BaseIterator::operator=(iter);
+					return (*this);
+				}
+				reference operator*() const
+				{
+					return (BaseIterator::operator*());
+				}
+				ReverseBaseIterator& operator++()
+				{
+					BaseIterator::operator--();
+					return (*this);
+				}
+				ReverseBaseIterator& operator--()
+				{
+					BaseIterator::operator++();
+					return (*this);
+				}
+				ReverseBaseIterator operator++(int)
+				{
+					ReverseBaseIterator iter(*this);
+					BaseIterator::operator--();
+					return (iter);
+				}
+				ReverseBaseIterator operator--(int)
+				{
+					ReverseBaseIterator iter(*this);
+					BaseIterator::operator++();
+					return (iter);
+				}
+				bool operator==(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator==(cmp));
+				}
+				bool operator!=(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator!=(cmp));
+				}
+				bool operator<(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator<(cmp));
+				}
+				bool operator<=(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator<=(cmp));
+				}
+				bool operator>(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator>(cmp));
+				}
+				bool operator>=(const BaseIterator &cmp)
+				{
+					return (BaseIterator::operator>=(cmp));
+				}
+		};
 	public:
 		typedef BaseIterator		iterator;
 		typedef ConstBaseIterator	const_iterator;
+		typedef ReverseBaseIterator	reverse_iterator;
 
 		void insert(iterator __pos, T el)
 		{
@@ -350,7 +424,7 @@ class vector
 			tmp = begin();
 			it_end = end();
 			i = 0;
-			for (insert_pos = 0; insert_pos < arr_size; insert_pos++)
+			for (insert_pos = 1; insert_pos <= arr_size; insert_pos++)
 			{
 				if (&(*tmp) == &(*__pos) || tmp == it_end)
 					break;
@@ -369,14 +443,14 @@ class vector
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
-				new_arr = new T[new_arr_capacity];
-				for (i = 0; i <= arr_size; i++)
+				new_arr = new T[new_arr_capacity + 2];
+				for (i = 1; i <= arr_size; i++)
 					new_arr[i] = arr[i];
 				delete arr;
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			i = size();
+			i = size() + 1;
 			while (i > insert_pos)
 			{
 				arr[i] = arr[i - 1];
@@ -387,19 +461,19 @@ class vector
 		}
 		iterator begin()
 		{
-			BaseIterator it(arr);
+			BaseIterator it(&(arr[1]));
 
 			return (it);
 		}
 		const_iterator begin() const
 		{
-			ConstBaseIterator it(arr);
+			ConstBaseIterator it(&(arr[1]));
 
 			return (it);
 		}
 		iterator end()
 		{
-			BaseIterator it(&arr[size()]);
+			BaseIterator it(&arr[size() + 1]);
 
 			return (it);
 		}
@@ -413,8 +487,7 @@ class vector
 				i++;
 			if (it != position)
 				throw std::runtime_error("vector: wrong input");
-			
-
+			//finish this
 		}
 	private:
 		pointer		arr;
@@ -424,12 +497,12 @@ class vector
 
 		void pasteAllInto(pointer buf, size_t buf_size)
 		{
-			for (size_t i = 0; i < buf_size; i++)
+			for (size_t i = 1; i <= buf_size; i++)
 				buf[i] = arr[i];
 		}
 		void moveAllToRightByOne()
 		{
-			for (size_t i = arr_size; i > 0; i--)
+			for (size_t i = (arr_size + 1); i > 1; i--)
 				arr[i] = arr[i - 1];
 		}
 		void setOs()
