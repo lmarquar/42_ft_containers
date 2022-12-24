@@ -171,7 +171,7 @@ class vector
 					arr_capacity = n;
 				}
 				for (size_t i = (arr_size + 1); i <= n; i++)
-					arr[i - 1] = val;
+					arr[i] = val;
 			}
 			arr_size = n;
 		}
