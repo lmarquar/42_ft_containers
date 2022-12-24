@@ -164,8 +164,16 @@ class MyTester
 		oStream << (iter != it_const) << std::endl;
 		oStream << *it_const << std::endl;
 		oStream << "Descr.: reverse_iterator:" << std::endl;
-//		typename Vector<int>::reverse_iterator it_rev;
-//		it_rev = v.rbegin();
+		typename Vector<int>::reverse_iterator it_rev;
+		it_rev = v.rbegin();
+        oStream << *it_rev << std::endl;
+        it_rev++;
+        oStream << *it_rev << std::endl;
+        it_rev = v.rend();
+        it_rev--;
+        oStream << *it_rev << std::endl;
+//        it_rev += 2;
+        oStream << *it_rev << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v)

@@ -354,7 +354,7 @@ class vector
 				// Operators
 				ReverseBaseIterator & operator=(const BaseIterator & iter)
 				{
-					BaseIterator::operator=(iter);
+					BaseIterator::operator=(BaseIterator(&(*end()) - (&(*iter) - &(*begin()))));
 					return (*this);
 				}
 				reference operator*() const
@@ -474,6 +474,24 @@ class vector
 		iterator end()
 		{
 			BaseIterator it(&arr[size() + 1]);
+
+			return (it);
+		}
+		const_iterator end() const
+		{
+			ConstBaseIterator	it(&arr[size() + 1]);
+
+			return (it);
+		}
+		reverse_iterator rbegin()
+		{
+			ReverseBaseIterator	it(&arr[size()]);
+
+			return (it);
+		}
+		reverse_iterator rend()
+		{
+			ReverseBaseIterator    it(arr);
 
 			return (it);
 		}
