@@ -173,7 +173,9 @@ class MyTester
         it_rev--;
         oStream << *it_rev << std::endl;
 //        it_rev += 2;
-        oStream << *it_rev << std::endl;
+//		it_rev = iter;
+		typename Vector<int>::reverse_iterator it_rev2(it_rev);
+        oStream << *it_rev2 << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v)

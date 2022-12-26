@@ -44,7 +44,8 @@ class vector
 			}
 			arr_capacity = i;
 			arr_size = arr_capacity;
-			arr = new T[arr_capacity + 2];
+			arr = alloc.allocate(arr_capacity + 2);
+//			arr = new T[arr_capacity + 2];
 			for (i = 1; i <= arr_capacity; i++)
 				arr[i] = range_start[i - 1];
 		}
@@ -57,7 +58,7 @@ class vector
 		~vector()
 		{
 			std::cout << "destructor of vector called" << std::endl;
-			delete arr;
+			alloc.destroy(arr);
 		}
 
 		// Operators
@@ -97,9 +98,9 @@ class vector
 				if (arr_capacity > MAX_SIZE / (size_t)2)
 					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				new_arr = new T[new_arr_capacity + 2];
+				new_arr = alloc.allocate(new_arr_capacity + 2);
 				pasteAllInto(new_arr, arr_size);
-				delete arr;
+				alloc.deallocate(arr, arr_capacity + 2);
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
@@ -166,7 +167,7 @@ class vector
 				{
 					new_arr = new value_type[n + 2];
 					pasteAllInto(new_arr, arr_size);
-					delete arr;
+					alloc.deallocate(arr, arr_capacity + 2);
 					arr = new_arr;
 					arr_capacity = n;
 				}
@@ -446,7 +447,7 @@ class vector
 				new_arr = new T[new_arr_capacity + 2];
 				for (i = 1; i <= arr_size; i++)
 					new_arr[i] = arr[i];
-				delete arr;
+				alloc.deallocate(arr, arr_capacity + 2);
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
@@ -508,6 +509,7 @@ class vector
 			//finish this
 		}
 	private:
+		Allocator	alloc;
 		pointer		arr;
 		size_t		arr_capacity;
 		size_t		arr_size;

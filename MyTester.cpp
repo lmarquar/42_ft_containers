@@ -90,6 +90,9 @@ int MyTester::run(char kind)
 		std::cout << *it_const << std::endl;
 		std::cout << *(++it_const) << std::endl;
 		std::cout << (it_const > it) << std::endl;
+		std::vector<int>::reverse_iterator it_rev;
+		it_rev = std::vector<int>::reverse_iterator(it);
+		std::cout << *it_rev << std::endl;
 	}
     return (0);
 }
