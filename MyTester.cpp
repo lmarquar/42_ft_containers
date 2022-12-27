@@ -84,11 +84,11 @@ int MyTester::run(char kind)
 		std::vector<int>::const_iterator it_const;
 		std::vector<int>::iterator it;
 		it = test_vec2.begin();
+		it++;
 		it_const = test_vec2.begin();
 		it_const = test_vec2.end();
 		it_const--;
 		std::cout << *it_const << std::endl;
-		std::cout << *(++it_const) << std::endl;
 		std::cout << (it_const > it) << std::endl;
 		std::vector<int>::reverse_iterator it_rev;
 		it_rev = std::vector<int>::reverse_iterator(it);

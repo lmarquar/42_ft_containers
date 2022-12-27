@@ -25,7 +25,7 @@ class vector
 		typedef T						value_type;
 
 		// Constructors
-		vector() : arr(new T[0]), arr_capacity(0), arr_size(0)
+		vector() : arr(alloc.allocate(2)), arr_capacity(0), arr_size(0)
 		{
 			setOs();
 		}
@@ -45,7 +45,6 @@ class vector
 			arr_capacity = i;
 			arr_size = arr_capacity;
 			arr = alloc.allocate(arr_capacity + 2);
-//			arr = new T[arr_capacity + 2];
 			for (i = 1; i <= arr_capacity; i++)
 				arr[i] = range_start[i - 1];
 		}
@@ -58,16 +57,18 @@ class vector
 		~vector()
 		{
 			std::cout << "destructor of vector called" << std::endl;
-			alloc.destroy(arr);
+			alloc.deallocate(arr, arr_capacity + 2);
 		}
 
 		// Operators
 		vector & operator=(const vector &assign)
 		{
+			alloc.deallocate(arr, arr_capacity + 2);
+			arr = alloc.allocate(assign.capacity() + 2);
 			arr_capacity = assign.capacity();
-			arr_size = assign.size();
-			for (size_t i = 1; i <= arr_size; i++)
+			for (size_t i = 1; i <= assign.size(); i++)
 				arr[i] = assign.at(i - 1);
+			arr_size = assign.size();
 			return (*this);
 		}
 		reference operator[](size_t pos)
@@ -165,7 +166,7 @@ class vector
 			{
 				if (n > arr_capacity)
 				{
-					new_arr = new value_type[n + 2];
+					new_arr = alloc.allocate(n + 2);
 					pasteAllInto(new_arr, arr_size);
 					alloc.deallocate(arr, arr_capacity + 2);
 					arr = new_arr;
@@ -444,7 +445,7 @@ class vector
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
-				new_arr = new T[new_arr_capacity + 2];
+				new_arr = alloc.allocate(new_arr_capacity + 2);
 				for (i = 1; i <= arr_size; i++)
 					new_arr[i] = arr[i];
 				alloc.deallocate(arr, arr_capacity + 2);
