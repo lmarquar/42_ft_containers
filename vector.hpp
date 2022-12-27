@@ -45,6 +45,7 @@ class vector
 			arr_capacity = i;
 			arr_size = arr_capacity;
 			arr = alloc.allocate(arr_capacity + 2);
+			arr[0] = T();
 			for (i = 1; i <= arr_capacity; i++)
 				arr[i] = range_start[i - 1];
 		}
@@ -153,20 +154,19 @@ class vector
 		}
 		T*	data()
 		{
-			return (arr);
+			return (&arr[1]);
 		}
 		void	resize(size_type n, value_type val = value_type())
 		{
 			value_type	*new_arr;
 
-			std::cout << val << std::endl;
 			if (n < 0 || n > MAX_SIZE)
 				throw std::length_error("vector::_M_fill_insert");
 			if (n > arr_size)
 			{
 				if (n > arr_capacity)
 				{
-					new_arr = alloc.allocate(n + 2);
+					new_arr = allocate(n + 2);
 					pasteAllInto(new_arr, arr_size);
 					alloc.deallocate(arr, arr_capacity + 2);
 					arr = new_arr;
@@ -183,7 +183,7 @@ class vector
 
 			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
 			{
-				new_arr = new value_type[new_arr_capacity + 2];
+				new_arr = allocate(new_arr_capacity + 2);
 				pasteAllInto(new_arr, arr_size);
 				arr_capacity = new_arr_capacity;
 			}
@@ -236,6 +236,28 @@ class vector
 				{
 					ptr = &(*iter);
 					return (*this);
+				}
+				BaseIterator & operator+=(int n)
+				{
+					ptr += n;
+					return (*this);
+				}
+				BaseIterator & operator-=(int n)
+				{
+					ptr -= n;
+					return (*this);
+				}
+				BaseIterator operator-(int n) const
+				{
+					BaseIterator iter(*this);
+					iter.ptr -= n;
+					return (iter);
+				}
+				BaseIterator operator+(int n) const
+				{
+					BaseIterator iter(*this);
+					iter.ptr += n;
+					return (iter);
 				}
 				bool operator==(const BaseIterator &cmp)
 				{
@@ -312,30 +334,6 @@ class vector
 					BaseIterator::operator--();
 					return (iter);
 				}
-				bool operator==(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator==(cmp));
-				}
-				bool operator!=(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator!=(cmp));
-				}
-				bool operator<(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator<(cmp));
-				}
-				bool operator<=(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator<=(cmp));
-				}
-				bool operator>(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator>(cmp));
-				}
-				bool operator>=(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator>=(cmp));
-				}
 		};
 		class ReverseBaseIterator : public BaseIterator
 		{
@@ -347,6 +345,9 @@ class vector
 				ReverseBaseIterator(const ReverseBaseIterator& ref) : BaseIterator(ref)
 				{
 				}
+ 				ReverseBaseIterator(const BaseIterator& ref) : BaseIterator(ref - 1)
+				{
+				}
 
 				// Destructors
 				virtual ~ReverseBaseIterator()
@@ -354,11 +355,6 @@ class vector
 				}
 
 				// Operators
-				ReverseBaseIterator & operator=(const BaseIterator & iter)
-				{
-					BaseIterator::operator=(BaseIterator(&(*end()) - (&(*iter) - &(*begin()))));
-					return (*this);
-				}
 				reference operator*() const
 				{
 					return (BaseIterator::operator*());
@@ -385,29 +381,21 @@ class vector
 					BaseIterator::operator++();
 					return (iter);
 				}
-				bool operator==(const BaseIterator &cmp)
+/* 				ReverseBaseIterator & operator=(const BaseIterator & iter)
 				{
-					return (BaseIterator::operator==(cmp));
+					BaseIterator::operator=(BaseIterator(&(arr[arr_size + 1]) - (&(*iter) - &(arr[1]))));
+					return (*this);
+				} */
+				ReverseBaseIterator & operator+=(int n)
+				{
+					BaseIterator::operator-=(n);
+					return (*this);
 				}
-				bool operator!=(const BaseIterator &cmp)
+				ReverseBaseIterator operator-(int n)
 				{
-					return (BaseIterator::operator!=(cmp));
-				}
-				bool operator<(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator<(cmp));
-				}
-				bool operator<=(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator<=(cmp));
-				}
-				bool operator>(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator>(cmp));
-				}
-				bool operator>=(const BaseIterator &cmp)
-				{
-					return (BaseIterator::operator>=(cmp));
+					ReverseBaseIterator iter(*this);
+					iter.arr += n;
+					return (iter);
 				}
 		};
 	public:
@@ -445,7 +433,7 @@ class vector
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
-				new_arr = alloc.allocate(new_arr_capacity + 2);
+				new_arr = allocate(new_arr_capacity + 2);
 				for (i = 1; i <= arr_size; i++)
 					new_arr[i] = arr[i];
 				alloc.deallocate(arr, arr_capacity + 2);
@@ -516,6 +504,12 @@ class vector
 		size_t		arr_size;
 		std::string	os;
 
+		pointer	allocate(size_t size)
+		{
+			pointer result = alloc.allocate(size);
+			result[0] = T();
+			return result;
+		}
 		void pasteAllInto(pointer buf, size_t buf_size)
 		{
 			for (size_t i = 1; i <= buf_size; i++)

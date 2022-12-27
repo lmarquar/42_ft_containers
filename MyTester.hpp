@@ -40,6 +40,7 @@ class MyTester
         v.push_back(13);
 
         oStream << std::endl << "Descr.: MY TESTS: " << std::endl;
+		oStream << *(v.data()) << std::endl;
         Vector<int> v2(arr, arr+3);
         oStream << "v2.capa(): " << v2.capacity() << std::endl;
         oStream << "Descr.: testing front and back function: " << std::endl;
@@ -57,7 +58,7 @@ class MyTester
         oStream << "v.capa: " << v.capacity() << std::endl;
         oStream << "v.size: " << v.size() << std::endl;
         oStream << empty.capacity() << std::endl;
-        printVector(v);
+        printVector(v, oStream);
         oStream << "Descr.: range input" << std::endl;
         int arr1[6] = {1, 2, 3, 4, 3, 2};
         int arr2[2] = {5, 6};
@@ -149,10 +150,11 @@ class MyTester
         oStream << *iter << std::endl;
         oStream << *(++iter) << std::endl;
         oStream << *(--iter) << std::endl;
+		iter = v.end();
+		oStream << *iter << std::endl;
         oStream << "Descr.: const_iterator:" << std::endl;
         typename Vector<int>::const_iterator it_const;
         it_const = v.end();
-		iter = v.end();
         it_const--;
         oStream << *it_const << std::endl;
 		oStream << *iter << std::endl;
@@ -164,26 +166,35 @@ class MyTester
 		oStream << (iter != it_const) << std::endl;
 		oStream << *it_const << std::endl;
 		oStream << "Descr.: reverse_iterator:" << std::endl;
-		typename Vector<int>::reverse_iterator it_rev;
+		typedef typename Vector<int>::reverse_iterator reverse_iterator;
+		reverse_iterator it_rev;
+		printVector(v, oStream);
 		it_rev = v.rbegin();
         oStream << *it_rev << std::endl;
         it_rev++;
         oStream << *it_rev << std::endl;
         it_rev = v.rend();
-        it_rev--;
         oStream << *it_rev << std::endl;
-//        it_rev += 2;
-//		it_rev = iter;
-		typename Vector<int>::reverse_iterator it_rev2(it_rev);
+		oStream << *(v.data()) << std::endl;
+        it_rev--;
+		it_rev--;
+        oStream << *it_rev << std::endl;
+        it_rev += 2;
+        oStream << *it_rev << std::endl;
+		it_rev = v.rbegin() + 1;
+		oStream << *it_rev << std::endl;
+		oStream << *(--it_rev) << "==" << *(v.rbegin()) << std::endl;
+//		it_rev = reverse_iterator(iter);
+		reverse_iterator it_rev2(it_rev);
         oStream << *it_rev2 << std::endl;
     }
 	template <typename Vector>
-    void printVector(Vector &v)
+    void printVector(Vector &v, std::ostream &os) const
     {
-        oStream << "v = { ";
+        os << "v = { ";
         for (unsigned long n = 0; n < v.size(); n++)
-            oStream << v.at(n) << ", ";
-        oStream << "}; \n";
+            os << v.at(n) << ", ";
+        os << "}; \n";
     }
     template <typename T>
     void execOnlyOnLinux(T arg)

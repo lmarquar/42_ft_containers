@@ -78,20 +78,28 @@ int MyTester::run(char kind)
 		std::vector<int> test_vec(onetothree, onetothree+3);
 		test_vec.insert(test_vec.end(), 4);
 		test_vec.resize(test_vec.size() - 1);
-		printVector(test_vec);
+		printVector(test_vec, std::cout);
 		std::vector<int> test_vec2;
 		test_vec2.insert(test_vec2.begin(), 10);
 		std::vector<int>::const_iterator it_const;
 		std::vector<int>::iterator it;
-		it = test_vec2.begin();
+		it = test_vec.begin();
+		std::vector<int>::reverse_iterator it_rev = std::vector<int>::reverse_iterator(it);
+		for (; it != test_vec.end(); it++)
+			std::cout << "it: " << *it << std::endl;
+		it = test_vec.begin();
+		for (; it_rev != test_vec.rbegin(); --it_rev)
+		{
+			std::cout << "it: " << *(1 + it) << std::endl;
+			std::cout << "it_rev: " << *it_rev << std::endl;
+//			it++;
+		}
 		it++;
-		it_const = test_vec2.begin();
-		it_const = test_vec2.end();
+		it_const = test_vec.end();
+		it_const = test_vec.begin();
 		it_const--;
 		std::cout << *it_const << std::endl;
 		std::cout << (it_const > it) << std::endl;
-		std::vector<int>::reverse_iterator it_rev;
-		it_rev = std::vector<int>::reverse_iterator(it);
 		std::cout << *it_rev << std::endl;
 	}
     return (0);
