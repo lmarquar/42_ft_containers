@@ -250,13 +250,15 @@ class vector
 				BaseIterator operator-(int n) const
 				{
 					BaseIterator iter(*this);
-					iter.ptr -= n;
+					for (int i = n; i > 0; i--)
+						iter--;
 					return (iter);
 				}
 				BaseIterator operator+(int n) const
 				{
 					BaseIterator iter(*this);
-					iter.ptr += n;
+					for (int i = n; i > 0; i--)
+						iter++;
 					return (iter);
 				}
 				bool operator==(const BaseIterator &cmp)
@@ -394,8 +396,22 @@ class vector
 				ReverseBaseIterator operator-(int n)
 				{
 					ReverseBaseIterator iter(*this);
-					iter.arr += n;
+					for (int i = n; i > 0; i--)
+						iter--;
 					return (iter);
+				}
+				ReverseBaseIterator operator+(int n)
+				{
+					ReverseBaseIterator iter(*this);
+					for (int i = n; i > 0; i--)
+						iter++;
+					return (iter);
+				}
+
+				// Functions
+				BaseIterator base()
+				{
+					return (BaseIterator(&(*(*this - 1))));
 				}
 		};
 	public:

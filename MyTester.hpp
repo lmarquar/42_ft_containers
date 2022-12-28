@@ -152,12 +152,16 @@ class MyTester
         oStream << *(--iter) << std::endl;
 		iter = v.end();
 		oStream << *iter << std::endl;
+		iter = v.begin() + 2;
+		oStream << *iter << std::endl;
         oStream << "Descr.: const_iterator:" << std::endl;
-        typename Vector<int>::const_iterator it_const;
+		typedef typename Vector<int>::const_iterator const_iterator;
+        const_iterator it_const;
         it_const = v.end();
         it_const--;
         oStream << *it_const << std::endl;
 		oStream << *iter << std::endl;
+//		oStream << "is_const ? (it_const): " << is_const_iterator<typename Vector<int>::const_iterator>::value << std::endl;
 		oStream << "test comparisons:" << std::endl;
 		oStream << (it_const == iter) << std::endl;
 		oStream << (it_const < iter) << std::endl;
@@ -182,9 +186,12 @@ class MyTester
         it_rev += 2;
         oStream << *it_rev << std::endl;
 		it_rev = v.rbegin() + 1;
-		oStream << *it_rev << std::endl;
+		oStream << "v.rbegin() + 1: " << *it_rev << std::endl;
 		oStream << *(--it_rev) << "==" << *(v.rbegin()) << std::endl;
-//		it_rev = reverse_iterator(iter);
+		it_rev = reverse_iterator(iter);
+		oStream << *it_rev << std::endl;
+		iter = it_rev.base();
+		oStream << *iter << std::endl;
 		reverse_iterator it_rev2(it_rev);
         oStream << *it_rev2 << std::endl;
     }
@@ -206,6 +213,18 @@ class MyTester
             oStream << "this test only works on linux" << std::endl;
         #endif
     }
+	template<typename T>
+	struct is_const_pointer { static const bool value = false; };
+
+	template<typename T>
+	struct is_const_pointer<const T*> { static const bool value = true; };
+
+	template <typename TIterator>
+	struct is_const_iterator
+	{
+	    typedef typename std::iterator_traits<TIterator>::pointer pointer;
+	    static const bool value = is_const_pointer<pointer>::value;
+	};
 	public:
 	int run(char kind);
 

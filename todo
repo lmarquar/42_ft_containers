@@ -1,3 +1,2 @@
-reverse_iterator
 all the iterator operators somehow, let's leave it for later, until we now it's 100% neccesary
 making const testable somehow without having a compilation error
