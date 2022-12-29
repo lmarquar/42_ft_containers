@@ -30,6 +30,7 @@ class MyTester
 		typedef typename Vector<int>::iterator iterator;
 		typedef typename Vector<int>::const_iterator const_iterator;
 		typedef typename Vector<int>::reverse_iterator reverse_iterator;
+		typedef typename Vector<int>::const_reverse_iterator const_reverse_iterator;
         oStream << "Descr.: GIVEN TESTS:" << std::endl;
         typename Vector<int>::iterator iter;
         // Create a vector containing integers
@@ -199,6 +200,8 @@ class MyTester
 		oStream << *iter << std::endl;
 		reverse_iterator it_rev2(it_rev);
         oStream << *it_rev2 << std::endl;
+		oStream << "Descr.: const_reverse_iterator:" << std::endl;
+		oStream << "is_const_iterator ? (const_reverse_iterator): " << is_const_iterator<const_reverse_iterator>::value << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v, std::ostream &os) const

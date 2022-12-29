@@ -352,9 +352,10 @@ class vector
 				}
 		};
 	public:
-		typedef BaseIterator							iterator;
-		typedef ConstBaseIterator						const_iterator;
-		typedef typename std::reverse_iterator<pointer>	reverse_iterator;
+		typedef BaseIterator									iterator;
+		typedef ConstBaseIterator								const_iterator;
+		typedef typename std::reverse_iterator<iterator>		reverse_iterator;
+		typedef typename std::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 		void insert(iterator __pos, T el)
 		{
@@ -404,35 +405,35 @@ class vector
 		}
 		iterator begin()
 		{
-			BaseIterator it(&(arr[1]));
-
-			return (it);
-		}
-		const_iterator begin() const
-		{
-			ConstBaseIterator it(&(arr[1]));
-
-			return (it);
+			return (iterator(&arr[1]));
 		}
 		iterator end()
 		{
-			BaseIterator it(&arr[size() + 1]);
-
-			return (it);
+			return (iterator(&arr[size() + 1]));
+		}
+		const_iterator begin() const
+		{
+			return (iterator(&arr[1]));
 		}
 		const_iterator end() const
 		{
-			ConstBaseIterator	it(&arr[size() + 1]);
-
-			return (it);
+			return (const_iterator(&arr[size() + 1]));
 		}
 		reverse_iterator rbegin()
 		{
-			return (reverse_iterator(arr + size() + 1));
+			return (reverse_iterator(end()));
 		}
 		reverse_iterator rend()
 		{
-			return (reverse_iterator(arr + 1));
+			return (reverse_iterator(begin()));
+		}
+		const_reverse_iterator	rbegin() const
+		{
+			return (const_reverse_iterator(end()));
+		}
+		const_reverse_iterator	rend() const
+		{
+			return (const_reverse_iterator(begin()));
 		}
 		inline iterator erase(const iterator position)
 		{
