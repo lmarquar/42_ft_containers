@@ -245,6 +245,11 @@ class vector
 					ptr = &(*iter);
 					return (*this);
 				}
+				BaseIterator & operator=(const pointer & iter)
+				{
+					ptr = iter;
+					return (*this);
+				}
 				BaseIterator & operator+=(int n)
 				{
 					ptr += n;
@@ -346,87 +351,10 @@ class vector
 					return (iter);
 				}
 		};
-		class ReverseBaseIterator : public BaseIterator
-		{
-			public:
-				// Constructors
-				explicit ReverseBaseIterator(pointer pt = 0) : BaseIterator(pt)
-				{
-				}
-				ReverseBaseIterator(const ReverseBaseIterator& ref) : BaseIterator(ref)
-				{
-				}
- 				ReverseBaseIterator(const BaseIterator& ref) : BaseIterator(ref - 1)
-				{
-				}
-
-				// Destructors
-				virtual ~ReverseBaseIterator()
-				{
-				}
-
-				// Operators
-				reference operator*() const
-				{
-					return (BaseIterator::operator*());
-				}
-				ReverseBaseIterator& operator++()
-				{
-					BaseIterator::operator--();
-					return (*this);
-				}
-				ReverseBaseIterator& operator--()
-				{
-					BaseIterator::operator++();
-					return (*this);
-				}
-				ReverseBaseIterator operator++(int)
-				{
-					ReverseBaseIterator iter(*this);
-					BaseIterator::operator--();
-					return (iter);
-				}
-				ReverseBaseIterator operator--(int)
-				{
-					ReverseBaseIterator iter(*this);
-					BaseIterator::operator++();
-					return (iter);
-				}
-/* 				ReverseBaseIterator & operator=(const BaseIterator & iter)
-				{
-					BaseIterator::operator=(BaseIterator(&(arr[arr_size + 1]) - (&(*iter) - &(arr[1]))));
-					return (*this);
-				} */
-				ReverseBaseIterator & operator+=(int n)
-				{
-					BaseIterator::operator-=(n);
-					return (*this);
-				}
-				ReverseBaseIterator operator-(int n)
-				{
-					ReverseBaseIterator iter(*this);
-					for (int i = n; i > 0; i--)
-						iter--;
-					return (iter);
-				}
-				ReverseBaseIterator operator+(int n)
-				{
-					ReverseBaseIterator iter(*this);
-					for (int i = n; i > 0; i--)
-						iter++;
-					return (iter);
-				}
-
-				// Functions
-				BaseIterator base()
-				{
-					return (BaseIterator(&(*(*this - 1))));
-				}
-		};
 	public:
-		typedef BaseIterator		iterator;
-		typedef ConstBaseIterator	const_iterator;
-		typedef ReverseBaseIterator	reverse_iterator;
+		typedef BaseIterator							iterator;
+		typedef ConstBaseIterator						const_iterator;
+		typedef typename std::reverse_iterator<pointer>	reverse_iterator;
 
 		void insert(iterator __pos, T el)
 		{
@@ -500,15 +428,11 @@ class vector
 		}
 		reverse_iterator rbegin()
 		{
-			ReverseBaseIterator	it(&arr[size()]);
-
-			return (it);
+			return (reverse_iterator(arr + size() + 1));
 		}
 		reverse_iterator rend()
 		{
-			ReverseBaseIterator    it(arr);
-
-			return (it);
+			return (reverse_iterator(arr + 1));
 		}
 		inline iterator erase(const iterator position)
 		{
