@@ -299,8 +299,9 @@ class vector
 		class ConstBaseIterator : public BaseIterator
 		{
 			public:
+				typedef typename std::iterator_traits<const T*>::pointer pointer;
 				// Constructors
-				explicit ConstBaseIterator(pointer pt = 0) : BaseIterator(pt)
+				explicit ConstBaseIterator(typename BaseIterator::pointer pt = 0) : BaseIterator(pt)
 				{
 				}
 				ConstBaseIterator(const ConstBaseIterator& ref) : BaseIterator(ref)
