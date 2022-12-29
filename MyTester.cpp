@@ -73,7 +73,7 @@ int MyTester::run(char kind)
 			std::cout << std::endl << RED << "✘ some tests for vector failed" << RESET << std::endl;
 			return (0);
 		}
-/* 		std::cout << "Some additional tests: " << std::endl;
+ 		std::cout << "Some additional tests: " << std::endl;
 		int onetothree[3] = {1, 2, 3};
 		std::vector<int> test_vec(onetothree, onetothree+3);
 		test_vec.insert(test_vec.end(), 4);
@@ -85,7 +85,8 @@ int MyTester::run(char kind)
 		std::vector<int>::iterator it;
 		it = test_vec.begin();
 		std::vector<int>::reverse_iterator it_rev = std::vector<int>::reverse_iterator(it);
-		it_rev++; */
+		it_rev++;
+
 	}
     return (0);
 }

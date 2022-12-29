@@ -161,7 +161,7 @@ class MyTester
         it_const--;
         oStream << *it_const << std::endl;
 		oStream << *iter << std::endl;
-//		oStream << "is_const ? (it_const): " << is_const_iterator<typename Vector<int>::const_iterator>::value << std::endl;
+		oStream << "is_const_iterator ? (it_const): " << is_const_iterator<const_iterator>::value << std::endl;
 		oStream << "test comparisons:" << std::endl;
 		oStream << (it_const == iter) << std::endl;
 		oStream << (it_const < iter) << std::endl;

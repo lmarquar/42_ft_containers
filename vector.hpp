@@ -194,11 +194,19 @@ class vector
 		class BaseIterator
 		{
 			public:
+				// Typedefs
+				typedef typename std::iterator_traits<T*>::pointer pointer;
+				typedef std::iterator_traits<pointer> traits;
+				typedef typename traits::iterator_category iterator_category;
+				typedef typename traits::value_type value_type;
+				typedef typename traits::difference_type difference_type;
+				typedef typename traits::reference reference;
+
 				// Constructors
 				explicit BaseIterator(pointer pt = 0) : ptr(pt)
 				{
 				}
-				BaseIterator(const BaseIterator& ref) : ptr(ref.ptr) {}
+				BaseIterator(const BaseIterator& ref) : ptr(&(*ref)) {}
 
 				// Destructors
 				virtual ~BaseIterator()
