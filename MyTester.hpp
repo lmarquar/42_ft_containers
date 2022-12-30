@@ -159,6 +159,7 @@ class MyTester
 		oStream << *iter << std::endl;
 		iter = v.begin() + 2;
 		oStream << *iter << std::endl;
+		oStream << *(iter.base()) << std::endl;
         oStream << "Descr.: const_iterator:" << std::endl;
 		oStream << "is_const_iterator ? (const_iterator): " << is_const_iterator<const_iterator>::value << std::endl;
         const_iterator it_const;
@@ -210,12 +211,11 @@ class MyTester
 		it_const_rev = it_rev + 1;
 		oStream << *it_const_rev << std::endl;
 		oStream << "Descr.: iterator mixtures: " << std::endl;
+		oStream << *it_const.base() << std::endl;
 		it_const = it_const_rev.base();
-		std::cout << *it_const << std::endl;
+		oStream << *it_const << std::endl;
 		it_const++;
-		std::cout << *it_const << std::endl;
-		std::cout << "write here: " << std::endl;
-
+		oStream << *it_const << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v, std::ostream &os) const

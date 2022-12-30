@@ -298,6 +298,12 @@ class vector
 				{
 					return (ptr >= &(*cmp));
 				}
+
+				// Functions
+				pointer base() const
+				{
+					return (ptr);
+				}
 			private:
 				pointer	ptr;
 		};
@@ -365,7 +371,7 @@ class vector
 				// Functions
 				const_pointer	base() const
 				{
-					return (&(BaseIterator::operator*()));
+					return (BaseIterator::base());
 				}
 		};
 	public:
