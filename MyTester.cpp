@@ -81,10 +81,11 @@ int MyTester::run(char kind)
 		printVector(test_vec, std::cout);
 		std::vector<int> test_vec2;
 		test_vec2.insert(test_vec2.begin(), 10);
-		std::vector<int>::const_iterator it_const;
 		std::vector<int>::iterator it;
 		it = test_vec.begin();
 		std::vector<int>::reverse_iterator it_rev = std::vector<int>::reverse_iterator(it);
+		std::vector<int>::const_iterator it_const = std::vector<int>::const_iterator(it_rev.base());
+		std::cout << it_const.base() << std::endl;
 		it_rev++;
 
 	}

@@ -202,6 +202,20 @@ class MyTester
         oStream << *it_rev2 << std::endl;
 		oStream << "Descr.: const_reverse_iterator:" << std::endl;
 		oStream << "is_const_iterator ? (const_reverse_iterator): " << is_const_iterator<const_reverse_iterator>::value << std::endl;
+		const_reverse_iterator it_const_rev = v.rbegin();
+//		(void) it_const_rev;
+		oStream << *it_const_rev << std::endl;
+		it_const_rev++;
+		oStream << *it_const_rev << std::endl;
+		it_const_rev = it_rev + 1;
+		oStream << *it_const_rev << std::endl;
+		oStream << "Descr.: iterator mixtures: " << std::endl;
+		it_const = it_const_rev.base();
+		std::cout << *it_const << std::endl;
+		it_const++;
+		std::cout << *it_const << std::endl;
+		std::cout << "write here: " << std::endl;
+
     }
 	template <typename Vector>
     void printVector(Vector &v, std::ostream &os) const

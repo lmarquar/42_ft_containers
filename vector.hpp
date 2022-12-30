@@ -203,7 +203,7 @@ class vector
 				typedef typename traits::reference reference;
 
 				// Constructors
-				explicit BaseIterator(pointer pt = 0) : ptr(pt)
+				BaseIterator(pointer pt = 0) : ptr(pt)
 				{
 				}
 				BaseIterator(const BaseIterator& ref) : ptr(&(*ref)) {}
@@ -305,13 +305,19 @@ class vector
 		{
 			public:
 				typedef typename std::iterator_traits<const T*>::pointer pointer;
+				typedef std::iterator_traits<pointer> traits;
+				typedef typename traits::iterator_category iterator_category;
+				typedef typename traits::value_type value_type;
+				typedef typename traits::difference_type difference_type;
+				typedef typename traits::reference reference;
 				// Constructors
-				explicit ConstBaseIterator(typename BaseIterator::pointer pt = 0) : BaseIterator(pt)
+				ConstBaseIterator(typename BaseIterator::pointer pt = 0) : BaseIterator(pt)
 				{
 				}
 				ConstBaseIterator(const ConstBaseIterator& ref) : BaseIterator(ref)
 				{
 				}
+				ConstBaseIterator(BaseIterator iter) : BaseIterator(iter) {}
 
 				// Destructors
 				virtual ~ConstBaseIterator()
@@ -320,6 +326,11 @@ class vector
 
 				// Operators
 				ConstBaseIterator & operator=(const BaseIterator & iter)
+				{
+					BaseIterator::operator=(iter);
+					return (*this);
+				}
+				ConstBaseIterator & operator=(const pointer & iter)
 				{
 					BaseIterator::operator=(iter);
 					return (*this);
@@ -349,6 +360,12 @@ class vector
 					ConstBaseIterator iter(*this);
 					BaseIterator::operator--();
 					return (iter);
+				}
+
+				// Functions
+				const_pointer	base() const
+				{
+					return (&(BaseIterator::operator*()));
 				}
 		};
 	public:
