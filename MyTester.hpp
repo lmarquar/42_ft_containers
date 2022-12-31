@@ -147,6 +147,18 @@ class MyTester
         oStream << v.at(1) << std::endl;
         oStream << v.at(2) << std::endl;
 		v.push_back(1);
+		oStream << "Descr.: some functions" << std::endl;
+		v.push_back(3);
+		printVector(v, oStream);
+		oStream << *v.end() << std::endl;
+		iter = v.erase(v.begin() + 1);
+		oStream << *iter << std::endl;
+		printVector(v, oStream);
+		iter = v.erase(v.end() - 1);
+		oStream << *iter << std::endl;
+		iter = v.erase(v.begin());
+		oStream << *iter << std::endl;
+		printVector(v, oStream);
         oStream << "Descr.: iterator:" << std::endl;
 		oStream << "is_const_iterator ? (iterator): " << is_const_iterator<iterator>::value << std::endl;
         iter = v.begin();
@@ -216,6 +228,16 @@ class MyTester
 		oStream << *it_const << std::endl;
 		it_const++;
 		oStream << *it_const << std::endl;
+		it_const = it_const - 2;
+		iter = v.begin();
+		oStream << (it_const < iter) << std::endl;
+		oStream << (it_const > iter) << std::endl;
+		oStream << (it_const_rev < it_rev) << std::endl;
+		it_const_rev++;
+		oStream << (it_const_rev < it_rev) << std::endl;
+		oStream << (it_const_rev != it_rev) << std::endl;
+		it_const_rev -= 2;
+		oStream << (it_const_rev == it_rev) << std::endl;
     }
 	template <typename Vector>
     void printVector(Vector &v, std::ostream &os) const

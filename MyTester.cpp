@@ -87,8 +87,8 @@ int MyTester::run(char kind)
 		std::vector<int>::const_iterator it_const = std::vector<int>::const_iterator(it_rev.base());
 		std::vector<int>::const_reverse_iterator it_const_rev(it_const);
 		std::cout << it.base() << std::endl;
+		std::cout << (it_const < it) << std::endl;
 		it_rev++;
-
 	}
     return (0);
 }

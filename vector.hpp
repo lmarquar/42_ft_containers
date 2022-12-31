@@ -78,11 +78,11 @@ class vector
 		}
 		
 		// Functions
-		inline size_t capacity() const
+		size_t capacity() const
 		{
 			return arr_capacity;
 		}
-		inline size_t size() const
+		size_t size() const
 		{
 			return arr_size;
 		}
@@ -108,7 +108,7 @@ class vector
 			}
 			arr[++arr_size] = el;
 		}
-		inline T at(size_t i) const
+		T at(size_t i) const
 		{
 
 			if (i >= arr_size)
@@ -125,13 +125,13 @@ class vector
 			}
 			return (arr[i + 1]);
 		}
-		inline T &front()
+		T &front()
 		{
 			if (arr_capacity == 0)
 				throw std::out_of_range("cannot access element of empty vector");
 			return (arr[1]);
 		}
-		inline T &back()
+		T &back()
 		{
 			if (arr_capacity == 0)
 				throw std::out_of_range("cannot access element of empty vector");
@@ -140,7 +140,7 @@ class vector
 			else
 				return (arr[arr_size]);
 		}
-		inline void clear()
+		void clear()
 		{
 			arr_size = 0;
 			arr[1] = T();
@@ -458,17 +458,20 @@ class vector
 		{
 			return (const_reverse_iterator(begin()));
 		}
-		inline iterator erase(const iterator position)
+		iterator erase(const iterator position)
 		{
 			iterator	it;
-			size_t		i;
+			iterator	ret_val;
 
-			i = 0;
-			for (it = begin(); (it != position) && (it != end()); ++it)
-				i++;
+			for (it = begin(); (it != position) && (it != end()); it++)
+				;
 			if (it != position)
 				throw std::runtime_error("vector: wrong input");
-			//finish this
+			ret_val = it;
+			for (it++; it != end(); it++)
+				*(it - 1) = *(it);
+			arr_size--;
+			return ret_val;
 		}
 	private:
 		Allocator	alloc;
