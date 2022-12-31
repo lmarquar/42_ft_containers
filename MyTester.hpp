@@ -148,7 +148,7 @@ class MyTester
         oStream << v.at(1) << std::endl;
         oStream << v.at(2) << std::endl;
 		v.push_back(1);
-		oStream << "Descr.: some functions" << std::endl;
+		oStream << "Descr.: erase()" << std::endl;
 		v.push_back(3);
 		printVector(v, oStream);
 		oStream << *v.end() << std::endl;
@@ -173,7 +173,10 @@ class MyTester
 		v = Vector<int>(arr, arr + 4);
 		v.push_back(20);
 		printVector(v, oStream);
-        oStream << "Descr.: iterator:" << std::endl;
+		oStream << "Descr.: small functions" << std::endl;
+		v.pop_back();
+		printVector(v, oStream);
+		oStream << "Descr.: iterator:" << std::endl;
 		oStream << "is_const_iterator ? (iterator): " << is_const_iterator<iterator>::value << std::endl;
         iter = v.begin();
         oStream << *iter << std::endl;

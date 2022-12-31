@@ -109,6 +109,11 @@ class vector
 			arr[++arr_size] = el;
 			arr[arr_size + 1] = T();
 		}
+		void	pop_back(void)
+		{
+			if (arr_size)
+				arr_size--;
+		}
 		T at(size_t i) const
 		{
 
