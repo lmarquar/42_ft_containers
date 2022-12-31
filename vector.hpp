@@ -458,20 +458,21 @@ class vector
 		{
 			return (const_reverse_iterator(begin()));
 		}
-		iterator erase(const iterator position)
+		iterator erase(iterator position)
 		{
-			iterator	it;
-			iterator	ret_val;
+			iterator	it = findIterator(position, begin());
 
-			for (it = begin(); (it != position) && (it != end()); it++)
-				;
-			if (it != position)
-				throw std::runtime_error("vector: wrong input");
-			ret_val = it;
 			for (it++; it != end(); it++)
 				*(it - 1) = *(it);
 			arr_size--;
-			return ret_val;
+			return position;
+		}
+		iterator erase(iterator first, iterator last)
+		{
+			iterator	itFirst = findIterator(first, begin());
+			iterator	itLast = findIterator(last, itFirst);
+			
+			return last;
 		}
 	private:
 		Allocator	alloc;
@@ -480,6 +481,16 @@ class vector
 		size_t		arr_size;
 		std::string	os;
 
+		iterator findIterator(iterator &needle, iterator start)
+		{
+			iterator it = start;
+
+			for (; (it != needle) && (it != end()); it++)
+				;
+			if (it != needle)
+				throw std::runtime_error("vector: wrong input");
+			return (it);
+		}
 		pointer	allocate(size_t size)
 		{
 			pointer result = alloc.allocate(size);
