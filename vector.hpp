@@ -100,13 +100,14 @@ class vector
 				if (arr_capacity > MAX_SIZE / (size_t)2)
 					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				new_arr = alloc.allocate(new_arr_capacity + 2);
+				new_arr = myAllocate(new_arr_capacity + 2);
 				pasteAllInto(new_arr, arr_size);
 				alloc.deallocate(arr, arr_capacity + 2);
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
 			arr[++arr_size] = el;
+			arr[arr_size + 1] = T();
 		}
 		T at(size_t i) const
 		{
@@ -166,7 +167,7 @@ class vector
 			{
 				if (n > arr_capacity)
 				{
-					new_arr = allocate(n + 2);
+					new_arr = myAllocate(n + 2);
 					pasteAllInto(new_arr, arr_size);
 					alloc.deallocate(arr, arr_capacity + 2);
 					arr = new_arr;
@@ -183,7 +184,7 @@ class vector
 
 			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
 			{
-				new_arr = allocate(new_arr_capacity + 2);
+				new_arr = myAllocate(new_arr_capacity + 2);
 				pasteAllInto(new_arr, arr_size);
 				arr_capacity = new_arr_capacity;
 			}
@@ -410,7 +411,7 @@ class vector
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				if (arr_capacity > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
-				new_arr = allocate(new_arr_capacity + 2);
+				new_arr = myAllocate(new_arr_capacity + 2);
 				for (i = 1; i <= arr_size; i++)
 					new_arr[i] = arr[i];
 				alloc.deallocate(arr, arr_capacity + 2);
@@ -460,7 +461,7 @@ class vector
 		}
 		iterator erase(iterator position)
 		{
-			iterator	it = findIterator(position, begin());
+			iterator	it = findIterator(position);
 
 			for (it++; it != end(); it++)
 				*(it - 1) = *(it);
@@ -469,9 +470,20 @@ class vector
 		}
 		iterator erase(iterator first, iterator last)
 		{
-			iterator	itFirst = findIterator(first, begin());
-			iterator	itLast = findIterator(last, itFirst);
-			
+			size_t		i = 0;
+			iterator	itFirst = findIterator(first);
+			iterator	itLast = itFirst;
+
+			for (; (itLast != last) && (itLast != end()); itLast++)
+				i++;
+			if (itLast != last)
+				throw std::runtime_error("vector: wrong input");
+			for (; (itLast != end()); itLast++)
+			{
+				*itFirst = *itLast;
+				itFirst++;
+			}
+			arr_size -= i;
 			return last;
 		}
 	private:
@@ -481,9 +493,9 @@ class vector
 		size_t		arr_size;
 		std::string	os;
 
-		iterator findIterator(iterator &needle, iterator start)
+		iterator findIterator(iterator &needle)
 		{
-			iterator it = start;
+			iterator it = begin();
 
 			for (; (it != needle) && (it != end()); it++)
 				;
@@ -491,10 +503,11 @@ class vector
 				throw std::runtime_error("vector: wrong input");
 			return (it);
 		}
-		pointer	allocate(size_t size)
+		pointer	myAllocate(size_t size)
 		{
 			pointer result = alloc.allocate(size);
 			result[0] = T();
+			result[size - 1] = T();
 			return result;
 		}
 		void pasteAllInto(pointer buf, size_t buf_size)

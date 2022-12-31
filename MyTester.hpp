@@ -33,6 +33,7 @@ class MyTester
 		typedef typename Vector<int>::const_reverse_iterator const_reverse_iterator;
         oStream << "Descr.: GIVEN TESTS:" << std::endl;
         typename Vector<int>::iterator iter;
+		typename Vector<int>::iterator iter2;
         // Create a vector containing integers
         int arr[4] = {7, 5, 16, 8};
         Vector<int> v(arr, arr+4);
@@ -158,6 +159,19 @@ class MyTester
 		oStream << *iter << std::endl;
 		iter = v.erase(v.begin());
 		oStream << *iter << std::endl;
+		printVector(v, oStream);
+		v.push_back(2);
+		v.push_back(3);
+		iter = v.begin();
+		iter2 = v.begin() + 2;
+		iter = v.erase(iter, iter2);
+		oStream << *iter << std::endl;
+		printVector(v, oStream);
+		iter = v.erase(v.begin(), v.end());
+		oStream << *iter << std::endl;
+		printVector(v, oStream);
+		v = Vector<int>(arr, arr + 4);
+		v.push_back(20);
 		printVector(v, oStream);
         oStream << "Descr.: iterator:" << std::endl;
 		oStream << "is_const_iterator ? (iterator): " << is_const_iterator<iterator>::value << std::endl;
