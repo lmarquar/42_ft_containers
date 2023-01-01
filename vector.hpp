@@ -88,7 +88,7 @@ class vector
 		}
 		size_t max_size() const
 		{
-			return (MAX_SIZE);
+			return (alloc.max_size());
 		}
  		void push_back(T el)
 		{
@@ -491,6 +491,19 @@ class vector
 			arr_size -= i;
 			return last;
 		}
+		void swap(vector<T, Allocator>& rhs)
+		{
+			pointer		tmp = arr;
+			size_t		old_capa = arr_capacity;
+			size_t		old_size = arr_size;
+
+			arr = rhs.arr;
+			arr_capacity = rhs.arr_capacity;
+			arr_size = rhs.arr_size;
+			rhs.arr = tmp;
+			rhs.arr_capacity = old_capa;
+			rhs.arr_size = old_size;
+		}
 	private:
 		Allocator	alloc;
 		pointer		arr;
@@ -534,6 +547,11 @@ class vector
 			#endif
 		}
 };
+template <typename T>
+void swap(vector<T>& a, vector<T>& b)
+{
+	a.swap(b);
+}
 }
 
 #endif

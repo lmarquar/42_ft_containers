@@ -27,6 +27,7 @@ class MyTester
 	template <template <class T, class Allocator = std::allocator<T> > class Vector >
     void test()
     {
+		using std::swap;
 		typedef typename Vector<int>::iterator iterator;
 		typedef typename Vector<int>::const_iterator const_iterator;
 		typedef typename Vector<int>::reverse_iterator reverse_iterator;
@@ -176,6 +177,11 @@ class MyTester
 		oStream << "Descr.: small functions" << std::endl;
 		v.pop_back();
 		printVector(v, oStream);
+		v.swap(t);
+		printVector(v, oStream);
+		printVector(t, oStream);
+		swap(t, v);
+		oStream << v.max_size() << std::endl;
 		oStream << "Descr.: iterator:" << std::endl;
 		oStream << "is_const_iterator ? (iterator): " << is_const_iterator<iterator>::value << std::endl;
         iter = v.begin();
@@ -233,7 +239,6 @@ class MyTester
 		oStream << "Descr.: const_reverse_iterator:" << std::endl;
 		oStream << "is_const_iterator ? (const_reverse_iterator): " << is_const_iterator<const_reverse_iterator>::value << std::endl;
 		const_reverse_iterator it_const_rev = v.rbegin();
-//		(void) it_const_rev;
 		oStream << *it_const_rev << std::endl;
 		it_const_rev++;
 		oStream << *it_const_rev << std::endl;
