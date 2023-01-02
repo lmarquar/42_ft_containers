@@ -382,52 +382,7 @@ class vector
 		typedef typename std::reverse_iterator<iterator>		reverse_iterator;
 		typedef typename std::reverse_iterator<const_iterator>	const_reverse_iterator;
 
-		void insert(iterator __pos, T el)
-		{
-			iterator tmp;
-			iterator it_end;
-
-			size_t	i;
-			size_t	insert_pos;
-
-			tmp = begin();
-			it_end = end();
-			i = 0;
-			for (insert_pos = 1; insert_pos <= arr_size; insert_pos++)
-			{
-				if (&(*tmp) == &(*__pos) || tmp == it_end)
-					break;
-				tmp++;
-			}
-			if (&(*tmp) != &(*__pos))
-			{
-				std::cerr << "vector: iterator position not found in vector" << std::endl;
-				throw std::bad_exception();
-			}
-			if (arr_size == arr_capacity)
-			{
-				T *new_arr;
-				size_t new_arr_capacity;
-
-				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				if (arr_capacity > INT_MAX)
-					throw std::out_of_range("vector size gets too big");
-				new_arr = myAllocate(new_arr_capacity + 2);
-				for (i = 1; i <= arr_size; i++)
-					new_arr[i] = arr[i];
-				alloc.deallocate(arr, arr_capacity + 2);
-				arr = new_arr;
-				arr_capacity = new_arr_capacity;
-			}
-			i = size() + 1;
-			while (i > insert_pos)
-			{
-				arr[i] = arr[i - 1];
-				i--;
-			}
-			arr[i] = el;
-			arr_size++;
-		}
+		// Functions you need the iterator for
 		iterator begin()
 		{
 			return (iterator(&arr[1]));
@@ -460,6 +415,41 @@ class vector
 		{
 			return (const_reverse_iterator(begin()));
 		}
+		iterator insert(const_iterator __pos, const T& el)
+		{
+			size_t	i;
+			size_t	insert_pos;
+
+			insert_pos = getIterPos(__pos);
+			if (arr_size == arr_capacity)
+			{
+				T *new_arr;
+				size_t new_arr_capacity;
+
+				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
+				if (arr_capacity > INT_MAX)
+					throw std::out_of_range("vector size gets too big");
+				new_arr = myAllocate(new_arr_capacity + 2);
+				for (i = 1; i <= arr_size; i++)
+					new_arr[i] = arr[i];
+				alloc.deallocate(arr, arr_capacity + 2);
+				arr = new_arr;
+				arr_capacity = new_arr_capacity;
+			}
+			i = size() + 1;
+			while (i > insert_pos)
+			{
+				arr[i] = arr[i - 1];
+				i--;
+			}
+			arr[i] = el;
+			arr_size++;
+			return (iterator(&arr[i]));
+		}
+/* 		iterator insert( const_iterator pos, size_type count, const T& value )
+		{
+
+		} */
 		iterator erase(iterator position)
 		{
 			iterator	it = findIterator(position);
@@ -509,7 +499,7 @@ class vector
 		pointer clone(const vector &toBeCloned)
 		{
 			alloc.deallocate(arr, arr_capacity + 2);
-			arr = alloc.allocate(toBeCloned.capacity() + 2);
+			arr = myAllocate(toBeCloned.capacity() + 2);
 			arr_capacity = toBeCloned.capacity();
 			for (size_t i = 1; i <= toBeCloned.size(); i++)
 				arr[i] = toBeCloned.at(i - 1);
@@ -525,6 +515,27 @@ class vector
 			if (it != needle)
 				throw std::runtime_error("vector: wrong input");
 			return (it);
+		}
+		size_t	getIterPos(iterator &__pos)
+		{
+			iterator	tmp;
+			iterator	it_end;
+			size_t		insert_pos;
+
+			tmp = begin();
+			it_end = end();
+			for (insert_pos = 1; insert_pos <= arr_size; insert_pos++)
+			{
+				if (&(*tmp) == &(*__pos) || tmp == it_end)
+					break;
+				tmp++;
+			}
+			if (&(*tmp) != &(*__pos))
+			{
+				std::cerr << "vector: iterator position not found in vector" << std::endl;
+				throw std::bad_exception();
+			}
+			return insert_pos;
 		}
 		pointer	myAllocate(size_t size)
 		{
