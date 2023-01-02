@@ -220,14 +220,20 @@ class MyTester
 		oStream << (it_const_rev != it_rev) << std::endl;
 		it_const_rev -= 2;
 		oStream << (it_const_rev == it_rev) << std::endl;
-        oStream << "Descr.: more function Tests ☺" << std::endl;
+        oStream << "Descr.: more function Tests ^<^" << std::endl;
         oStream << "Descr.: insert()" << std::endl;
         iter = t.begin();
         t.insert(iter, 22);
         t.insert(++iter, 11);
         iter = t.insert(t.end(), 33);
         printVector(t, oStream);
+        iter = t.insert((t.begin() + 1), 3, 87);
         oStream << *iter << std::endl;
+        printVector(t, oStream);
+//        iter = t.insert(t.end(), (v.end() - 1), v.begin()); //wrong
+//        iter = t.insert(t.end(), v.begin(), (v.end() - 1));
+        oStream << *iter << std::endl;
+        printVector(t, oStream);
         oStream << "Descr.: empty():" << std::endl;
         oStream << t.empty() << std::endl;
         oStream << vec.empty() << std::endl;
