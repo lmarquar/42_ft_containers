@@ -417,39 +417,18 @@ class vector
 		}
 		iterator insert(const_iterator __pos, const T& el)
 		{
-			size_t	i;
-			size_t	insert_pos;
-
-			insert_pos = getIterPos(__pos);
-			if (arr_size == arr_capacity)
-			{
-				T *new_arr;
-				size_t new_arr_capacity;
-
-				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
-				if (arr_capacity > INT_MAX)
-					throw std::out_of_range("vector size gets too big");
-				new_arr = myAllocate(new_arr_capacity + 2);
-				for (i = 1; i <= arr_size; i++)
-					new_arr[i] = arr[i];
-				alloc.deallocate(arr, arr_capacity + 2);
-				arr = new_arr;
-				arr_capacity = new_arr_capacity;
-			}
-			i = size() + 1;
-			while (i > insert_pos)
-			{
-				arr[i] = arr[i - 1];
-				i--;
-			}
-			arr[i] = el;
-			arr_size++;
-			return (iterator(&arr[i]));
+			size_t	insert_pos = insert_pos = getIterPos(__pos);
+			incrArrCapaIfNecessary(arr_size + 1);
+			insertElAt(el, insert_pos);
+			return (iterator(&arr[insert_pos]));
 		}
-/* 		iterator insert( const_iterator pos, size_type count, const T& value )
+		iterator insert( const_iterator pos, size_type count, const T& value )
 		{
-
-		} */
+			incrArrCapaIfNecessary(arr_size + count);
+			for (size_t insert_pos = getIterPos(); count > 0; count--)
+				insertElAt(value, insert_pos);
+			return pos;
+		}
 		iterator erase(iterator position)
 		{
 			iterator	it = findIterator(position);
@@ -553,6 +532,42 @@ class vector
 		{
 			for (size_t i = (arr_size + 1); i > 1; i--)
 				arr[i] = arr[i - 1];
+		}
+		void incrArrCapaIfNecessary(size_t min_capa)
+		{
+			if (min_capa > arr_capacity)
+				incrArrCapa(min_capa);
+		}
+		void	incrArrCapa(size_t min_capa)
+		{
+			size_t	capa_new = arr_capacity;
+
+			if (capa_new == 0)
+				capa_new = 1;
+			while (capa_new < min_capa)
+			{
+				capa_new = capa_new * 2;
+				if (capa_new > INT_MAX)
+					throw std::out_of_range("vector size gets too big");
+			}
+			T*	new_arr = myAllocate(capa_new + 2);
+			for (size_t	i = 1; i <= arr_size; i++)
+				new_arr[i] = arr[i];
+			alloc.deallocate(arr, arr_capacity + 2);
+			arr = new_arr;
+			arr_capacity = capa_new;
+		}
+		void	insertElAt(const T& el, size_t insert_pos)
+		{
+			size_t	i = arr_size + 1;
+
+			while (i > insert_pos)
+			{
+				arr[i] = arr[i - 1];
+				i--;
+			}
+			arr[i] = el;
+			arr_size++;
 		}
 };
 template <typename T>

@@ -248,8 +248,6 @@ class MyTester
 		printVector(v, oStream);
 		iter = v.erase(v.end() - 1);
 		oStream << *iter << std::endl;
-//		iter = v.erase(v.begin());
-		oStream << *iter << std::endl;
 		printVector(v, oStream);
 		v.push_back(2);
 		v.push_back(3);
