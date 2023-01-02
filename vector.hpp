@@ -422,20 +422,6 @@ class vector
 			insertElAt(el, insert_pos);
 			return (iterator(&arr[insert_pos]));
 		}
-		iterator insert( const_iterator pos, const_iterator first, const_iterator last )
-		{
-			if (first > last)
-				return pos;
-			typename const_iterator::difference_type i_diff = &(*last) - &(*first);
-
-			size_t insert_pos = getIterPos(pos);
-			incrArrCapaIfNecessary(arr_size + static_cast<size_t>(i_diff));
-			for (; i_diff > 0; i_diff--)
-			{
-				insertElAt(*(--last), insert_pos);
-			}
-			return (last);
-		}
 		iterator insert( const_iterator pos, size_type count, const T& value )
 		{
 			size_t insert_pos = this->getIterPos(pos);
@@ -443,6 +429,19 @@ class vector
 			for (; count > 0; count--)
 				insertElAt(value, insert_pos);
 			return pos;
+		}
+		iterator insert( const_iterator pos, iterator first, iterator last )
+		{
+			size_t i_diff = 0;
+			if (first > last)
+				return pos;
+			for (iterator tmp = last; tmp != first; tmp--)
+				i_diff++;
+			size_t insert_pos = getIterPos(pos);
+			incrArrCapaIfNecessary(arr_size + i_diff);
+			for (; i_diff > 0; i_diff--)
+				insertElAt(*(--last), insert_pos);
+			return (last);
 		}
 		iterator erase(iterator position)
 		{
