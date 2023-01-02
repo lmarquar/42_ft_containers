@@ -7,6 +7,14 @@
 # include <string>
 # include <stdexcept>
 
+# ifndef OS
+#  ifdef __linux__
+#   define OS "linux"
+#  else
+#   define OS "ios"
+#  endif
+# endif
+
 namespace ft
 {
 template<
@@ -25,19 +33,15 @@ class vector
 		typedef T						value_type;
 
 		// Constructors
-		vector() : arr(alloc.allocate(2)), arr_capacity(0), arr_size(0)
-		{
-			setOs();
-		}
+		vector() : arr(alloc.allocate(2)), arr_capacity(0), arr_size(0){}
 		vector(pointer range_start, pointer range_end) : arr(0), arr_capacity(0), arr_size(0)
 		{
-			setOs();
 			size_t	i;
 
 			i = (size_t)(range_end - range_start);
 			if ((range_start + i) != range_end || i > MAX_SIZE)
 			{
-				if (os == "linux")
+				if (!strcmp(OS, "linux"))
 					throw std::length_error("cannot create ft::vector larger than max_size()");
 				else
 					throw std::length_error("vector");
@@ -49,10 +53,7 @@ class vector
 			for (i = 1; i <= arr_capacity; i++)
 				arr[i] = range_start[i - 1];
 		}
-		vector(const vector &copy)
-		{
-			*this = copy;
-		}
+		vector(const vector &copy) : arr(clone(copy)) {}
 
 		// Destructor
 		~vector()
@@ -64,12 +65,7 @@ class vector
 		// Operators
 		vector & operator=(const vector &assign)
 		{
-			alloc.deallocate(arr, arr_capacity + 2);
-			arr = alloc.allocate(assign.capacity() + 2);
-			arr_capacity = assign.capacity();
-			for (size_t i = 1; i <= assign.size(); i++)
-				arr[i] = assign.at(i - 1);
-			arr_size = assign.size();
+			clone(assign);
 			return (*this);
 		}
 		reference operator[](size_t pos)
@@ -119,7 +115,7 @@ class vector
 
 			if (i >= arr_size)
 			{
-				if (os == "linux")
+				if (!strcmp(OS, "linux"))
 				{
 					std::stringstream ss;
 					ss << "vector::_M_range_check: __n (which is " << i << ") >= this->size() (which is " << arr_size << ")";
@@ -509,8 +505,17 @@ class vector
 		pointer		arr;
 		size_t		arr_capacity;
 		size_t		arr_size;
-		std::string	os;
 
+		pointer clone(const vector &toBeCloned)
+		{
+			alloc.deallocate(arr, arr_capacity + 2);
+			arr = alloc.allocate(toBeCloned.capacity() + 2);
+			arr_capacity = toBeCloned.capacity();
+			for (size_t i = 1; i <= toBeCloned.size(); i++)
+				arr[i] = toBeCloned.at(i - 1);
+			arr_size = toBeCloned.size();
+			return (arr);
+		}
 		iterator findIterator(iterator &needle)
 		{
 			iterator it = begin();
@@ -537,14 +542,6 @@ class vector
 		{
 			for (size_t i = (arr_size + 1); i > 1; i--)
 				arr[i] = arr[i - 1];
-		}
-		void setOs()
-		{
-			#ifdef __linux__
-				os = "linux";
-			#else
-				os = "mac";
-			#endif
 		}
 };
 template <typename T>
