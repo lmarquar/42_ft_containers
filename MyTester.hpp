@@ -219,14 +219,13 @@ class MyTester
         oStream << *it_rev << std::endl;
         it_rev = v.rend();
 		oStream << *(v.data()) << std::endl;
-        oStream << *it_rev << std::endl;
         it_rev--;
 		oStream << *it_rev << std::endl;
 		it_rev--;
         oStream << *it_rev << std::endl;
 		it_rev = it_rev - 1;
 		oStream << *it_rev << std::endl;
-        it_rev += 3;
+        it_rev += 2;
         oStream << *it_rev << std::endl;
 		it_rev = v.rbegin() + 1;
 		oStream << "v.rbegin() + 1: " << *it_rev << std::endl;
