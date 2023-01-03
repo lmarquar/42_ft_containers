@@ -6,6 +6,7 @@
 # include <iostream>
 # include <string>
 # include <stdexcept>
+#include <cstring>
 
 # ifndef OS
 #  ifdef __linux__
@@ -417,7 +418,7 @@ class vector
 		}
 		iterator insert(const_iterator __pos, const T& el)
 		{
-			size_t	insert_pos = insert_pos = getIterPos(__pos);
+			size_t	insert_pos = getIterPos(__pos);
 			incrArrCapaIfNecessary(arr_size + 1);
 			insertElAt(el, insert_pos);
 			return (iterator(&arr[insert_pos]));

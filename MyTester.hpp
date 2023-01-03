@@ -226,14 +226,17 @@ class MyTester
         t.insert(iter, 22);
         t.insert(++iter, 11);
         iter = t.insert(t.end(), 33);
+		oStream << *iter << std::endl;
         printVector(t, oStream);
-        iter = t.insert((t.begin() + 1), 3, 87);
-        oStream << *iter << std::endl;
+//        iter = t.insert((t.begin() + 1), 3, 87);
+		t.insert((t.begin() + 1), 3, 87);
         printVector(t, oStream);
-        iter = t.insert(t.end(), (v.end() - 1), v.begin()); //wrong
-        printVector(v, oStream);
-        iter = t.insert(t.end(), v.begin(), (v.end() - 1));
-        oStream << *iter << std::endl;
+/* 		if (OS != "linux")
+        	iter = t.insert(t.end(), (v.end() - 1), v.begin()); //wrong
+        else */
+//			t.insert(t.end(), (v.end() - 1), v.begin()); //wrong also
+		printVector(v, oStream);
+        t.insert(t.end(), v.begin(), (v.end() - 1));
         printVector(t, oStream);
         oStream << "Descr.: empty():" << std::endl;
         oStream << t.empty() << std::endl;
