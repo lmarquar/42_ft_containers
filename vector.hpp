@@ -106,7 +106,7 @@ class vector
 				++it_lhs;
                 ++it_rhs;
 			}
-			if (it_lhs == end() && it_rhs != end())
+			if (it_lhs == end() && it_rhs != rhs.end())
 			    return true;
             else
                 return false;
@@ -126,7 +126,7 @@ class vector
 				it_lhs++;
 				it_rhs++;
 			}
-			if (it_lhs != end() && it_rhs == end())
+			if (it_lhs != end() && it_rhs == rhs.end())
 			    return true;
             else
                 return false;

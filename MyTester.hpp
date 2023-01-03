@@ -303,12 +303,14 @@ class MyTester
     template <typename Vector>
     void compareVectors(Vector &v1, Vector &v2)
     {
-        oStream << (v1 == v2) << std::endl;
-        oStream << (v1 != v2) << std::endl;
-        oStream << (v1 < v2) << std::endl;
-        oStream << (v1 > v2) << std::endl;
-        oStream << (v1 <= v2) << std::endl;
-        oStream << (v1 >= v2) << std::endl;
+        printVector(v1, oStream);
+        printVector(v2, oStream);
+        oStream << "(v1 == v2): " << (v1 == v2) << std::endl;
+        oStream << "(v1 != v2): " << (v1 != v2) << std::endl;
+        oStream << "(v1 < v2): " << (v1 < v2) << std::endl;
+        oStream << "(v1 > v2): " << (v1 > v2) << std::endl;
+        oStream << "(v1 <= v2): " << (v1 <= v2) << std::endl;
+        oStream << "(v1 >= v2): " << (v1 >= v2) << std::endl;
     }
     template <typename T>
     void execOnlyOnLinux(T arg)
