@@ -26,12 +26,13 @@ class vector
 {
 	public:
 		// Variables
+		typedef T						value_type;
+		typedef Allocator				allocator_type;
+		typedef size_t					size_type;
 		typedef T&						reference;
 		typedef const T&				const_reference;
 		typedef T *						pointer;
 		typedef const T *				const_pointer;
-		typedef size_t					size_type;
-		typedef T						value_type;
 
 		// Constructors
 		vector() : arr(alloc.allocate(2)), arr_capacity(0), arr_size(0){}
@@ -221,7 +222,7 @@ class vector
 				{
 					return (*ptr);
 				}
-				BaseIterator& operator++()
+				virtual BaseIterator& operator++()
 				{
 					++ptr;
 					return (*this);
@@ -232,7 +233,7 @@ class vector
 					operator++();
 					return (iter);
 				}
-				BaseIterator& operator--()
+				virtual BaseIterator& operator--()
 				{
 					--ptr;
 					return (*this);
@@ -243,34 +244,34 @@ class vector
 					operator--();
 					return (iter);
 				}
-				BaseIterator & operator=(const BaseIterator & iter)
+				virtual BaseIterator & operator=(const BaseIterator & iter)
 				{
 					ptr = &(*iter);
 					return (*this);
 				}
-				BaseIterator & operator=(const pointer & iter)
+				virtual BaseIterator & operator=(const pointer & iter)
 				{
 					ptr = iter;
 					return (*this);
 				}
-				BaseIterator & operator+=(int n)
+				virtual BaseIterator & operator+=(int n)
 				{
 					ptr += n;
 					return (*this);
 				}
-				BaseIterator & operator-=(int n)
+				virtual BaseIterator & operator-=(int n)
 				{
 					ptr -= n;
 					return (*this);
 				}
-				BaseIterator operator-(int n) const
+				virtual BaseIterator operator-(int n) const
 				{
 					BaseIterator iter(*this);
 					for (int i = n; i > 0; i--)
 						iter--;
 					return (iter);
 				}
-				BaseIterator operator+(int n) const
+				virtual BaseIterator operator+(int n) const
 				{
 					BaseIterator iter(*this);
 					for (int i = n; i > 0; i--)
@@ -378,10 +379,11 @@ class vector
 				}
 		};
 	public:
-		typedef BaseIterator									iterator;
-		typedef ConstBaseIterator								const_iterator;
-		typedef typename std::reverse_iterator<iterator>		reverse_iterator;
-		typedef typename std::reverse_iterator<const_iterator>	const_reverse_iterator;
+	    typedef typename std::iterator_traits<BaseIterator>::difference_type	difference_type;
+		typedef BaseIterator													iterator;
+		typedef ConstBaseIterator												const_iterator;
+		typedef typename std::reverse_iterator<iterator>						reverse_iterator;
+		typedef typename std::reverse_iterator<const_iterator>					const_reverse_iterator;
 
 		// Functions you need the iterator for
 		iterator begin()
