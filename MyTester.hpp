@@ -22,6 +22,7 @@ class MyTester
 {
 	public:
 	MyTester();
+	int run(char kind);
 	
 	private:
 	template <template <class T, class Allocator = std::allocator<T> > class Vector >
@@ -272,6 +273,24 @@ class MyTester
 		v = Vector<int>(arr, arr + 4);
 		v.push_back(20);
 		printVector(v, oStream);
+        oStream << "Descr.: all the operators" << std::endl;
+        std::cout << "before compare" << std::endl;
+        compareVectors(v, v2);
+        oStream << (v == t) << std::endl;
+        oStream << (v != t) << std::endl;
+        oStream << (v < t) << std::endl;
+        oStream << (v > t) << std::endl;
+        oStream << (v <= t) << std::endl;
+        oStream << (v >= t) << std::endl;
+        std::cout << "after compare" << std::endl;
+        v2.clear();
+        v2.insert(v2.begin(), v.begin(), v.end());
+        oStream << (v == t) << std::endl;
+        oStream << (v != t) << std::endl;
+        oStream << (v < t) << std::endl;
+        oStream << (v > t) << std::endl;
+        oStream << (v <= t) << std::endl;
+        oStream << (v >= t) << std::endl;
 		oStream << "Descr.: small functions" << std::endl;
 		v.pop_back();
 		printVector(v, oStream);
@@ -285,6 +304,7 @@ class MyTester
         t.assign(v.begin(), v.end());
         printVector(t, oStream);
     }
+
 	template <typename Vector>
     void printVector(Vector &v, std::ostream &os) const
     {
@@ -292,6 +312,16 @@ class MyTester
         for (unsigned long n = 0; n < v.size(); n++)
             os << v.at(n) << ", ";
         os << "}; \n";
+    }
+    template <typename Vector>
+    void compareVectors(Vector &v1, Vector &v2)
+    {
+        oStream << (v1 == v2) << std::endl;
+        oStream << (v1 != v2) << std::endl;
+        oStream << (v1 < v2) << std::endl;
+        oStream << (v1 > v2) << std::endl;
+        oStream << (v1 <= v2) << std::endl;
+        oStream << (v1 >= v2) << std::endl;
     }
     template <typename T>
     void execOnlyOnLinux(T arg)
@@ -315,10 +345,7 @@ class MyTester
 	    typedef typename std::iterator_traits<TIterator>::pointer pointer;
 	    static const bool value = is_const_pointer<pointer>::value;
 	};
-	public:
-	int run(char kind);
 
-	private:
 	std::stringstream oStream;
 	std::string equalizeDifferences(std::string buf_mine);
     void toOutput(std::string first, std::string second, size_t width, std::string color);

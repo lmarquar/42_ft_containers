@@ -89,6 +89,13 @@ int MyTester::run(char kind)
 		std::cout << it.base() << std::endl;
 		std::cout << (it_const < it) << std::endl;
 		test_vec.pop_back();
+		std::cout << (test_vec == test_vec2) << std::endl;
+		printVector(test_vec, std::cout);
+		printVector(test_vec2, std::cout);
+		test_vec.insert(test_vec.begin(), test_vec2.begin(), test_vec2.end());
+		test_vec.erase(test_vec.begin() + 1, test_vec.end());
+		printVector(test_vec, std::cout);
+		std::cout << (test_vec == test_vec2) << std::endl;
 		it_rev++;
 	}
     return (0);

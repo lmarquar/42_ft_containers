@@ -74,7 +74,71 @@ class vector
 		{
 			return (arr[pos + 1]);
 		}
-		
+		bool operator==( const vector& rhs )
+		{
+			iterator	it_lhs = begin();
+			iterator	it_rhs = rhs.begin();
+
+			while (it_lhs != end() && it_rhs != rhs.end())
+			{
+                if (*it_lhs != *it_rhs)
+					return false;
+                ++it_lhs;
+				++it_rhs;
+			}
+			return (it_lhs == end() && it_rhs == rhs.end());
+		}
+		bool operator!=( const vector& rhs )
+        {
+			return!(*this == rhs);
+		}
+		bool operator<( const vector& rhs )
+        {
+			iterator    it_lhs = begin();
+			iterator    it_rhs = rhs.begin();
+
+			while (it_lhs != end() && it_rhs != rhs.end())
+			{
+				if (*it_lhs < *it_rhs)
+                    return true;
+				else if (*it_lhs > *it_rhs)
+                    return false;
+				++it_lhs;
+                ++it_rhs;
+			}
+			if (it_lhs == end() && it_rhs != end())
+			    return true;
+            else
+                return false;
+		}
+		bool operator>( const vector& rhs )
+        {
+			std::cout << "inside operator>()" << std::endl;
+			iterator    it_lhs = begin();
+			iterator    it_rhs = rhs.begin();
+
+			while (it_lhs != end() && it_rhs != rhs.end())
+			{
+                if (*it_lhs > *it_rhs)
+				    return true;
+				else if (*it_lhs < *it_rhs)
+                    return false;
+				it_lhs++;
+				it_rhs++;
+			}
+			if (it_lhs != end() && it_rhs == end())
+			    return true;
+            else
+                return false;
+		}
+		bool operator<=( const vector& rhs )
+        {
+			return (!(*this > rhs));
+		}
+		bool operator>=( const vector& rhs )
+        {
+			return (!(*this < rhs));
+		}
 		// Functions
 		size_t capacity() const
 		{
@@ -159,6 +223,14 @@ class vector
 		T*	data()
 		{
 			return (&arr[1]);
+		}
+		const T* data() const
+		{
+            return (&arr[1]);
+        }
+		allocator_type	get_allocator() const
+		{
+			return (alloc);
 		}
 		void	resize(size_type n, value_type val = value_type())
 		{
@@ -613,6 +685,36 @@ template <typename T>
 void swap(vector<T>& a, vector<T>& b)
 {
 	a.swap(b);
+}
+template <typename T>
+void operator==(const T& a, const T& b)
+{
+	return (a.operator==(b));
+}
+template <typename T>
+void operator!=(const T& a, const T& b)
+{
+	return (a.operator!=(b));
+}
+template <typename T>
+void operator<(const T& a, const T& b)
+{
+	return (a.operator<(b));
+}
+template <typename T>
+void operator>(const T& a, const T& b)
+{
+	return (a.operator>(b));
+}
+template <typename T>
+void operator<=(const T& a, const T& b)
+{
+	return (a.operator<=(b));
+}
+template <typename T>
+void operator>=(const T& a, const T& b)
+{
+	return (a.operator>=(b));
 }
 }
 
