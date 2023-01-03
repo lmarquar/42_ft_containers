@@ -35,7 +35,7 @@ class vector
 		typedef const T *				const_pointer;
 
 		// Constructors
-		vector() : arr(alloc.allocate(2)), arr_capacity(0), arr_size(0){}
+		vector() : arr(myAllocate(0)), arr_capacity(0), arr_size(0){}
 		vector(pointer range_start, pointer range_end) : arr(0), arr_capacity(0), arr_size(0)
 		{
 			size_t	i;
@@ -50,7 +50,7 @@ class vector
 			}
 			arr_capacity = i;
 			arr_size = arr_capacity;
-			arr = alloc.allocate(arr_capacity + 2);
+			arr = myAllocate(arr_capacity);
 			arr[0] = T();
 			for (i = 1; i <= arr_capacity; i++)
 				arr[i] = range_start[i - 1];
@@ -61,7 +61,7 @@ class vector
 		~vector()
 		{
 			std::cout << "destructor of vector called" << std::endl;
-			alloc.deallocate(arr, arr_capacity + 2);
+			myDeallocate(arr, arr_capacity);
 		}
 
 		// Operators
@@ -100,7 +100,7 @@ class vector
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				new_arr = myAllocate(new_arr_capacity + 2);
 				pasteAllInto(new_arr, arr_size);
-				alloc.deallocate(arr, arr_capacity + 2);
+				myDeallocate(arr, arr_capacity + 2);
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
@@ -172,7 +172,7 @@ class vector
 				{
 					new_arr = myAllocate(n + 2);
 					pasteAllInto(new_arr, arr_size);
-					alloc.deallocate(arr, arr_capacity + 2);
+					myDeallocate(arr, arr_capacity + 2);
 					arr = new_arr;
 					arr_capacity = n;
 				}
@@ -187,12 +187,24 @@ class vector
 
 			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
 			{
-				new_arr = myAllocate(new_arr_capacity + 2);
+				new_arr = myAllocate(new_arr_capacity);
 				pasteAllInto(new_arr, arr_size);
 				arr_capacity = new_arr_capacity;
 			}
 		}
+		void swap(vector<T, Allocator>& rhs)
+		{
+			pointer		tmp = arr;
+			size_t		old_capa = arr_capacity;
+			size_t		old_size = arr_size;
 
+			arr = rhs.arr;
+			arr_capacity = rhs.arr_capacity;
+			arr_size = rhs.arr_size;
+			rhs.arr = tmp;
+			rhs.arr_capacity = old_capa;
+			rhs.arr_size = old_size;
+		}
 
 		// Classes
 		class BaseIterator
@@ -473,18 +485,24 @@ class vector
 			arr_size -= i;
 			return last;
 		}
-		void swap(vector<T, Allocator>& rhs)
+		void assign( size_type count, const T& value )
 		{
-			pointer		tmp = arr;
-			size_t		old_capa = arr_capacity;
-			size_t		old_size = arr_size;
-
-			arr = rhs.arr;
-			arr_capacity = rhs.arr_capacity;
-			arr_size = rhs.arr_size;
-			rhs.arr = tmp;
-			rhs.arr_capacity = old_capa;
-			rhs.arr_size = old_size;
+			incrArrCapaIfNecessary(count);
+			for (size_type i = 1; i <= count; i++)
+				arr[i] = value;
+			arr_size = count;
+		}
+		void assign( iterator first, iterator last )
+		{
+			size_t i_diff = 0;
+			if (first > last)
+				return ;
+			for (iterator tmp = last; tmp != first; tmp--)
+				i_diff++;
+			incrArrCapaIfNecessary(i_diff);
+			for (size_t j = 1; j <= i_diff; j++, first++)
+				arr[j] = *first;
+			arr_size = i_diff;
 		}
 	private:
 		Allocator	alloc;
@@ -494,8 +512,8 @@ class vector
 
 		pointer clone(const vector &toBeCloned)
 		{
-			alloc.deallocate(arr, arr_capacity + 2);
-			arr = myAllocate(toBeCloned.capacity() + 2);
+			myDeallocate(arr, arr_capacity);
+			arr = myAllocate(toBeCloned.capacity());
 			arr_capacity = toBeCloned.capacity();
 			for (size_t i = 1; i <= toBeCloned.size(); i++)
 				arr[i] = toBeCloned.at(i - 1);
@@ -535,10 +553,14 @@ class vector
 		}
 		pointer	myAllocate(size_t size)
 		{
-			pointer result = alloc.allocate(size);
+			pointer result = alloc.allocate(size + 2);
 			result[0] = T();
 			result[size - 1] = T();
 			return result;
+		}
+		void	myDeallocate(pointer ptr, size_t size)
+		{
+			alloc.deallocate(ptr, size + 2);
 		}
 		void pasteAllInto(pointer buf, size_t buf_size)
 		{

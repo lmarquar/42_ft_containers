@@ -280,6 +280,10 @@ class MyTester
 		printVector(t, oStream);
 		swap(t, v);
 		oStream << v.max_size() << std::endl;
+        t.assign(0, 10);
+        printVector(t, oStream);
+        t.assign(v.begin(), v.end());
+        printVector(t, oStream);
     }
 	template <typename Vector>
     void printVector(Vector &v, std::ostream &os) const
