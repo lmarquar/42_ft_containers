@@ -97,6 +97,11 @@ int MyTester::run(char kind)
 		printVector(test_vec, std::cout);
 		std::cout << (test_vec == test_vec2) << std::endl;
 		it_rev++;
+		oStream << "trying with strings instead of numbers" << std::endl;
+		std::vector<std::string> strings;
+		strings.push_back("hello");
+		strings.push_back("world");
+		printVector(strings, std::cout);
 	}
     return (0);
 }

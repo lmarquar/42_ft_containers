@@ -626,8 +626,8 @@ class vector
 		pointer	myAllocate(size_t size)
 		{
 			pointer result = alloc.allocate(size + 2);
-			result[0] = T();
-			result[size - 1] = T();
+/* 			result[0] = T();
+			result[size - 1] = T(); */
 			return result;
 		}
 		void	myDeallocate(pointer ptr, size_t size)

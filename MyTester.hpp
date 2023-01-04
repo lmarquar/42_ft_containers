@@ -290,6 +290,11 @@ class MyTester
         printVector(t, oStream);
         t.assign(v.begin(), v.end());
         printVector(t, oStream);
+ 		oStream << "trying with strings instead of numbers" << std::endl;
+		Vector<std::string> strings;
+//		strings.push_back("hello");
+/*		strings.push_back("world");
+		printVector(t, oStream); */
     }
 
 	template <typename Vector>

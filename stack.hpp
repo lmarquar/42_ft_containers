@@ -10,6 +10,8 @@ class Container = vector<T>
 > class stack
 {
 	
+	private:
+		Container	container;
 };
 }
 
