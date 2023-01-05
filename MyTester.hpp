@@ -141,7 +141,6 @@ class MyTester
         {
             oStream << "catched Exception: " << e.what() << std::endl;
         }
-		std::cout << "after try-catch" << std::endl;
         oStream << "capacity(): " << t.capacity() << std::endl;
         oStream << "size(): " << t.size() << std::endl;
         printVector(v, oStream);
@@ -292,10 +291,12 @@ class MyTester
         printVector(t, oStream);
  		oStream << "Descr.: trying with strings instead of numbers" << std::endl;
 		std::string values[] = {"hello", "there"};
-		// Vector<std::string> strings(values, values + 1);
-		// strings.push_back("hello");
-/*		strings.push_back("world");
-		printVector(t, oStream); */
+		Vector<std::string> strings(values, values + 1);
+		strings.push_back("hellohello");
+		strings.push_back("world");
+		printVector(strings, oStream);
+		strings.clear();
+		printVector(strings, oStream);
     }
 
 	template <typename Vector>
