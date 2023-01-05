@@ -1,13 +1,16 @@
 CC			:= c++
 CFLAGS		:= -Wall -Werror -Wextra -Wconversion -std=c++98 -g
-SRC			:= main.cpp
-MY_SRC		:= mymain.cpp MyTester.cpp
+TEST_DIR	:= ./tests/
+MAINNAME	:= main.cpp
+MY_MAINNAME	:= mymain.cpp MyTester.cpp
+SRC			:= $(TEST_DIR)$(MAINNAME)
+MY_SRC		:= $(addprefix $(TEST_DIR),$(MY_MAINNAME))
 NAME		:= ft_containers_test.out
 MY_NAME		:= ft_containers_test_mine.out
 
 all: $(MY_NAME)
 
-mytest: $(NAME)
+intratest: $(NAME)
 
 re: fclean all
 

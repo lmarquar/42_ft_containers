@@ -1,21 +1,6 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# define MAX_SIZE INT_MAX // (LONG_MAX / 2)
-
-# include <iostream>
-# include <string>
-# include <stdexcept>
-# include <cstring>
-
-# ifndef OS
-#  ifdef __linux__
-#   define OS "linux"
-#  else
-#   define OS "ios"
-#  endif
-# endif
-
 namespace ft
 {
 template<
@@ -41,7 +26,7 @@ class vector
 			size_t	i;
 
 			i = (size_t)(range_end - range_start);
-			if ((range_start + i) != range_end || i > MAX_SIZE)
+			if ((range_start + i) != range_end || i > alloc.max_size())
 			{
 				if (!strcmp(OS, "linux"))
 					throw std::length_error("cannot create ft::vector larger than max_size()");
@@ -157,7 +142,7 @@ class vector
 				T *new_arr;
 				size_t new_arr_capacity;
 
-				if (arr_capacity > MAX_SIZE / (size_t)2)
+				if (arr_capacity > alloc.max_size() / (size_t)2)
 					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				new_arr = myAllocate(new_arr_capacity + 2);
@@ -234,7 +219,7 @@ class vector
 		{
 			value_type	*new_arr;
 
-			if (n < 0 || n > MAX_SIZE)
+			if (n < 0 || n > alloc.max_size())
 				throw std::length_error("vector::_M_fill_insert");
 			if (n > arr_size)
 			{
@@ -255,7 +240,7 @@ class vector
 		{
 			value_type *new_arr;
 
-			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
+			if (new_arr_capacity <= alloc.max_size() && new_arr_capacity > arr_capacity)
 			{
 				new_arr = myAllocate(new_arr_capacity);
 				pasteAllInto(new_arr, arr_size);

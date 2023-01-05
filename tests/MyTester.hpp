@@ -8,7 +8,9 @@
 # include <iomanip>
 # include <cassert>
 # include <climits>
-# include "vector.hpp"
+# include "../srcs/map.hpp"
+# include "../srcs/vector.hpp"
+# include "../srcs/stack.hpp"
 
 # define RED "\033[1;31m"
 # define GREEN "\033[0;32m"
@@ -228,13 +230,8 @@ class MyTester
         iter = t.insert(t.end(), 33);
 		oStream << *iter << std::endl;
         printVector(t, oStream);
-//        iter = t.insert((t.begin() + 1), 3, 87);
 		t.insert((t.begin() + 1), 3, 87);
         printVector(t, oStream);
-/* 		if (OS != "linux")
-        	iter = t.insert(t.end(), (v.end() - 1), v.begin()); //wrong
-        else */
-//			t.insert(t.end(), (v.end() - 1), v.begin()); //wrong also
 		printVector(v, oStream);
         t.insert(t.end(), v.begin(), (v.end() - 1));
         printVector(t, oStream);
