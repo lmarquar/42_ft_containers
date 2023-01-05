@@ -6,7 +6,7 @@
 # include <iostream>
 # include <string>
 # include <stdexcept>
-#include <cstring>
+# include <cstring>
 
 # ifndef OS
 #  ifdef __linux__
@@ -51,7 +51,7 @@ class vector
 			arr_capacity = i;
 			arr_size = arr_capacity;
 			arr = myAllocate(arr_capacity);
-			arr[0] = T();
+			// arr[0] = T();
 			for (i = 1; i <= arr_capacity; i++)
 				arr[i] = range_start[i - 1];
 		}

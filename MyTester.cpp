@@ -99,8 +99,8 @@ int MyTester::run(char kind)
 		it_rev++;
 		oStream << "trying with strings instead of numbers" << std::endl;
 		std::vector<std::string> strings;
-		strings.push_back("hello");
 		strings.push_back("world");
+		strings.push_back("hello");
 		printVector(strings, std::cout);
 	}
     return (0);
