@@ -7,7 +7,7 @@
 # include <climits>
 # include <stdexcept>
 # include <cstring>
-# include <memory>
+//# include <memory>
 
 template<
 	class T,
@@ -21,6 +21,11 @@ class Allocation
 	{
 		ptr = alloc.allocate(1);
 //		*ptr = somevalue;
+	}
+	~Allocation()
+    {
+        if (ptr)
+			alloc.deallocate(ptr, 1);
 	}
 	void printPointer() const { std::cout << *ptr << std::endl; }
 	private:

@@ -168,7 +168,8 @@ class vector
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			arr[++arr_size] = el;
+			// arr[++arr_size] = el;
+			alloc.construct(arr, 0);
 			arr[arr_size + 1] = T();
 		}
 		void	pop_back(void)

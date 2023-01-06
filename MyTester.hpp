@@ -292,8 +292,9 @@ class MyTester
         printVector(t, oStream);
  		oStream << "Descr.: trying with strings instead of numbers" << std::endl;
 		std::string values[] = {"hello", "there"};
-		// Vector<std::string> strings(values, values + 1);
-		// strings.push_back("hello");
+		//Vector<std::string> strings(values, values + 1);
+		Vector<std::string> strings();
+		strings.push_back("hello");
 /*		strings.push_back("world");
 		printVector(t, oStream); */
     }
