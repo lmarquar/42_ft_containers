@@ -1,1 +1,1 @@
-fix vector for strings
+replace insert void with the std::pair return

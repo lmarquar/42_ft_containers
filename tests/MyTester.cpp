@@ -35,7 +35,10 @@ int MyTester::run(char kind)
 	}
 	else
 	{
+		std::cout << BLUE << "VectorTest: " << RESET << std::endl;
 		comparisonTest(&MyTester::vectorTest<ft::vector>, &MyTester::vectorTest<std::vector>);
+		std::cout << BLUE << "MapTest: " << RESET << std::endl;
+		comparisonTest(&MyTester::mapTest<ft::map>, &MyTester::mapTest<ft::map>);
 	}
     return (0);
 }

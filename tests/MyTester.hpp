@@ -45,7 +45,7 @@ class MyTester
 		oStream.str("");
 		(this->*myContainerTest)();
 		ss_v_mine << oStream.str();
-		std::cout << BLUE << std::setw((int)width + 1) << std::left << "real vector: " << "my vector: " << RESET << std::endl;
+		std::cout << BLUE << std::setw((int)width + 1) << std::left << "real: " << "my: " << RESET << std::endl;
 		while(std::getline(ss_v_mine, buf_mine) && std::getline(ss_v_real, buf_real))
 		{
 			buf_mine_adjusted = equalizeDifferences(buf_mine);
