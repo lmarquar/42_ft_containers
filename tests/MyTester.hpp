@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <vector>
+# include <map>
 # include <string>
 # include <sstream>
 # include <iomanip>
@@ -69,8 +70,14 @@ class MyTester
 			std::cout << std::endl << RED << "✘ some tests for vector failed" << RESET << std::endl;
 			return (0);
 		}
+		std::cout << BLUE << "some additional tests:" << RESET << std::endl;
+		std::map<int, std::string> my_map;
+		int i = 1;
+		my_map.insert(std::pair<int, std::string>(i, "hello"));
+		std::cout << "key: " << 1 << " value: " << my_map.at(i) << std::endl;
 		return (1);
 	}
+	template< template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > > class Vector > void mapTest();
 	template <template <class T, class Allocator = std::allocator<T> > class Vector > void vectorTest();
 	template <typename Vector>
 	void printVector(Vector &v, std::ostream &os) const
@@ -122,6 +129,7 @@ class MyTester
 	class A {public: A(){a = 1;} int a;};
 };
 
-#include "VectorTester.hpp"
+#include "VectorTest.hpp"
+#include "MapTest.hpp"
 
 #endif

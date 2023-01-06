@@ -28,7 +28,7 @@ int MyTester::run(char kind)
 	}
 	else if (kind == 'f')
 	{
-		vectorTest<std::vector>();
+		vectorTest<ft::vector>();
 		std::cout <<  oStream.str();
 		oStream.str("");
 		std::cout << BLUE << "end for only ft::vector testrun" << RESET << std::endl;
