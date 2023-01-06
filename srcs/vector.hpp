@@ -1,21 +1,6 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# define MAX_SIZE INT_MAX // (LONG_MAX / 2)
-
-# include <iostream>
-# include <string>
-# include <stdexcept>
-# include <cstring>
-
-# ifndef OS
-#  ifdef __linux__
-#   define OS "linux"
-#  else
-#   define OS "ios"
-#  endif
-# endif
-
 namespace ft
 {
 template<
@@ -41,7 +26,7 @@ class vector
 			size_t	i;
 
 			i = (size_t)(range_end - range_start);
-			if ((range_start + i) != range_end || i > MAX_SIZE)
+			if ((range_start + i) != range_end || i > alloc.max_size())
 			{
 				if (!strcmp(OS, "linux"))
 					throw std::length_error("cannot create ft::vector larger than max_size()");
@@ -51,16 +36,15 @@ class vector
 			arr_capacity = i;
 			arr_size = arr_capacity;
 			arr = myAllocate(arr_capacity);
-			// arr[0] = T();
+			myConstruct(arr, T());
 			for (i = 1; i <= arr_capacity; i++)
-				arr[i] = range_start[i - 1];
+				myConstruct(&arr[i], range_start[i - 1]);
 		}
 		vector(const vector &copy) : arr(clone(copy)) {}
 
 		// Destructor
 		~vector()
 		{
-			std::cout << "destructor of vector called" << std::endl;
 			myDeallocate(arr, arr_capacity);
 		}
 
@@ -113,7 +97,6 @@ class vector
 		}
 		bool operator>( const vector& rhs )
         {
-			std::cout << "inside operator>()" << std::endl;
 			iterator    it_lhs = begin();
 			iterator    it_rhs = rhs.begin();
 
@@ -159,7 +142,7 @@ class vector
 				T *new_arr;
 				size_t new_arr_capacity;
 
-				if (arr_capacity > MAX_SIZE / (size_t)2)
+				if (arr_capacity > alloc.max_size() / (size_t)2)
 					throw std::out_of_range("vector");
 				new_arr_capacity = (arr_capacity == 0 ? 1 : (arr_capacity * 2));
 				new_arr = myAllocate(new_arr_capacity + 2);
@@ -168,9 +151,8 @@ class vector
 				arr = new_arr;
 				arr_capacity = new_arr_capacity;
 			}
-			// arr[++arr_size] = el;
-			alloc.construct(arr, 0);
-			arr[arr_size + 1] = T();
+			myConstruct(&arr[++arr_size], el);
+			myConstruct(&arr[arr_size + 1], T());
 		}
 		void	pop_back(void)
 		{
@@ -212,7 +194,7 @@ class vector
 		void clear()
 		{
 			arr_size = 0;
-			arr[1] = T();
+			myConstruct(&arr[1], T());
 		}
 		bool empty() const
 		{
@@ -237,7 +219,7 @@ class vector
 		{
 			value_type	*new_arr;
 
-			if (n < 0 || n > MAX_SIZE)
+			if (n < 0 || n > alloc.max_size())
 				throw std::length_error("vector::_M_fill_insert");
 			if (n > arr_size)
 			{
@@ -258,7 +240,7 @@ class vector
 		{
 			value_type *new_arr;
 
-			if (new_arr_capacity <= MAX_SIZE && new_arr_capacity > arr_capacity)
+			if (new_arr_capacity <= alloc.max_size() && new_arr_capacity > arr_capacity)
 			{
 				new_arr = myAllocate(new_arr_capacity);
 				pasteAllInto(new_arr, arr_size);
@@ -562,7 +544,7 @@ class vector
 		{
 			incrArrCapaIfNecessary(count);
 			for (size_type i = 1; i <= count; i++)
-				arr[i] = value;
+				myConstruct(&arr[i], value);
 			arr_size = count;
 		}
 		void assign( iterator first, iterator last )
@@ -574,7 +556,7 @@ class vector
 				i_diff++;
 			incrArrCapaIfNecessary(i_diff);
 			for (size_t j = 1; j <= i_diff; j++, first++)
-				arr[j] = *first;
+				myConstruct(&arr[j] , *first);
 			arr_size = i_diff;
 		}
 	private:
@@ -589,7 +571,7 @@ class vector
 			arr = myAllocate(toBeCloned.capacity());
 			arr_capacity = toBeCloned.capacity();
 			for (size_t i = 1; i <= toBeCloned.size(); i++)
-				arr[i] = toBeCloned.at(i - 1);
+				myConstruct(&arr[i], toBeCloned.at(i - 1));
 			arr_size = toBeCloned.size();
 			return (arr);
 		}
@@ -627,23 +609,25 @@ class vector
 		pointer	myAllocate(size_t size)
 		{
 			pointer result = alloc.allocate(size + 2);
-/* 			result[0] = T();
-			result[size - 1] = T(); */
 			return result;
 		}
 		void	myDeallocate(pointer ptr, size_t size)
 		{
 			alloc.deallocate(ptr, size + 2);
 		}
+		void	myConstruct(pointer ptr, T el)
+		{
+			alloc.construct(ptr, el);
+		}
 		void pasteAllInto(pointer buf, size_t buf_size)
 		{
 			for (size_t i = 1; i <= buf_size; i++)
-				buf[i] = arr[i];
+				myConstruct(&buf[i], arr[i]);
 		}
 		void moveAllToRightByOne()
 		{
 			for (size_t i = (arr_size + 1); i > 1; i--)
-				arr[i] = arr[i - 1];
+				myConstruct(&arr[i], arr[i - 1]);
 		}
 		void incrArrCapaIfNecessary(size_t min_capa)
 		{
@@ -662,10 +646,10 @@ class vector
 				if (capa_new > INT_MAX)
 					throw std::out_of_range("vector size gets too big");
 			}
-			T*	new_arr = myAllocate(capa_new + 2);
+			T*	new_arr = myAllocate(capa_new);
 			for (size_t	i = 1; i <= arr_size; i++)
-				new_arr[i] = arr[i];
-			alloc.deallocate(arr, arr_capacity + 2);
+				myConstruct(&new_arr[i], arr[i]);
+			myDeallocate(arr, arr_capacity);
 			arr = new_arr;
 			arr_capacity = capa_new;
 		}
@@ -675,10 +659,10 @@ class vector
 
 			while (i > insert_pos)
 			{
-				arr[i] = arr[i - 1];
+				myConstruct(&arr[i], arr[i - 1]);
 				i--;
 			}
-			arr[i] = el;
+			myConstruct(&arr[i], el);
 			arr_size++;
 		}
 };
