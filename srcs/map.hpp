@@ -44,6 +44,12 @@ class map
 				throw std::out_of_range("map");
 			return tmp->pair->second;
 		}
+		bool empty() const
+		{
+			if (!tree_start->pair)
+				return true;
+			return false;
+		}
 
 	private:
 		struct	Node {

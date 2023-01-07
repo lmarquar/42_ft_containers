@@ -8,6 +8,7 @@ void MyTester::mapTest()
 {
 	Map<int, std::string> my_map;
 	int i = 1;
+	oStream << "map empty?: " << my_map.empty() << std::endl;
 	my_map.insert(std::pair<int, std::string>(i, "hello"));
 	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
 	i = 2;
@@ -18,6 +19,10 @@ void MyTester::mapTest()
 	}
 	my_map.insert(std::pair<int, std::string>(i, "there"));
 	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
+	i = 0;
+	my_map.insert(std::pair<int, std::string>(i, "what's up ?"));
+	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
+	oStream << "map empty?: " << my_map.empty() << std::endl;
 }
 
 #endif
