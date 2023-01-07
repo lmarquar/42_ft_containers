@@ -29,7 +29,7 @@ class MyTester
 
 	
 	private:
-	int		comparisonTest(void (MyTester::*myContainerTest)(), void (MyTester::*stdContainerTest)())
+	int		comparisonTest(void (MyTester::*myContainerTest)(), void (MyTester::*stdContainerTest)(), std::string name)
 	{
 		std::stringstream ss_v_mine;
 		std::stringstream ss_v_real;
@@ -65,17 +65,12 @@ class MyTester
 		buf_mine = equalizeDifferences(ss_v_mine.str());
 		buf_real = ss_v_real.str();
 		if (buf_mine == buf_real)
-			std::cout << std::endl << GREEN << "✔ all tests for vector passed" << RESET << std::endl;
+			std::cout << std::endl << GREEN << "✔ all tests for " << name <<  " passed" << RESET << std::endl;
 		else
 		{
-			std::cout << std::endl << RED << "✘ some tests for vector failed" << RESET << std::endl;
+			std::cout << std::endl << RED << "✘ some tests for " << name << " failed" << RESET << std::endl;
 			return (0);
 		}
-		std::cout << BLUE << "some additional tests:" << RESET << std::endl;
-		std::map<int, std::string> my_map;
-		int i = 1;
-		my_map.insert(std::pair<int, std::string>(i, "hello"));
-		std::cout << "key: " << 1 << " value: " << my_map.at(i) << std::endl;
 		return (1);
 	}
 	template< template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > > class Vector > void mapTest();
