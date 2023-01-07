@@ -40,6 +40,7 @@ class MyTester
 		size_t length_min;
 
 		width = 50;
+		oStream.str("");
 		(this->*stdContainerTest)();
 		ss_v_real << oStream.str();
 		oStream.str("");

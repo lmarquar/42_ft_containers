@@ -26,25 +26,27 @@ class map
 		typedef typename Allocator::const_pointer	const_pointer;
 
 		//Constructors
-		map() : tree_start(allocator.allocate(1)) {}
+		map() : tree_start(new Node) {
+			tree_start->pair = allocator.allocate(1);
+		}
 		virtual ~map() {}
 
 		//Functions
 		void insert( const value_type& value )
 		{
-			myConstruct(tree_start, value);
+			myConstruct(tree_start->pair, value);
 			return ;
 		}
 		T& at( const Key& key )
 		{
-			if (tree_start->val.first != key)
+			if (tree_start->pair->first != key)
 				throw std::out_of_range("map");
-			return tree_start->val.second;
+			return tree_start->pair->second;
 		}
 
 	private:
 		struct	Node {
-			value_type	val;
+			value_type	*pair;
 			Node		*left;
 			Node		*right;
 		};
