@@ -5,6 +5,7 @@
 # include <string>
 # include <stdexcept>
 # include <cstring>
+# include <functional>
 
 # ifndef OS
 #  ifdef __linux__

@@ -25,9 +25,8 @@ class MyTester
 {
 	public:
 	MyTester();
-	int run(char kind);
+	void run(char kind);
 
-	
 	private:
 	int		comparisonTest(void (MyTester::*myContainerTest)(), void (MyTester::*stdContainerTest)(), std::string name)
 	{
@@ -64,13 +63,12 @@ class MyTester
 		}
 		buf_mine = equalizeDifferences(ss_v_mine.str());
 		buf_real = ss_v_real.str();
-		if (buf_mine == buf_real)
-			std::cout << std::endl << GREEN << "✔ all tests for " << name <<  " passed" << RESET << std::endl;
-		else
+		if (buf_mine != buf_real)
 		{
 			std::cout << std::endl << RED << "✘ some tests for " << name << " failed" << RESET << std::endl;
 			return (0);
 		}
+		std::cout << std::endl << GREEN << "✔ all tests for " << name <<  " passed" << RESET << std::endl;
 		return (1);
 	}
 	template< template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > > class Vector > void mapTest();

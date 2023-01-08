@@ -21,7 +21,10 @@ void MyTester::mapTest()
 	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
 	i = 0;
 	my_map.insert(std::pair<int, std::string>(i, "what's up ?"));
-	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
+	oStream << "key: " << i << " value: " << my_map[i] << std::endl;
+	i = 5;
+	oStream << my_map[5] << std::endl;
+	
 	oStream << "map empty?: " << my_map.empty() << std::endl;
 }
 

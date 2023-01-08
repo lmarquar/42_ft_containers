@@ -17,33 +17,15 @@ std::string MyTester::equalizeDifferences(std::string buf_mine)
     return (buf_mine_adjusted);
 }
 
-int MyTester::run(char kind)
+void MyTester::run(char kind)
 {
-	if (kind == 's')
+	if (kind == 'v')
 	{
-    	vectorTest<std::vector>();
-    	std::cout <<  oStream.str();
-    	oStream.str("");
-    	std::cout << BLUE << "end for only std::vector testrun" << RESET << std::endl;
+		std::cout << BLUE << "VectorTest: " << RESET << std::endl;
+		comparisonTest(&MyTester::vectorTest<ft::vector>, &MyTester::vectorTest<std::vector>, "vector");
 	}
-	else if (kind == 'f')
-	{
-		vectorTest<ft::vector>();
-		std::cout <<  oStream.str();
-		oStream.str("");
-		std::cout << BLUE << "end for only ft::vector testrun" << RESET << std::endl;
-	}
-	else
-	{
-		if (kind == 'v')
-		{
-			std::cout << BLUE << "VectorTest: " << RESET << std::endl;
-			comparisonTest(&MyTester::vectorTest<ft::vector>, &MyTester::vectorTest<std::vector>, "vector");
-		}
-		std::cout << BLUE << "MapTest: " << RESET << std::endl;
-		comparisonTest(&MyTester::mapTest<ft::map>, &MyTester::mapTest<ft::map>, "map");
-	}
-    return (0);
+	std::cout << BLUE << "MapTest: " << RESET << std::endl;
+	comparisonTest(&MyTester::mapTest<ft::map>, &MyTester::mapTest<ft::map>, "map");
 }
 
 void MyTester::toOutput(std::string first, std::string second, size_t width, std::string color)
