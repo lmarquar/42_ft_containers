@@ -24,8 +24,8 @@ void MyTester::mapTest()
 	oStream << "key: " << i << " value: " << my_map[i] << std::endl;
 	i = 5;
 	oStream << my_map[5] << std::endl;
-	
 	oStream << "map empty?: " << my_map.empty() << std::endl;
+	oStream << "map size: " << my_map.size() << std::endl;
 }
 
 #endif

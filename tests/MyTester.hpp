@@ -69,6 +69,7 @@ class MyTester
 			return (0);
 		}
 		std::cout << std::endl << GREEN << "✔ all tests for " << name <<  " passed" << RESET << std::endl;
+		// std::cout << std::endl << BLUE << "some additional tests" << RESET << std::endl;
 		return (1);
 	}
 	template< template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > > class Vector > void mapTest();

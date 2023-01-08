@@ -25,7 +25,7 @@ void MyTester::run(char kind)
 		comparisonTest(&MyTester::vectorTest<ft::vector>, &MyTester::vectorTest<std::vector>, "vector");
 	}
 	std::cout << BLUE << "MapTest: " << RESET << std::endl;
-	comparisonTest(&MyTester::mapTest<ft::map>, &MyTester::mapTest<ft::map>, "map");
+	comparisonTest(&MyTester::mapTest<ft::map>, &MyTester::mapTest<std::map>, "map");
 }
 
 void MyTester::toOutput(std::string first, std::string second, size_t width, std::string color)
