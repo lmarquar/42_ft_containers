@@ -6,6 +6,7 @@
 # include <stdexcept>
 # include <cstring>
 # include <functional>
+# include <cstdlib>
 
 # ifndef OS
 #  ifdef __linux__

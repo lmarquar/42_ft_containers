@@ -1,4 +1,4 @@
-CC			:= c++
+CC			:= g++
 CFLAGS		:= -Wall -Werror -Wextra -Wconversion -std=c++98 -g
 TEST_DIR	:= ./tests/
 MAINNAME	:= main.cpp

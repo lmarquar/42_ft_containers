@@ -59,19 +59,44 @@ class map
 		}
 
 		//this one seems too hard for now
-/* 		size_type erase( const Key& key ) {
+		size_type erase( const Key& key ) {
 			Node* node = findNode(key);
+			Node* tmp;
+			Node* npos;
 			if (!node->pair)
 				return 0;
-			
-		} */
+			Node* p = node->parent;
+			if (p->right && p->right->pair && (p->right->pair->first == node->pair->first))
+				p->right = NULL;
+			else
+				p->left = NULL;
+			if (node->right)
+			{
+				tmp = node->right;
+				node->right = NULL;
+				npos = findNode(tmp->pair->first);
+				reassignAllButParent(npos, tmp);
+				free(tmp);
+			}
+			if (node->left)
+			{
+				tmp = node->left;
+				node->left = NULL;
+				npos = findNode(tmp->pair->first);
+				reassignAllButParent(npos, tmp);
+				free(tmp);
+			}
+			myDeallocate(node->pair, 1);
+			free(node);
+			return 1;
+		}
 
 	private:
 		struct	Node {
 			value_type	*pair;
 			Node		*left;
 			Node		*right;
-			const Node	*parent;
+			Node		*parent;
 		};
 		Node		*tree_start;
 		size_t		tree_size;
@@ -108,11 +133,19 @@ class map
 			}
 			return tmp;
 		}
-		Node	*createChildNode(const Node &parent)
+		Node	*createChildNode(Node &parent)
 		{
 			Node *child = allocateNode();
 			child->parent = &parent;
 			return child;
+		}
+		void	reassignAllButParent(Node *dest, const Node *src)
+		{
+			if (dest->left || dest->right || dest->pair)
+				throw std::bad_exception();
+			dest->right = src->right;
+			dest->left = src->left;
+			dest->pair = src->pair;
 		}
 		Node	*allocateNode()
 		{
