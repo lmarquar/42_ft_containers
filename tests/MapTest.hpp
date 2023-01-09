@@ -40,6 +40,10 @@ void MyTester::mapTest()
 	oStream << my_clone[1] << std::endl;
 	my_clone = my_map;
 	oStream << my_clone[1] << std::endl;
+	my_clone[3] = "this only exists in the clone";
+	oStream << "Descr.: swap test" << std::endl;
+	my_clone.swap(my_map);
+	oStream << my_map[3] << std::endl;
 }
 
 #endif

@@ -101,14 +101,29 @@ class map
 			tree_start = allocateNode();
 			tree_size = 0;
 		}
+		void swap( map& other ) {
+			Node		*tmpN = tree_start;
+			size_t		tmp_size = tree_size;
+			Allocator	tmp_alloc = allocator;
+			key_compare	tmp_cmp = my_comp;
+
+			tree_start = other.tree_start;
+			tree_size = other.tree_size;
+			allocator = other.allocator;
+			my_comp = other.my_comp;
+			other.tree_start = tmpN;
+			other.tree_size = tmp_size;
+			other.allocator = tmp_alloc;
+			other.my_comp = tmp_cmp;
+		}
 
 
 	private:
 		struct	Node {
-			value_type	*pair;
-			Node		*left;
-			Node		*right;
-			Node		*parent;
+			pointer	pair;
+			Node	*left;
+			Node	*right;
+			Node	*parent;
 		};
 		Node		*tree_start;
 		size_t		tree_size;
