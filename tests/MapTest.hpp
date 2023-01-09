@@ -12,11 +12,6 @@ void MyTester::mapTest()
 	my_map.insert(std::pair<int, std::string>(i, "hello"));
 	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
 	i = 2;
-	try{
-		oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
-	} catch (std::out_of_range& e) {
-		oStream << e.what() << std::endl;
-	}
 	my_map.insert(std::pair<int, std::string>(i, "there"));
 	oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
 	i = 0;
@@ -27,8 +22,13 @@ void MyTester::mapTest()
 	oStream << "map empty?: " << my_map.empty() << std::endl;
 	oStream << "map size: " << my_map.size() << std::endl;
 	i = 0;
-	my_map.erase(0);
-	oStream << my_map.at(i) << std::endl;
+	my_map.erase(i);
+	try{
+		oStream << "key: " << i << " value: " << my_map.at(i) << std::endl;
+	} catch (std::out_of_range& e) {
+		oStream << e.what() << std::endl;
+	}
+	oStream << "key: " << (i = 2) << " value: " << my_map.at(i) << std::endl;
 }
 
 #endif
