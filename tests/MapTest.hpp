@@ -29,9 +29,17 @@ void MyTester::mapTest()
 	}
 	oStream << "key: " << (i = 2) << " value: " << my_map.at(i) << std::endl;
 	Map<int, std::string> my_clone(my_map);
+	my_map.insert(std::pair<int, std::string>(4, "this only exists in the original map"));
 	oStream << "key: " << (i = 1) << " value: " << my_clone.at(i) << std::endl;
 	oStream << "key: " << (i = 2) << " value: " << my_clone.at(i) << std::endl;
+	oStream << my_map[4] << std::endl;
+	oStream << my_clone[4] << std::endl;
 	oStream << "clone size: " << my_map.size() << std::endl;
+	oStream << "max_size(): " << my_map.max_size() << std::endl;
+	my_clone.clear();
+	oStream << my_clone[1] << std::endl;
+	my_clone = my_map;
+	oStream << my_clone[1] << std::endl;
 }
 
 #endif
