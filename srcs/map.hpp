@@ -27,11 +27,17 @@ class map
 
 		//Constructors
 		map() : tree_start(allocateNode()), tree_size(0) {}
+		explicit map( const Compare& comp, const Allocator& alloc = Allocator() ) : my_comp(comp), allocator(alloc) {}
+		map( const map& other ) : tree_start(allocateNode()), tree_size(0), allocator(other.allocator), my_comp(other.my_comp)
+		{
+			createPair(*tree_start, *(other.tree_start->pair));
+			cloneChildNodes(tree_start, *(other.tree_start));
+		}
 		virtual ~map() {}
 
 		//Operators
 		T& operator[]( const Key& key ) {
-			Node	*tmp = findNode( key );
+			Node	*tmp = findOrCreate( key );
 			if (!tmp->pair)
 				createPair(*tmp, *(myAllocate()));
 			return tmp->pair->second;
@@ -39,12 +45,12 @@ class map
 
 		//Functions
 		void insert( const value_type& value ) {
-			Node	*tmp = findNode( value.first );
+			Node	*tmp = findOrCreate( value.first );
 			if (!tmp->pair)
 				createPair(*tmp, value);
 		}
 		T& at( const Key& key ) {
-			Node	*tmp = findNode(key);
+			Node	*tmp = findOrCreate(key);
 			if (!tmp->pair || tmp->pair->first != key)
 				throw std::out_of_range("map::at");
 			return tmp->pair->second;
@@ -58,11 +64,8 @@ class map
 			return (tree_size);
 		}
 
-		//this one seems too hard for now
 		size_type erase( const Key& key ) {
-			Node* node = findNode(key);
-			Node* tmp;
-			Node* npos;
+			Node* node = findOrCreate(key);
 			if (!node->pair)
 				return 0;
 			Node* p = node->parent;
@@ -71,21 +74,9 @@ class map
 			else
 				p->left = NULL;
 			if (node->right)
-			{
-				tmp = node->right;
-				node->right = NULL;
-				npos = findNode(tmp->pair->first);
-				reassignAllButParent(npos, tmp);
-				free(tmp);
-			}
+				reimplementNode(&node->right);
 			if (node->left)
-			{
-				tmp = node->left;
-				node->left = NULL;
-				npos = findNode(tmp->pair->first);
-				reassignAllButParent(npos, tmp);
-				free(tmp);
-			}
+				reimplementNode(&node->left);
 			myDeallocate(node->pair, 1);
 			free(node);
 			return 1;
@@ -101,37 +92,43 @@ class map
 		Node		*tree_start;
 		size_t		tree_size;
 		Allocator	allocator;
-		key_compare	comp;
+		key_compare	my_comp;
 
-		Node	*findNode(const key_type &key)
+		void cloneChildNodes(Node *parent, const Node &toBeCloned) {
+			if (toBeCloned.left)
+				parent->left = cloneAndReplaceParent(parent, *toBeCloned.left);
+			if (toBeCloned.right)
+				parent->right = cloneAndReplaceParent(parent, *toBeCloned.right);
+		}
+		Node *cloneAndReplaceParent(Node *parent, const Node &toBeCloned)
+		{
+			Node *clone = cloneAndReplaceParent(parent, *(toBeCloned.left));
+			createPair(*clone, *toBeCloned.pair);
+			if (toBeCloned.left)
+				clone->left = cloneAndReplaceParent(clone, *(toBeCloned.left));
+			if (toBeCloned.right)
+				clone->right = cloneAndReplaceParent(clone, *(toBeCloned.right));
+			return clone;
+		}
+		Node	*findOrCreate(const key_type &key)
 		{
 			Node	*tmp;
 
 			tmp = tree_start;
-			while (tmp && tmp->pair)
+			while (tmp && tmp->pair && key != tmp->pair->first)
 			{
 				if (key < tmp->pair->first)
-				{
-					if (!tmp->left)
-					{
-						tmp->left = createChildNode(*tmp);
-						return tmp->left;
-					}
-					tmp = tmp->left;
-				}
+					tmp = createIfDoesNotExist(&tmp->left, tmp);
 				else if (key > tmp->pair->first)
-				{
-					if (!tmp->right)
-					{
-						tmp->right = createChildNode(*tmp);
-						return tmp->right;
-					}
-					tmp = tmp->right;
-				}
-				else
-					return tmp;
+					tmp = createIfDoesNotExist(&tmp->right, tmp);
 			}
 			return tmp;
+		}
+		Node	*createIfDoesNotExist(Node **node, Node *parent)
+		{
+			if (!(*node))
+				*node = createChildNode(*parent);
+			return (*node);
 		}
 		Node	*createChildNode(Node &parent)
 		{
@@ -155,6 +152,13 @@ class map
 			node->left = NULL;
 			node->pair = NULL;
 			return (node);
+		}
+		void	reimplementNode(Node **toBeReimplemented)
+		{
+			Node *tmp = *toBeReimplemented;
+			*toBeReimplemented = NULL;
+			Node *npos = findOrCreate(tmp->pair->first);
+			reassignAllButParent(npos, tmp);
 		}
 		pointer	createPair( Node &node, const value_type& value )
 		{
