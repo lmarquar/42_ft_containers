@@ -28,11 +28,7 @@ class map
 		//Constructors
 		map() : tree_start(allocateNode()), tree_size(0) {}
 		explicit map( const Compare& comp, const Allocator& alloc = Allocator() ) : my_comp(comp), allocator(alloc) {}
-		map( const map& other ) : tree_start(allocateNode()), tree_size(0), allocator(other.allocator), my_comp(other.my_comp)
-		{
-			createPair(*tree_start, *(other.tree_start->pair));
-			cloneChildNodes(tree_start, *(other.tree_start));
-		}
+		map( const map& other ) : tree_start(cloneAllNodes(NULL, *(other.tree_start))), tree_size(0), allocator(other.allocator), my_comp(other.my_comp) {}
 		virtual ~map() {}
 
 		//Operators
@@ -52,7 +48,12 @@ class map
 		T& at( const Key& key ) {
 			Node	*tmp = findOrCreate(key);
 			if (!tmp->pair || tmp->pair->first != key)
-				throw std::out_of_range("map::at");
+			{
+				if (!strcmp(OS, "linux"))
+					throw std::out_of_range("map::at");
+				else
+					throw std::out_of_range("map::at:  key not found");
+			}
 			return tmp->pair->second;
 		}
 		bool empty() const {
@@ -79,6 +80,7 @@ class map
 				reimplementNode(&node->left);
 			myDeallocate(node->pair, 1);
 			free(node);
+			tree_size--;
 			return 1;
 		}
 
@@ -94,21 +96,20 @@ class map
 		Allocator	allocator;
 		key_compare	my_comp;
 
-		void cloneChildNodes(Node *parent, const Node &toBeCloned) {
-			if (toBeCloned.left)
-				parent->left = cloneAndReplaceParent(parent, *toBeCloned.left);
-			if (toBeCloned.right)
-				parent->right = cloneAndReplaceParent(parent, *toBeCloned.right);
-		}
-		Node *cloneAndReplaceParent(Node *parent, const Node &toBeCloned)
+		Node *cloneAllNodes(Node *parent, const Node &toBeCloned)
 		{
-			Node *clone = cloneAndReplaceParent(parent, *(toBeCloned.left));
-			createPair(*clone, *toBeCloned.pair);
-			if (toBeCloned.left)
-				clone->left = cloneAndReplaceParent(clone, *(toBeCloned.left));
-			if (toBeCloned.right)
-				clone->right = cloneAndReplaceParent(clone, *(toBeCloned.right));
+			Node *clone = cloneAndReplaceParent(parent, toBeCloned);
+			if (toBeCloned.left && toBeCloned.left->pair)
+				clone->left = cloneAllNodes(clone, *(toBeCloned.left));
+			if (toBeCloned.right && toBeCloned.right->pair)
+				clone->right = cloneAllNodes(clone, *(toBeCloned.right));
 			return clone;
+		}
+		Node *cloneAndReplaceParent(Node *parent, const Node &toBeCloned) {
+			Node *clone = allocateNode();
+			clone->parent = parent;
+			createPair(*clone, *(toBeCloned.pair));
+			return (clone);
 		}
 		Node	*findOrCreate(const key_type &key)
 		{

@@ -29,7 +29,9 @@ void MyTester::mapTest()
 	}
 	oStream << "key: " << (i = 2) << " value: " << my_map.at(i) << std::endl;
 	Map<int, std::string> my_clone(my_map);
+	oStream << "key: " << (i = 1) << " value: " << my_clone.at(i) << std::endl;
 	oStream << "key: " << (i = 2) << " value: " << my_clone.at(i) << std::endl;
+	oStream << "clone size: " << my_map.size() << std::endl;
 }
 
 #endif
