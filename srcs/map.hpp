@@ -44,9 +44,13 @@ class map
 			return (*this);
 		}
 		T& operator[]( const Key& key ) {
-			Node	*tmp = findOrCreate( key );
+			Node		*tmp = findOrCreate( key );
 			if (!tmp->pair)
-				tmp->pair = createPair(*(myAllocate()));
+			{
+				tmp->pair = myAllocate();
+				myConstruct(tmp->pair, value_type(key, mapped_type()));
+				tree_size++;
+			}
 			return tmp->pair->second;
 		}
 
@@ -204,7 +208,7 @@ class map
 			Node *npos = findOrCreate(tmp->pair->first);
 			reassignAllButParent(npos, tmp);
 		}
-		pointer	createPair( const value_type& value )
+		pointer	createPair(value_type value)
 		{
 			value_type *pair = myAllocate();
 			myConstruct(pair, value);
@@ -214,7 +218,6 @@ class map
 		pointer	myAllocate()
 		{
 			pointer result = allocator.allocate(1);
-			allocator.construct(result, *(new value_type()));
 			return result;
 		}
 		void	myDeallocate(pointer ptr, size_t size)
