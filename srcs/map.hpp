@@ -44,11 +44,11 @@ class map
 			return (*this);
 		}
 		T& operator[]( const Key& key ) {
-			Node		*tmp = findOrCreate( key );
+			Node	*tmp = findOrCreate( key );
 			if (!tmp->pair)
 			{
 				tmp->pair = myAllocate();
-				myConstruct(tmp->pair, value_type(key, mapped_type()));
+				myConstruct(tmp->pair, std::make_pair(key, mapped_type()));
 				tree_size++;
 			}
 			return tmp->pair->second;
@@ -120,8 +120,11 @@ class map
 			other.allocator = tmp_alloc;
 			other.my_comp = tmp_cmp;
 		}
-
-
+		size_type count( const Key& key ) const {
+			//might be easier when find is implemented#
+			(void) key;
+			return (2);
+		}
 	private:
 		struct	Node {
 			pointer	pair;
@@ -129,6 +132,27 @@ class map
 			Node	*right;
 			Node	*parent;
 		};
+		class BaseIterator
+		{
+			public:
+				typedef typename std::iterator_traits<pointer>::pointer pointer;
+				typedef std::iterator_traits<pointer> traits;
+				typedef typename traits::iterator_category iterator_category;
+				typedef typename traits::value_type value_type;
+				typedef typename traits::difference_type difference_type;
+				typedef typename traits::reference reference;
+				
+				// Constructors
+				BaseIterator(pointer pt = 0) : ptr(pt)
+				{
+				}
+				BaseIterator(const BaseIterator& ref) : ptr(&(*ref)) {}
+
+			private:
+				Node	*ptr;
+		};
+
+	private:
 		Node		*tree_start;
 		size_t		tree_size;
 		Allocator	allocator;
@@ -229,6 +253,11 @@ class map
 			allocator.construct(ptr, el);
 		}
 };
+template <typename Key, typename Value>
+void swap(map<Key,Value>& a, map<Key,Value>& b)
+{
+	a.swap(b);
+}
 }
 
 #endif

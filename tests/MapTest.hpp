@@ -29,7 +29,7 @@ void MyTester::mapTest()
 	}
 	oStream << "key: " << (i = 2) << " value: " << my_map.at(i) << std::endl;
 	Map<int, std::string> my_clone(my_map);
-	my_map.insert(std::pair<int, std::string>(4, "this only exists in the original map"));
+	my_map.insert(std::pair<int, std::string>(4, "my origin is my_map"));
 	oStream << "key: " << (i = 1) << " value: " << my_clone.at(i) << std::endl;
 	oStream << "key: " << (i = 2) << " value: " << my_clone.at(i) << std::endl;
 	oStream << my_map[4] << std::endl;
@@ -40,11 +40,15 @@ void MyTester::mapTest()
 	oStream << my_clone[1] << std::endl;
 	my_clone = my_map;
 	oStream << my_clone[1] << std::endl;
-	my_clone[3] = "this only exists in the clone";
+	my_clone[3] = "just a random string";
 	oStream << "Descr.: swap test" << std::endl;
 	my_clone.swap(my_map);
 	oStream << "clone size: " << my_map.size() << std::endl;
 	oStream << "after swap: " << my_map.at(3) << std::endl;
+	swap(my_map, my_clone);
+	oStream << "after second swap: " << my_map[3] << std::endl;
+	oStream << "after second swap: " << my_clone.at(3) << std::endl;
+
 }
 
 #endif
