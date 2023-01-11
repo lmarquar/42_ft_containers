@@ -50,7 +50,10 @@ void MyTester::mapTest()
 	oStream << "after second swap: " << my_map[3] << std::endl;
 	oStream << "after second swap: " << my_clone.at(3) << std::endl;
 	iterator it = my_map.begin();
-	oStream << "*it: " << (*it).second << std::endl;
+	for (typename Map<int,std::string>::size_type i = 0; i < my_map.size(); i++) {
+		oStream << "*it: " << (*it).second << std::endl;
+		++it;
+	}
 }
 
 #endif

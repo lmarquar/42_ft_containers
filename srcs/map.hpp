@@ -83,15 +83,15 @@ class map
 			if (!node->pair)
 				return 0;
 			Node* p = node->parent;
-			if (p->right && p->right->pair && (p->right->pair->first == node->pair->first))
-				p->right = NULL;
+			if (p->left_right[R] && p->left_right[R]->pair && (p->left_right[R]->pair->first == node->pair->first))
+				p->left_right[R] = NULL;
 			else
-				p->left = NULL;
-			if (node->right)
-				reimplementNode(&node->right);
-			if (node->left)
-				reimplementNode(&node->left);
-			myDeallocate(node->pair, 1);
+				p->left_right[L] = NULL;
+			if (node->left_right[R])
+				reimplementNode(&node->left_right[R]);
+			if (node->left_right[L])
+				reimplementNode(&node->left_right[L]);
+			myDeallocate(node->pair, R);
 			free(node);
 			tree_size--;
 			return 1;
@@ -127,8 +127,6 @@ class map
 	private:
 		struct	Node {
 			pointer	pair;
-			Node	*left;
-			Node	*right;
 			Node	*left_right[2];
 			Node	*parent;
 		};
@@ -158,13 +156,18 @@ class map
 				{
 					return (*ptr->pair);
 				}
-/* 				virtual BaseIterator& operator++()
+				virtual BaseIterator& operator++()
 				{
-					if ()
-					++ptr;
+					if (!ptr->left_right[R])
+						ptr = ptr->parent;
+					else {
+						ptr = ptr->left_right[R];
+						while (ptr->left_right[L])
+							ptr = ptr->left_right[L];
+					}
 					return (*this);
 				}
- */
+
 
 			private:
 				Node	*ptr;
@@ -180,20 +183,21 @@ class map
 			return (iterator(getRightMostNode()));
  */
 	private:
+		enum		Side{L, R};
+		
 		Node		*tree_start;
 		size_t		tree_size;
 		Allocator	allocator;
 		key_compare	my_comp;
-		enum		Side{LEFT, RIGHT};
-		Side	side;
+		Side		side;
 
 		Node *cloneAllNodes(Node *parent, const Node &toBeCloned)
 		{
 			Node *clone = cloneAndReplaceParent(parent, toBeCloned);
-			if (toBeCloned.left && toBeCloned.left->pair)
-				clone->left = cloneAllNodes(clone, *(toBeCloned.left));
-			if (toBeCloned.right && toBeCloned.right->pair)
-				clone->right = cloneAllNodes(clone, *(toBeCloned.right));
+			if (toBeCloned.left_right[0] && toBeCloned.left_right[0]->pair)
+				clone->left_right[0] = cloneAllNodes(clone, *(toBeCloned.left_right[0]));
+			if (toBeCloned.left_right[1] && toBeCloned.left_right[1]->pair)
+				clone->left_right[1] = cloneAllNodes(clone, *(toBeCloned.left_right[1]));
 			return clone;
 		}
 		Node *cloneAndReplaceParent(Node *parent, const Node &toBeCloned) {
@@ -203,10 +207,10 @@ class map
 			return (clone);
 		}
 		void	eraseAllNodes(Node *top) {
-			if (top->right)
-				eraseAllNodes(top->right);
-			if (top->left)
-				eraseAllNodes(top->left);
+			if (top->left_right[0])
+				eraseAllNodes(top->left_right[0]);
+			if (top->left_right[1])
+				eraseAllNodes(top->left_right[1]);
 			if (top->pair)
 				myDeallocate(top->pair, 1);
 			free(top);
@@ -219,9 +223,9 @@ class map
 			while (tmp && tmp->pair && key != tmp->pair->first)
 			{
 				if (key < tmp->pair->first)
-					tmp = createIfDoesNotExist(&tmp->left, tmp);
+					tmp = createIfDoesNotExist(&tmp->left_right[0], tmp);
 				else if (key > tmp->pair->first)
-					tmp = createIfDoesNotExist(&tmp->right, tmp);
+					tmp = createIfDoesNotExist(&tmp->left_right[1], tmp);
 			}
 			return tmp;
 		}
@@ -239,10 +243,10 @@ class map
 		}
 		void	reassignAllButParent(Node *dest, const Node *src)
 		{
-			if (dest->left || dest->right || dest->pair)
+			if (dest->left_right[0] || dest->left_right[1] || dest->pair)
 				throw std::bad_exception();
-			dest->right = src->right;
-			dest->left = src->left;
+			dest->left_right[0] = src->left_right[0];
+			dest->left_right[1] = src->left_right[1];
 			dest->pair = src->pair;
 		}
 		void	reimplementNode(Node **toBeReimplemented)
@@ -254,8 +258,8 @@ class map
 		}
 		Node	*getLeftMostNode() {
 			Node *node = tree_start;
-			while (node->left && node->left->pair)
-				node = node->left;
+			while (node->left_right[0] && node->left_right[0]->pair)
+				node = node->left_right[0];
 			return node;
 		}
 /* 		Node	*getRightMostNode() {
@@ -275,8 +279,8 @@ class map
 		{
 			Node	*node = new Node();
 			node->parent = NULL;
-			node->right = NULL;
-			node->left = NULL;
+			node->left_right[0] = NULL;
+			node->left_right[1] = NULL;
 			node->pair = NULL;
 			return (node);
 		}
