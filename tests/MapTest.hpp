@@ -41,6 +41,7 @@ void MyTester::mapTest()
 	oStream << my_clone[1] << std::endl;
 	my_clone = my_map;
 	oStream << my_clone[1] << std::endl;
+	oStream << sizeof(typename Map<int, std::string>::value_type) << std::endl;
 	my_clone[3] = "just a random string";
 	oStream << "Descr.: swap test" << std::endl;
 	my_clone.swap(my_map);

@@ -100,7 +100,7 @@ class map
 			return 1;
 		}
 		size_type max_size() const {
-			return (allocator.max_size() / sizeof(value_type));
+			return (allocator.max_size());
 		}
 		void clear() {
 			eraseAllNodes(tree_start);
