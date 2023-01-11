@@ -25,7 +25,10 @@ class map
 		typedef typename Allocator::const_pointer	const_pointer;
 
 		//Constructors
-		map() : tree_start(allocateNode()), tree_size(0) {}
+		map() : tree_start(allocateNode()), tree_size(0) {
+/* 			end_val = value_type();
+			std::cout << "endType: " << end_val.first << std::endl; */
+		}
 		explicit map( const Compare& comp, const Allocator& alloc = Allocator() ) : my_comp(comp), allocator(alloc) {}
 		map( const map& other ) : tree_start(cloneAllNodes(NULL, *(other.tree_start))), tree_size(0), allocator(other.allocator), my_comp(other.my_comp) {}
 		virtual ~map() {
@@ -130,6 +133,7 @@ class map
 			Node	*left_right[2];
 			Node	*parent;
 		};
+//		static value_type	end_val;
 		class BaseIterator
 		{
 			public:
@@ -159,7 +163,13 @@ class map
 				virtual BaseIterator& operator++()
 				{
 					if (!ptr->left_right[R])
-						ptr = ptr->parent;
+					{
+						Node *tmp = ptr->parent;
+/* 						if (tmp->left_right[L] != ptr->left_right[R])
+							ptr = &end_val;
+						else */
+							ptr = tmp;
+					}
 					else {
 						ptr = ptr->left_right[R];
 						while (ptr->left_right[L])
@@ -182,9 +192,9 @@ class map
 		iterator begin() {
 			return (iterator(getLeftmostNode()));
 		}
-		iterator end() {
-			return (iterator(getRightMostNode()));
-		}
+/* 		iterator end() {
+			return (iterator(&end_val));
+		} */
 	private:
 		enum		Side{L, R};
 		
@@ -281,6 +291,10 @@ class map
 		Node	*allocateNode()
 		{
 			Node	*node = new Node();
+			return (node);
+		}
+		Node	*setAllElementsToNul(Node *node)
+		{
 			node->parent = NULL;
 			node->left_right[0] = NULL;
 			node->left_right[1] = NULL;
@@ -307,5 +321,6 @@ void swap(map<Key,Value>& a, map<Key,Value>& b)
 	a.swap(b);
 }
 }
+//template < typename Key, typename T > typename ::std::pair<const Key, T> ft::map< Key, T >::end_val = std::pair<const Key, T>;
 
 #endif
