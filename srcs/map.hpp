@@ -167,7 +167,10 @@ class map
 					}
 					return (*this);
 				}
-
+				bool operator==(const BaseIterator &cmp)
+				{
+					return (ptr == cmp.ptr);
+				}
 
 			private:
 				Node	*ptr;
@@ -177,11 +180,11 @@ class map
 		typedef BaseIterator													iterator;
 
 		iterator begin() {
-			return (iterator(getLeftMostNode()));
+			return (iterator(getLeftmostNode()));
 		}
-/* 		iterator end() {
+		iterator end() {
 			return (iterator(getRightMostNode()));
- */
+		}
 	private:
 		enum		Side{L, R};
 		
@@ -256,18 +259,18 @@ class map
 			Node *npos = findOrCreate(tmp->pair->first);
 			reassignAllButParent(npos, tmp);
 		}
-		Node	*getLeftMostNode() {
+		Node	*getLeftmostNode() {
+			return (getBorderNode(L));
+		}
+		Node	*getRightMostNode() {
+			return (getBorderNode(R));
+		}
+		Node	*getBorderNode(Side side) {
 			Node *node = tree_start;
-			while (node->left_right[0] && node->left_right[0]->pair)
-				node = node->left_right[0];
+			while (node->left_right[side] && node->left_right[side]->pair)
+				node = node->left_right[side];
 			return node;
 		}
-/* 		Node	*getRightMostNode() {
-			Node *node = tree_start;
-			while (node->right && node->right->pair)
-				node = node->right;
-			return node;
-		} */
 		pointer	createPair(value_type value)
 		{
 			value_type *pair = myAllocate();

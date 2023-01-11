@@ -54,6 +54,7 @@ void MyTester::mapTest()
 		oStream << "*it: " << (*it).second << std::endl;
 		++it;
 	}
+	oStream << (it == my_map.end()) << std::endl;
 }
 
 #endif
