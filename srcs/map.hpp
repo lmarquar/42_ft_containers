@@ -100,7 +100,7 @@ class map
 			return 1;
 		}
 		size_type max_size() const {
-			return (allocator.max_size() / 2);
+			return (allocator.max_size() / sizeof(value_type));
 		}
 		void clear() {
 			eraseAllNodes(tree_start);
@@ -137,7 +137,7 @@ class map
 		class BaseIterator
 		{
 			public:
-				typedef typename std::iterator_traits<pointer>::pointer pointer;
+				typedef typename std::iterator_traits<typename Allocator::pointer>::pointer pointer;
 				typedef std::iterator_traits<pointer> traits;
 				typedef typename traits::iterator_category iterator_category;
 				typedef typename traits::value_type value_type;
