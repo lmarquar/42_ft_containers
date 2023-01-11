@@ -17,7 +17,6 @@ class map
 		typedef T									mapped_type;
 		typedef std::pair<const Key, T>				value_type;
 		typedef size_t								size_type;
-		typedef std::ptrdiff_t						difference_type;
 		typedef Compare								key_compare;
 		typedef Allocator							allocator_type;
 		typedef value_type&							reference;
@@ -130,6 +129,7 @@ class map
 			pointer	pair;
 			Node	*left;
 			Node	*right;
+			Node	*left_right[2];
 			Node	*parent;
 		};
 		class BaseIterator
@@ -141,22 +141,51 @@ class map
 				typedef typename traits::value_type value_type;
 				typedef typename traits::difference_type difference_type;
 				typedef typename traits::reference reference;
-				
+
 				// Constructors
-				BaseIterator(pointer pt = 0) : ptr(pt)
+				BaseIterator(Node *pt = 0) : ptr(pt)
 				{
 				}
-				BaseIterator(const BaseIterator& ref) : ptr(&(*ref)) {}
+				BaseIterator(const BaseIterator& ref) : ptr(ref.ptr) {}
+
+				// Destructors
+				virtual ~BaseIterator()
+				{
+				}
+
+				// Operators
+				reference operator*() const
+				{
+					return (*ptr->pair);
+				}
+/* 				virtual BaseIterator& operator++()
+				{
+					if ()
+					++ptr;
+					return (*this);
+				}
+ */
 
 			private:
 				Node	*ptr;
 		};
+	public:
+		typedef typename std::iterator_traits<BaseIterator>::difference_type	difference_type;
+		typedef BaseIterator													iterator;
 
+		iterator begin() {
+			return (iterator(getLeftMostNode()));
+		}
+/* 		iterator end() {
+			return (iterator(getRightMostNode()));
+ */
 	private:
 		Node		*tree_start;
 		size_t		tree_size;
 		Allocator	allocator;
 		key_compare	my_comp;
+		enum		Side{LEFT, RIGHT};
+		Side	side;
 
 		Node *cloneAllNodes(Node *parent, const Node &toBeCloned)
 		{
@@ -216,6 +245,32 @@ class map
 			dest->left = src->left;
 			dest->pair = src->pair;
 		}
+		void	reimplementNode(Node **toBeReimplemented)
+		{
+			Node *tmp = *toBeReimplemented;
+			*toBeReimplemented = NULL;
+			Node *npos = findOrCreate(tmp->pair->first);
+			reassignAllButParent(npos, tmp);
+		}
+		Node	*getLeftMostNode() {
+			Node *node = tree_start;
+			while (node->left && node->left->pair)
+				node = node->left;
+			return node;
+		}
+/* 		Node	*getRightMostNode() {
+			Node *node = tree_start;
+			while (node->right && node->right->pair)
+				node = node->right;
+			return node;
+		} */
+		pointer	createPair(value_type value)
+		{
+			value_type *pair = myAllocate();
+			myConstruct(pair, value);
+			tree_size++;
+			return pair;
+		}
 		Node	*allocateNode()
 		{
 			Node	*node = new Node();
@@ -224,20 +279,6 @@ class map
 			node->left = NULL;
 			node->pair = NULL;
 			return (node);
-		}
-		void	reimplementNode(Node **toBeReimplemented)
-		{
-			Node *tmp = *toBeReimplemented;
-			*toBeReimplemented = NULL;
-			Node *npos = findOrCreate(tmp->pair->first);
-			reassignAllButParent(npos, tmp);
-		}
-		pointer	createPair(value_type value)
-		{
-			value_type *pair = myAllocate();
-			myConstruct(pair, value);
-			tree_size++;
-			return pair;
 		}
 		pointer	myAllocate()
 		{

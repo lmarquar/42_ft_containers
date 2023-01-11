@@ -6,6 +6,7 @@
 template< template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > > class Map >
 void MyTester::mapTest()
 {
+	typedef typename Map<int, std::string>::iterator iterator;
 	Map<int, std::string> my_map;
 	int i = 1;
 	oStream << "map empty?: " << my_map.empty() << std::endl;
@@ -48,7 +49,8 @@ void MyTester::mapTest()
 	swap(my_map, my_clone);
 	oStream << "after second swap: " << my_map[3] << std::endl;
 	oStream << "after second swap: " << my_clone.at(3) << std::endl;
-
+	iterator it = my_map.begin();
+	oStream << "*it: " << (*it).second << std::endl;
 }
 
 #endif
