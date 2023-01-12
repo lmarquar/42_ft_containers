@@ -100,7 +100,7 @@ class map
 			return 1;
 		}
 		size_type max_size() const {
-			return (allocator.max_size());
+			return ((size_t(-1) / sizeof(std::map<Key, mapped_type>)) / 3);
 		}
 		void clear() {
 			eraseAllNodes(tree_start);

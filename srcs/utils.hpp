@@ -7,6 +7,9 @@
 # include <cstring>
 # include <functional>
 # include <cstdlib>
+# ifdef MAP_HPP
+#  include <cmath>
+# endif
 
 # ifndef OS
 #  ifdef __linux__
