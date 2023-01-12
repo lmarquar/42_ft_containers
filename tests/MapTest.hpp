@@ -55,6 +55,8 @@ void MyTester::mapTest()
 		oStream << "*it: " << (*it).second << std::endl;
 		++it;
 	}
+	Map<int, std::string> empty_map;
+	oStream << (empty_map.begin() == empty_map.end()) << std::endl;
 //	oStream << "map_end: " << (*my_map.end()).first << (*my_map.end()).second << std::endl;
 //	oStream << (it == my_map.end()) << std::endl;
 }

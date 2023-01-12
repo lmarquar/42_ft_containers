@@ -192,9 +192,9 @@ class map
 		iterator begin() {
 			return (iterator(getLeftmostNode()));
 		}
-/* 		iterator end() {
-			return (iterator(&end_val));
-		} */
+		iterator end() {
+			return (iterator(getRightmostNode()));
+		}
 	private:
 		enum		Side{L, R};
 		
@@ -272,7 +272,7 @@ class map
 		Node	*getLeftmostNode() {
 			return (getBorderNode(L));
 		}
-		Node	*getRightMostNode() {
+		Node	*getRightmostNode() {
 			return (getBorderNode(R));
 		}
 		Node	*getBorderNode(Side side) {
@@ -291,6 +291,7 @@ class map
 		Node	*allocateNode()
 		{
 			Node	*node = new Node();
+			setAllElementsToNul(node);
 			return (node);
 		}
 		Node	*setAllElementsToNul(Node *node)
