@@ -199,6 +199,10 @@ class map
 		iterator end() {
 			return (iterator(getEndNode(R)));
 		}
+		void	draw_tree()
+		{
+			
+		}
 	private:
 		enum		Side{L, R};
 		
@@ -207,7 +211,6 @@ class map
 		Allocator	allocator;
 		key_compare	my_comp;
 		Side		side;
-
 		Node *cloneAllNodes(Node *parent, const Node &toBeCloned)
 		{
 			Node *clone = cloneAndReplaceParent(parent, toBeCloned);
@@ -237,7 +240,7 @@ class map
 			Node	*tmp;
 
 			tmp = tree_start;
-			while (tmp && tmp->pair && key != tmp->pair->first)
+			while (isOfValue(tmp) && key != tmp->pair->first)
 			{
 				if (key < tmp->pair->first)
 					tmp = createIfDoesNotExist(&tmp->left_right[0], tmp);

@@ -1,2 +1,5 @@
-change g++ to c++ in the end
 add end and begin nodes
+do draw_tree
+
+delete draw_tree or comment it out
+change g++ to c++ in the end
