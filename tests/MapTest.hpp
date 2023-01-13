@@ -37,6 +37,8 @@ void MyTester::mapTest()
 	oStream << my_clone[4] << std::endl;
 	oStream << "clone size: " << my_map.size() << std::endl;
 	oStream << "max_size(): " << my_map.max_size() << std::endl;
+	Map<int, int> map_int;
+	oStream << "max_size(): " << map_int.max_size() << std::endl;
 	my_clone.clear();
 	oStream << my_clone[1] << std::endl;
 	my_clone = my_map;
@@ -59,7 +61,7 @@ void MyTester::mapTest()
 	oStream << (mappy.begin() == mappy.end()) << std::endl;
 	mappy.insert(std::make_pair(1, "hi im Mappy, or atleast a small part of it"));
 	oStream << (mappy.begin() == mappy.end()) << std::endl;
-//	oStream << "map_end: " << (*my_map.end()).first << (*my_map.end()).second << std::endl;
+	// oStream << "map_end: " << (*my_map.end()).first << (*my_map.end()).second << std::endl;
 //	oStream << (it == my_map.end()) << std::endl;
 }
 
