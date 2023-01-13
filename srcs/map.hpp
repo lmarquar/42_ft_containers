@@ -61,6 +61,10 @@ class map
 			Node	*tmp = findOrCreate( value.first );
 			if (!tmp->pair)
 				tmp->pair = createPair(value);
+			if (tmp == getBorderNode(L))
+				tmp->left_right[L] = createChildNode(*tmp);
+			if (tmp == getBorderNode(R))
+				tmp->left_right[R] = createChildNode(*tmp);
 		}
 		T& at( const Key& key ) {
 			Node	*tmp = findOrCreate(key);
@@ -90,9 +94,9 @@ class map
 				p->left_right[R] = NULL;
 			else
 				p->left_right[L] = NULL;
-			if (node->left_right[R])
+			if (isOfValue(node->left_right[R]))
 				reimplementNode(&node->left_right[R]);
-			if (node->left_right[L])
+			if (isOfValue(node->left_right[L]))
 				reimplementNode(&node->left_right[L]);
 			myDeallocate(node->pair, R);
 			free(node);
@@ -190,10 +194,10 @@ class map
 		typedef BaseIterator													iterator;
 
 		iterator begin() {
-			return (iterator(getLeftmostNode()));
+			return (iterator(getBorderNode(L)));
 		}
 		iterator end() {
-			return (iterator(getRightmostNode()));
+			return (iterator(getEndNode(R)));
 		}
 	private:
 		enum		Side{L, R};
@@ -269,17 +273,24 @@ class map
 			Node *npos = findOrCreate(tmp->pair->first);
 			reassignAllButParent(npos, tmp);
 		}
-		Node	*getLeftmostNode() {
-			return (getBorderNode(L));
-		}
-		Node	*getRightmostNode() {
-			return (getBorderNode(R));
-		}
 		Node	*getBorderNode(Side side) {
 			Node *node = tree_start;
 			while (node->left_right[side] && node->left_right[side]->pair)
 				node = node->left_right[side];
 			return node;
+		}
+		Node	*getEndNode(Side side) {
+			Node *node = tree_start;
+			while (node->left_right[side])
+				node = node->left_right[side];
+			return node;
+		}
+		bool	isOfValue(const Node *node) const {
+			if (!node)
+				return false;
+			if (!node->pair)
+				return false;
+			return true;
 		}
 		pointer	createPair(value_type value)
 		{
